@@ -38,6 +38,10 @@ class DrawerMenu extends StatelessWidget {
           getListTile('Settings', onTap: () {
             Navigator.pushReplacementNamed(context, '/settings');
           }),
+          getLine(),
+          getListTile('Login', onTap: () {
+            Navigator.pushReplacementNamed(context, '/login');
+          }),
         ],
       ),
     );

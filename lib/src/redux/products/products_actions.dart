@@ -18,23 +18,17 @@ class SetProductsStateAction {
 Future<void> fetchProductsAction(Store<AppState> store) async {
   store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
-  print(123);
-
   try {
     final response = await http.get(
-      'http://10.0.2.2:8000/api/products?limit=2',
+      'http://10.0.2.2:8000/api/products?limit=5',
       headers: {
         HttpHeaders.authorizationHeader:
             "Token 21d665472f2d12c8f0e3120cca47562f9e2d5ffa4992ae796e931c0378e574aa"
       },
     );
 
-    print("oke");
-
     assert(response.statusCode == 200);
     final jsonData = json.decode(response.body);
-
-    print(jsonData);
 
     store.dispatch(
       SetProductsStateAction(

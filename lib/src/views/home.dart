@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:ecommerce_flutter/src/components/drawer_menu.dart';
+import 'package:ecommerce_flutter/src/widgets/drawer_menu.dart';
 
 import 'package:ecommerce_flutter/src/models/i_post.dart';
 import 'package:ecommerce_flutter/src/redux/posts/posts_actions.dart';
