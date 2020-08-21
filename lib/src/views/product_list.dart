@@ -18,7 +18,7 @@ class ProductList extends StatefulWidget {
 
 class _ProductListState extends State<ProductList> {
   void _onFetchProductsPressed() {
-    Redux.store.dispatch(fetchProductsAction);
+    Redux.store.dispatch(new ProductActions(page:1, size:20).getAllProductsAction);
   }
 
   @override

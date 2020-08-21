@@ -6,6 +6,8 @@ productsReducer(ProductsState prevState, SetProductsStateAction action) {
   return prevState.copyWith(
       isError: payload.isError,
       isLoading: payload.isLoading,
-      count: payload.count,
-      products: payload.products);
+      isSuccess: payload.isSuccess,
+      totalItems: payload.totalItems,
+      totalPages: payload.totalPages,
+      products: payload.products;
 }

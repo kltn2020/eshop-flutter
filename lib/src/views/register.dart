@@ -31,6 +31,11 @@ class _RegisterState extends State<Register> {
     super.dispose();
   }
 
+  void onRegister() {
+    Redux.store.dispatch();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,11 +151,7 @@ class _RegisterState extends State<Register> {
                         FadeAnimation(
                             1.5,
                             FlatButton(
-                                onPressed: () {
-                                  print(email.text);
-                                  print(password.text);
-                                  print(repassword.text);
-                                },
+                                onPressed: _onRegister,
                                 child: Container(
                                   height: 50,
                                   decoration: BoxDecoration(

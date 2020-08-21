@@ -15,32 +15,46 @@ class SetProductsStateAction {
   SetProductsStateAction(this.productsState);
 }
 
-Future<void> fetchProductsAction(Store<AppState> store) async {
+class ProductActions{
+  String token;
+  String page;
+  String size;
+
+  ProductActions({
+    this.token,
+    this.page,
+    this.size,
+  });
+
+  Future<void> getAllProductsAction(Store<AppState> store) async {
   store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
-  try {
-    final response = await http.get(
-      'http://10.0.2.2:8000/api/products?limit=5',
-      headers: {
-        HttpHeaders.authorizationHeader:
-            "Token 21d665472f2d12c8f0e3120cca47562f9e2d5ffa4992ae796e931c0378e574aa"
-      },
-    );
+    try {
+      final response = await http.get(
+        'https://rocky-sierra-70366.herokuapp.com/api/products?size=20&&page=1',
+        headers: {
+          HttpHeaders.authorizationHeader:
+              "Token $token"
+        },
+      );
 
-    assert(response.statusCode == 200);
-    final jsonData = json.decode(response.body);
+      assert(response.statusCode == 200);
+      final jsonData = json.decode(response.body);
 
-    store.dispatch(
-      SetProductsStateAction(
-        ProductsState(
-          isLoading: false,
-          count: jsonData['count'],
-          products: IProduct.listFromJson(jsonData['results']),
+      store.dispatch(
+        SetProductsStateAction(
+          ProductsState(
+            isLoading: false,
+            isSuccess:true,
+            totalPages: jsonData['count'],
+            products: IProduct.listFromJson(jsonData['results']),
+          ),
         ),
-      ),
-    );
-  } catch (error) {
-    print(error);
-    store.dispatch(SetProductsStateAction(ProductsState(isLoading: false)));
+      );
+    } catch (error) {
+      print(error);
+      store.dispatch(SetProductsStateAction(ProductsState(isLoading: false, isError:true)));
+    }
   }
 }
+
