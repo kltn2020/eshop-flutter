@@ -9,5 +9,5 @@ productsReducer(ProductsState prevState, SetProductsStateAction action) {
       isSuccess: payload.isSuccess,
       totalItems: payload.totalItems,
       totalPages: payload.totalPages,
-      products: payload.products;
+      products: payload.products);
 }

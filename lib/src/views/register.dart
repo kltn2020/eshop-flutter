@@ -1,5 +1,7 @@
 import 'package:ecommerce_flutter/src/animations/fade_animation.dart';
+import 'package:ecommerce_flutter/src/redux/user/user_actions.dart';
 import 'package:flutter/material.dart';
+import 'package:ecommerce_flutter/src/redux/store.dart';
 
 class Register extends StatefulWidget {
   Register({Key key, this.title}) : super(key: key);
@@ -31,10 +33,13 @@ class _RegisterState extends State<Register> {
     super.dispose();
   }
 
-  void onRegister() {
-    Redux.store.dispatch();
+  void _onRegister() {
+    Redux.store.dispatch(new UserActions(
+            email: email.text,
+            password: password.text,
+            passwordConfirmation: repassword.text)
+        .resigterAction);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +111,7 @@ class _RegisterState extends State<Register> {
                                     child: TextField(
                                       controller: email,
                                       decoration: InputDecoration(
-                                          hintText: "Email or Phone number",
+                                          hintText: "Email ",
                                           hintStyle:
                                               TextStyle(color: Colors.grey),
                                           border: InputBorder.none),
@@ -119,6 +124,7 @@ class _RegisterState extends State<Register> {
                                             bottom: BorderSide(
                                                 color: Colors.grey[200]))),
                                     child: TextField(
+                                      obscureText: true,
                                       controller: password,
                                       decoration: InputDecoration(
                                           hintText: "Password",
@@ -134,6 +140,7 @@ class _RegisterState extends State<Register> {
                                             bottom: BorderSide(
                                                 color: Colors.grey[200]))),
                                     child: TextField(
+                                      obscureText: true,
                                       controller: repassword,
                                       decoration: InputDecoration(
                                           hintText: "Re-enter password",
@@ -151,7 +158,9 @@ class _RegisterState extends State<Register> {
                         FadeAnimation(
                             1.5,
                             FlatButton(
-                                onPressed: _onRegister,
+                                onPressed: () {
+                                  _onRegister();
+                                },
                                 child: Container(
                                   height: 50,
                                   decoration: BoxDecoration(

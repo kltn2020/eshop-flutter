@@ -6,6 +6,7 @@ import 'package:ecommerce_flutter/src/views/home.dart';
 import 'package:ecommerce_flutter/src/views/product_list.dart';
 import 'package:ecommerce_flutter/src/views/login.dart';
 import 'package:ecommerce_flutter/src/views/register.dart';
+import 'package:ecommerce_flutter/src/views/category_list.dart';
 
 //StoreProvider it passes our Redux Store to our tree of widgets.
 //StoreConnector gets the Store from StoreProvider, reads a piece of data from our store and passes that data to its builder function, then whenever that data changes, rebuilds itself.
@@ -33,14 +34,15 @@ class MyApp extends StatelessWidget {
     return StoreProvider<AppState>(
       store: Redux.store,
       child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'Roboto'),
+        title: 'Shop',
         initialRoute: '/',
         routes: {
-          '/': (context) => MyHomePage(title: 'Flutter Demo Home Page'),
+          '/': (context) => HomePage(),
           '/product-list': (context) => ProductList(title: 'Product List'),
+          '/category-list': (context) => CategoryList(),
+
           // '/settings': (context) => Settings(),
           '/login': (context) => Login(),
           '/register': (context) => Register(),

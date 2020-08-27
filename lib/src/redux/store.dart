@@ -12,6 +12,11 @@ import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_reducer.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_state.dart';
 
+//Product
+import 'package:ecommerce_flutter/src/redux/user/user_actions.dart';
+import 'package:ecommerce_flutter/src/redux/user/user_reducer.dart';
+import 'package:ecommerce_flutter/src/redux/user/user_state.dart';
+
 //appReducer: the root reducer of our entire application is where we use all of our reducers
 AppState appReducer(AppState state, dynamic action) {
   if (action is SetPostsStateAction) {
@@ -26,6 +31,12 @@ AppState appReducer(AppState state, dynamic action) {
     return state.copyWith(productsState: nextProductsState);
   }
 
+  if (action is SetUserStateAction) {
+    final nextUserState = userReducer(state.userState, action);
+
+    return state.copyWith(userState: nextUserState);
+  }
+
   return state;
 }
 
@@ -34,19 +45,24 @@ AppState appReducer(AppState state, dynamic action) {
 class AppState {
   final PostsState postsState;
   final ProductsState productsState;
+  final UserState userState;
 
   AppState({
     @required this.postsState,
     @required this.productsState,
+    @required this.userState,
   });
 
   AppState copyWith({
     PostsState postsState,
     ProductsState productsState,
+    UserState userState,
   }) {
     return AppState(
-        postsState: postsState ?? this.postsState,
-        productsState: productsState ?? this.productsState);
+      postsState: postsState ?? this.postsState,
+      productsState: productsState ?? this.productsState,
+      userState: userState ?? this.userState,
+    );
   }
 }
 
@@ -67,12 +83,16 @@ class Redux {
   static Future<void> init() async {
     final postsStateInitial = PostsState.initial();
     final productsStateInitial = ProductsState.initial();
+    final userStateInitial = UserState.initial();
 
     _store = Store<AppState>(
       appReducer,
       middleware: [thunkMiddleware],
       initialState: AppState(
-          postsState: postsStateInitial, productsState: productsStateInitial),
+        postsState: postsStateInitial,
+        productsState: productsStateInitial,
+        userState: userStateInitial,
+      ),
     );
   }
 }

@@ -1,7 +1,47 @@
 import 'package:ecommerce_flutter/src/animations/fade_animation.dart';
 import 'package:flutter/material.dart';
+import 'package:ecommerce_flutter/src/redux/store.dart';
+import 'package:ecommerce_flutter/src/redux/user/user_actions.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  Login({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final email = TextEditingController();
+  final password = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    email.dispose();
+    password.dispose();
+
+    super.dispose();
+  }
+
+  Future<void> _onLogin() async {
+    await Redux.store.dispatch(new UserActions(
+      email: email.text,
+      password: password.text,
+    ).loginAction);
+
+    if (Redux.store.state.userState.token != null)
+      Navigator.pushReplacementNamed(context, '/');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +103,30 @@ class Login extends StatelessWidget {
                                   ]),
                               child: Column(
                                 children: <Widget>[
+                                  StoreConnector<AppState, bool>(
+                                    distinct: true,
+                                    converter: (store) =>
+                                        store.state.userState.isLoading,
+                                    builder: (context, isLoading) {
+                                      if (isLoading) {
+                                        return LinearProgressIndicator();
+                                      } else {
+                                        return SizedBox.shrink();
+                                      }
+                                    },
+                                  ),
+                                  StoreConnector<AppState, bool>(
+                                    distinct: true,
+                                    converter: (store) =>
+                                        store.state.userState.isLoading,
+                                    builder: (context, isLoading) {
+                                      if (isLoading) {
+                                        return LinearProgressIndicator();
+                                      } else {
+                                        return SizedBox.shrink();
+                                      }
+                                    },
+                                  ),
                                   Container(
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
@@ -70,8 +134,9 @@ class Login extends StatelessWidget {
                                             bottom: BorderSide(
                                                 color: Colors.grey[200]))),
                                     child: TextField(
+                                      controller: email,
                                       decoration: InputDecoration(
-                                          hintText: "Email or Phone number",
+                                          hintText: "Email ",
                                           hintStyle:
                                               TextStyle(color: Colors.grey),
                                           border: InputBorder.none),
@@ -84,6 +149,8 @@ class Login extends StatelessWidget {
                                             bottom: BorderSide(
                                                 color: Colors.grey[200]))),
                                     child: TextField(
+                                      obscureText: true,
+                                      controller: password,
                                       decoration: InputDecoration(
                                           hintText: "Password",
                                           hintStyle:
@@ -100,7 +167,9 @@ class Login extends StatelessWidget {
                         FadeAnimation(
                             1.5,
                             FlatButton(
-                                onPressed: null,
+                                onPressed: () {
+                                  _onLogin();
+                                },
                                 child: Container(
                                   height: 50,
                                   decoration: BoxDecoration(

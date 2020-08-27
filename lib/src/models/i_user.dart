@@ -9,7 +9,6 @@ class IUser {
     id = json['id'];
     email = json['email'];
     role = json['role'];
-    
   }
 
   static List<IUser> listFromJson(List<dynamic> json) {

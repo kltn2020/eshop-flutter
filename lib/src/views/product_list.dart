@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:ecommerce_flutter/src/widgets/drawer_menu.dart';
-
 import 'package:ecommerce_flutter/src/models/i_product.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
@@ -18,7 +16,8 @@ class ProductList extends StatefulWidget {
 
 class _ProductListState extends State<ProductList> {
   void _onFetchProductsPressed() {
-    Redux.store.dispatch(new ProductActions(page:1, size:20).getAllProductsAction);
+    Redux.store
+        .dispatch(new ProductActions(page: 1, size: 20).getAllProductsAction);
   }
 
   @override
@@ -30,7 +29,7 @@ class _ProductListState extends State<ProductList> {
         backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
         title: Text(widget.title),
       ),
-      drawer: DrawerMenu(),
+      //drawer: DrawerMenu(),
       body: Column(
         children: <Widget>[
           RaisedButton(
@@ -83,45 +82,48 @@ class _ProductListState extends State<ProductList> {
   }
 
   List<Widget> _buildProducts(List<IProduct> products) {
-    return products
-        .map((product) => Card(
-            elevation: 1.0,
-            margin: new EdgeInsets.all(8.0),
-            child: Container(
-                decoration:
-                    BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
-                child: InkWell(
-                    splashColor: Colors.blue.withAlpha(30),
-                    onTap: () {
-                      print('Card tapped.');
-                    },
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        verticalDirection: VerticalDirection.down,
-                        children: <Widget>[
-                          SizedBox(height: 30.0),
-                          Center(
-                              child: Icon(
-                            Icons.book,
-                            size: 30.0,
-                            color: Colors.black,
-                          )),
-                          SizedBox(height: 20.0),
-                          new Center(
-                            child: new Text(product.title,
-                                style: new TextStyle(
-                                    fontSize: 18.0, color: Colors.white)),
-                          ),
-                          SizedBox(height: 20.0),
-                          new Center(
-                            child: new Text(
-                              product.price.toString(),
-                              style: new TextStyle(
-                                  fontSize: 20, color: Colors.red),
+    if (products != null)
+      return products
+          .map((product) => Card(
+              elevation: 1.0,
+              margin: new EdgeInsets.all(8.0),
+              child: Container(
+                  decoration:
+                      BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+                  child: InkWell(
+                      splashColor: Colors.blue.withAlpha(30),
+                      onTap: () {
+                        print('Card tapped.');
+                      },
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          verticalDirection: VerticalDirection.down,
+                          children: <Widget>[
+                            SizedBox(height: 30.0),
+                            Center(
+                                child: Icon(
+                              Icons.book,
+                              size: 30.0,
+                              color: Colors.black,
+                            )),
+                            SizedBox(height: 20.0),
+                            new Center(
+                              child: new Text(product.title,
+                                  style: new TextStyle(
+                                      fontSize: 18.0, color: Colors.white)),
                             ),
-                          )
-                        ])))))
-        .toList();
+                            SizedBox(height: 20.0),
+                            new Center(
+                              child: new Text(
+                                product.price.toString(),
+                                style: new TextStyle(
+                                    fontSize: 20, color: Colors.red),
+                              ),
+                            )
+                          ])))))
+          .toList();
+    else
+      return null;
   }
 }
