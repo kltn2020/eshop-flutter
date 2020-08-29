@@ -15,6 +15,21 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/');
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(context, '/notifications');
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context, '/user');
+        break;
+      default:
+    }
+  }
+
   void _onFetchProductsPressed() {
     Redux.store
         .dispatch(new ProductActions(page: 1, size: 20).getAllProductsAction);
@@ -77,6 +92,31 @@ class _ProductListState extends State<ProductList> {
                     );
                   }))
         ],
+      ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.laptop),
+            title: Text('Product'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            title: Text('Notification'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            title: Text('User'),
+          ),
+        ],
+        currentIndex: 1,
+        selectedItemColor: Colors.purple[800],
+        onTap: _onItemTapped,
       ),
     );
   }

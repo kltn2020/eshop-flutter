@@ -79,6 +79,7 @@ class UserActions {
   Future<void> loginAction(Store<AppState> store) async {
     store.dispatch(SetUserStateAction(UserState(isLoading: true)));
     try {
+      print("Login");
       final response = await http.post(
         'https://rocky-sierra-70366.herokuapp.com/api/auth/login',
         body: {
