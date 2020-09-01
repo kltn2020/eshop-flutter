@@ -99,7 +99,7 @@ class _NotificationsState extends State<Notifications> {
             ListView(
               children: [
                 Container(
-                  padding: EdgeInsets.all(24),
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -109,6 +109,7 @@ class _NotificationsState extends State<Notifications> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
+                      SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -116,26 +117,256 @@ class _NotificationsState extends State<Notifications> {
                           Text("Category: Laptop"),
                         ],
                       ),
+                      SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text("start date"),
-                          Text(" - "),
-                          Text("end date"),
+                          Text(
+                            "start date",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Text(
+                            " - ",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Text(
+                            "end date",
+                            style: TextStyle(color: Colors.grey),
+                          ),
                         ],
-                      ),
-                      const Divider(
-                        color: Colors.black,
-                        thickness: 5,
-                        indent: 20,
-                        endIndent: 0,
                       ),
                     ],
                   ),
                 ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  // indent: 20,
+                  // endIndent: 0,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Voucher 1",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Discount: %"),
+                          Text("Category: Laptop"),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "start date",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Text(
+                            " - ",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Text(
+                            "end date",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  // indent: 20,
+                  // endIndent: 0,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Voucher 1",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Discount: %"),
+                          Text("Category: Laptop"),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "start date",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Text(
+                            " - ",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Text(
+                            "end date",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  // indent: 20,
+                  // endIndent: 0,
+                ),
               ],
             ),
-            Icon(Icons.directions_transit),
+
+            //List Order notification
+            ListView(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Order ID 1",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Total: 10000"),
+                          Text(
+                            "Status: Pending",
+                            style: TextStyle(color: Colors.amber),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "update date",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  // indent: 20,
+                  // endIndent: 0,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Order ID 1",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Total: 10000"),
+                          Text(
+                            "Status: Complete",
+                            style: TextStyle(color: Colors.green),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "update date",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  // indent: 20,
+                  // endIndent: 0,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Order ID 1",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Total: 10000"),
+                          Text(
+                            "Status: Processing",
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "update date",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  // indent: 20,
+                  // endIndent: 0,
+                ),
+              ],
+            ),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
