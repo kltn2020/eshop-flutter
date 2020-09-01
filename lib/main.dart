@@ -1,3 +1,8 @@
+import 'package:ecommerce_flutter/src/views/account_info.dart';
+import 'package:ecommerce_flutter/src/views/account_setting.dart';
+import 'package:ecommerce_flutter/src/views/address_create.dart';
+import 'package:ecommerce_flutter/src/views/address_list.dart';
+import 'package:ecommerce_flutter/src/views/favorite_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -48,6 +53,11 @@ class MyApp extends StatelessWidget {
           '/user': (context) => User(title: 'User'),
           '/login': (context) => Login(),
           '/register': (context) => Register(),
+          '/favorite-list': (context) => FavoriteList(),
+          '/account-setting': (context) => AccountSetting(),
+          '/account-info': (context) => AccountInfo(),
+          '/address-list': (context) => AddressList(),
+          '/address-create': (context) => AddressCreate(),
         },
       ),
     );
