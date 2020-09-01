@@ -82,14 +82,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.shopping_cart),
             color: Color.fromRGBO(146, 127, 191, 1),
           ),
-          SizedBox(
-            width: 5,
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.person),
-            color: Color.fromRGBO(146, 127, 191, 1),
-          ),
         ],
       ),
       body: Container(
