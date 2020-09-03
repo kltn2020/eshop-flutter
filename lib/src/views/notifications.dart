@@ -73,7 +73,9 @@ class _NotificationsState extends State<Notifications> {
           ),
           actions: <Widget>[
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/cart');
+              },
               icon: Icon(Icons.shopping_cart),
               color: Color.fromRGBO(146, 127, 191, 1),
             ),

@@ -78,7 +78,9 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/cart');
+            },
             icon: Icon(Icons.shopping_cart),
             color: Color.fromRGBO(146, 127, 191, 1),
           ),

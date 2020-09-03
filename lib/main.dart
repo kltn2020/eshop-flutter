@@ -1,8 +1,4 @@
-import 'package:ecommerce_flutter/src/views/account_info.dart';
-import 'package:ecommerce_flutter/src/views/account_setting.dart';
-import 'package:ecommerce_flutter/src/views/address_create.dart';
-import 'package:ecommerce_flutter/src/views/address_list.dart';
-import 'package:ecommerce_flutter/src/views/favorite_list.dart';
+import 'package:ecommerce_flutter/src/views/checkout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -14,6 +10,12 @@ import 'package:ecommerce_flutter/src/views/register.dart';
 import 'package:ecommerce_flutter/src/views/category_list.dart';
 import 'package:ecommerce_flutter/src/views/notifications.dart';
 import 'package:ecommerce_flutter/src/views/user.dart';
+import 'package:ecommerce_flutter/src/views/account_info.dart';
+import 'package:ecommerce_flutter/src/views/account_setting.dart';
+import 'package:ecommerce_flutter/src/views/address_create.dart';
+import 'package:ecommerce_flutter/src/views/address_list.dart';
+import 'package:ecommerce_flutter/src/views/cart.dart';
+import 'package:ecommerce_flutter/src/views/favorite_list.dart';
 
 //StoreProvider it passes our Redux Store to our tree of widgets.
 //StoreConnector gets the Store from StoreProvider, reads a piece of data from our store and passes that data to its builder function, then whenever that data changes, rebuilds itself.
@@ -42,7 +44,10 @@ class MyApp extends StatelessWidget {
       store: Redux.store,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'Roboto'),
+        theme: ThemeData(
+          fontFamily: 'Roboto',
+          primaryColor: Color.fromRGBO(79, 59, 120, 1),
+        ),
         title: 'Shop',
         initialRoute: '/',
         routes: {
@@ -58,6 +63,8 @@ class MyApp extends StatelessWidget {
           '/account-info': (context) => AccountInfo(),
           '/address-list': (context) => AddressList(),
           '/address-create': (context) => AddressCreate(),
+          '/cart': (context) => Cart(),
+          '/checkout': (context) => CheckOut(),
         },
       ),
     );
