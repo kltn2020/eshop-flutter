@@ -48,9 +48,9 @@ class _RegisterState extends State<Register> {
         width: double.infinity,
         decoration: BoxDecoration(
             gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-          Colors.blueGrey[900],
-          Colors.blueGrey[800],
-          Colors.blueGrey[400]
+          Color.fromRGBO(54, 59, 78, 1),
+          Color.fromRGBO(79, 59, 120, 1),
+          Color.fromRGBO(146, 127, 191, 1),
         ])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +96,8 @@ class _RegisterState extends State<Register> {
                                   borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
-                                        color: Colors.teal[100],
+                                        color:
+                                            Color.fromRGBO(196, 187, 240, 0.5),
                                         blurRadius: 20,
                                         offset: Offset(0, 10))
                                   ]),
@@ -164,17 +165,20 @@ class _RegisterState extends State<Register> {
                                 child: Container(
                                   height: 50,
                                   decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1,
-                                      ),
+                                      gradient: LinearGradient(
+                                          colors: [
+                                            Color.fromRGBO(146, 127, 191, 1),
+                                            Color.fromRGBO(79, 59, 120, 1)
+                                          ],
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft),
                                       borderRadius: BorderRadius.circular(50),
                                       color: Colors.tealAccent[400]),
                                   child: Center(
                                     child: Text(
                                       "Register",
                                       style: TextStyle(
-                                          color: Colors.black,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),

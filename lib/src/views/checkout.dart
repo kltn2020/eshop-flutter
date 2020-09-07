@@ -1,5 +1,20 @@
 import 'package:flutter/material.dart';
 
+class Address {
+  String name;
+  String number;
+  String addressDetail;
+
+  Address(this.name, this.number, this.addressDetail);
+
+  Address.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    name = json['name'];
+    number = json['number'];
+    addressDetail = json['addressDetail'];
+  }
+}
+
 class CheckOut extends StatefulWidget {
   // static String get routeName => '@routes/home-page';
 
@@ -11,6 +26,38 @@ class CheckOut extends StatefulWidget {
 
 class _CheckOutState extends State<CheckOut> {
   final List<String> items = ['apple', 'banana', 'orange', 'lemon'];
+
+  var paymentType = "Choose type of payment";
+
+  Address shippingAddress;
+
+  _navigateAndDisplayAddressSelection(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    var result = await Navigator.pushNamed(context, '/address-checkout');
+
+    if (result != null) {
+      print(result);
+
+      setState(() {
+        shippingAddress = Address.fromJson(result);
+      });
+
+      print(shippingAddress);
+    }
+  }
+
+  _navigateAndDisplaySelection(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    final result = await Navigator.pushNamed(context, '/payment-checkout');
+
+    if (result != null) {
+      setState(() {
+        paymentType = result;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +101,7 @@ class _CheckOutState extends State<CheckOut> {
                     ),
                     FlatButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, "/address-checkout");
+                        _navigateAndDisplayAddressSelection(context);
                       },
                       child: Container(
                         width: double.infinity,
@@ -64,8 +111,18 @@ class _CheckOutState extends State<CheckOut> {
                           children: [
                             Column(
                               children: [
-                                Text("Name/Number"),
-                                Text("Address detail"),
+                                shippingAddress != null &&
+                                        shippingAddress.name != null
+                                    ? Text(shippingAddress.name)
+                                    : Text("Name"),
+                                shippingAddress != null &&
+                                        shippingAddress.number != null
+                                    ? Text(shippingAddress.number)
+                                    : Text("Number"),
+                                shippingAddress != null &&
+                                        shippingAddress.addressDetail != null
+                                    ? Text(shippingAddress.addressDetail)
+                                    : Text("Address Detail"),
                               ],
                             ),
                             Icon(Icons.navigate_next),
@@ -121,7 +178,7 @@ class _CheckOutState extends State<CheckOut> {
                     ),
                     FlatButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, "/payment-checkout");
+                        _navigateAndDisplaySelection(context);
                       },
                       child: Container(
                         width: double.infinity,
@@ -132,7 +189,7 @@ class _CheckOutState extends State<CheckOut> {
                             Text("Payment Type: "),
                             Row(
                               children: [
-                                Text("Cash"),
+                                Text("$paymentType"),
                                 Icon(Icons.navigate_next),
                               ],
                             ),

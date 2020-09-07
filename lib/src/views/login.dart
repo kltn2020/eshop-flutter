@@ -38,7 +38,7 @@ class _LoginState extends State<Login> {
       password: password.text,
     ).loginAction);
 
-    if (Redux.store.state.userState.token != null)
+    if (Redux.store.state.userState.token != "")
       Navigator.pushReplacementNamed(context, '/');
   }
 
@@ -49,9 +49,9 @@ class _LoginState extends State<Login> {
         width: double.infinity,
         decoration: BoxDecoration(
             gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-          Colors.blueGrey[900],
-          Colors.blueGrey[800],
-          Colors.blueGrey[400]
+          Color.fromRGBO(54, 59, 78, 1),
+          Color.fromRGBO(79, 59, 120, 1),
+          Color.fromRGBO(146, 127, 191, 1),
         ])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,75 +91,114 @@ class _LoginState extends State<Login> {
                         ),
                         FadeAnimation(
                             1.4,
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.teal[100],
-                                        blurRadius: 20,
-                                        offset: Offset(0, 10))
-                                  ]),
-                              child: Column(
-                                children: <Widget>[
-                                  StoreConnector<AppState, bool>(
-                                    distinct: true,
-                                    converter: (store) =>
-                                        store.state.userState.isLoading,
-                                    builder: (context, isLoading) {
-                                      if (isLoading) {
-                                        return LinearProgressIndicator();
-                                      } else {
-                                        return SizedBox.shrink();
-                                      }
-                                    },
+                            Column(
+                              children: [
+                                StoreConnector<AppState, bool>(
+                                  distinct: true,
+                                  converter: (store) =>
+                                      store.state.userState.isLoading,
+                                  builder: (context, isLoading) {
+                                    if (isLoading) {
+                                      return Container(
+                                        margin: EdgeInsets.all(8),
+                                        child: LinearProgressIndicator(
+                                          backgroundColor: Color.fromRGBO(
+                                              196, 187, 240, 0.5),
+                                          valueColor:
+                                              new AlwaysStoppedAnimation<Color>(
+                                            Color.fromRGBO(146, 127, 191, 1),
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      return SizedBox.shrink();
+                                    }
+                                  },
+                                ),
+                                StoreConnector<AppState, bool>(
+                                  distinct: true,
+                                  converter: (store) =>
+                                      store.state.userState.isError,
+                                  builder: (context, isError) {
+                                    if (isError) {
+                                      return Container(
+                                        margin: EdgeInsets.all(8),
+                                        child: Text(
+                                          "Error",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      );
+                                    } else {
+                                      return SizedBox.shrink();
+                                    }
+                                  },
+                                ),
+                                StoreConnector<AppState, String>(
+                                  distinct: true,
+                                  converter: (store) =>
+                                      store.state.userState.errorMessage,
+                                  builder: (context, errorMessage) {
+                                    if (errorMessage != "") {
+                                      return Container(
+                                        margin: EdgeInsets.all(8),
+                                        child: Text(
+                                          "$errorMessage",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      );
+                                    } else {
+                                      return SizedBox.shrink();
+                                    }
+                                  },
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Color.fromRGBO(
+                                                196, 187, 240, 0.5),
+                                            blurRadius: 20,
+                                            offset: Offset(0, 10))
+                                      ]),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: Colors.grey[200]))),
+                                        child: TextField(
+                                          controller: email,
+                                          decoration: InputDecoration(
+                                              hintText: "Email ",
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              border: InputBorder.none),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: Colors.grey[200]))),
+                                        child: TextField(
+                                          obscureText: true,
+                                          controller: password,
+                                          decoration: InputDecoration(
+                                              hintText: "Password",
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              border: InputBorder.none),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  StoreConnector<AppState, bool>(
-                                    distinct: true,
-                                    converter: (store) =>
-                                        store.state.userState.isLoading,
-                                    builder: (context, isLoading) {
-                                      if (isLoading) {
-                                        return LinearProgressIndicator();
-                                      } else {
-                                        return SizedBox.shrink();
-                                      }
-                                    },
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey[200]))),
-                                    child: TextField(
-                                      controller: email,
-                                      decoration: InputDecoration(
-                                          hintText: "Email ",
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          border: InputBorder.none),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey[200]))),
-                                    child: TextField(
-                                      obscureText: true,
-                                      controller: password,
-                                      decoration: InputDecoration(
-                                          hintText: "Password",
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                          border: InputBorder.none),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             )),
                         SizedBox(
                           height: 40,
@@ -173,17 +212,24 @@ class _LoginState extends State<Login> {
                                 child: Container(
                                   height: 50,
                                   decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(50),
-                                      color: Colors.tealAccent[400]),
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(50),
+                                    gradient: LinearGradient(
+                                        colors: [
+                                          Color.fromRGBO(146, 127, 191, 1),
+                                          Color.fromRGBO(79, 59, 120, 1)
+                                        ],
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft),
+                                  ),
                                   child: Center(
                                     child: Text(
                                       "Login",
                                       style: TextStyle(
-                                          color: Colors.black,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -279,14 +325,19 @@ class _LoginState extends State<Login> {
                                       child: Container(
                                         height: 40,
                                         decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black38,
+                                              width: 1,
+                                            ),
                                             borderRadius:
                                                 BorderRadius.circular(50),
-                                            color: Colors.teal[300]),
+                                            color: Color.fromRGBO(
+                                                196, 187, 240, 1)),
                                         child: Center(
                                           child: Text(
                                             "Register",
                                             style: TextStyle(
-                                                color: Colors.white,
+                                                color: Colors.black,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ),

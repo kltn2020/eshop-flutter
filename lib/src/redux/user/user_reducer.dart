@@ -3,8 +3,8 @@ import 'package:ecommerce_flutter/src/redux/user/user_state.dart';
 
 userReducer(UserState prevState, SetUserStateAction action) {
   final payload = action.userState;
-  print("123456789");
-  print(payload);
+  print("User reducer");
+  print(payload.token);
   return prevState.copyWith(
     isError: payload.isError,
     errorMessage: payload.errorMessage,

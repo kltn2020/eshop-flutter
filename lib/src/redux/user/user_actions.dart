@@ -58,6 +58,24 @@ String _decodeBase64(String str) {
   return utf8.decode(base64Url.decode(output));
 }
 
+//Error Handle
+class ErrorMessage {
+  String message;
+  int status;
+
+  ErrorMessage({
+    this.message,
+    this.status,
+  });
+
+  factory ErrorMessage.fromJson(Map<String, dynamic> json) {
+    if (json != null)
+      return ErrorMessage(message: json['message'], status: json['status']);
+    else
+      return null;
+  }
+}
+
 @immutable
 class SetUserStateAction {
   final UserState userState;
@@ -77,7 +95,12 @@ class UserActions {
   });
 
   Future<void> loginAction(Store<AppState> store) async {
-    store.dispatch(SetUserStateAction(UserState(isLoading: true)));
+    store.dispatch(SetUserStateAction(UserState(
+      isLoading: true,
+      isError: false,
+      errorMessage: "",
+      isSuccess: false,
+    )));
     try {
       print("Login");
       final response = await http.post(
@@ -108,13 +131,15 @@ class UserActions {
         );
       }
       if (response.statusCode > 400) {
+        print("its herer");
         final jsonData = json.decode(response.body);
+        print(jsonData['error']);
         store.dispatch(
           SetUserStateAction(
             UserState(
               isLoading: false,
               isError: true,
-              errorMessage: jsonData['error'],
+              errorMessage: ErrorMessage.fromJson(jsonData['error']).message,
             ),
           ),
         );
@@ -125,26 +150,6 @@ class UserActions {
       store.dispatch(
           SetUserStateAction(UserState(isLoading: false, isError: true)));
     }
-    // print(101112);
-    // final http.Response response = await http.post(
-    //   'https://jsonplaceholder.typicode.com/albums',
-    //   headers: <String, String>{
-    //     'Content-Type': 'application/json; charset=UTF-8',
-    //   },
-    //   body: jsonEncode(<String, String>{
-    //     'title': '$email',
-    //   }),
-    // );
-    // if (response.statusCode == 201) {
-    //   // If the server did return a 201 CREATED response,
-    //   // then parse the JSON.
-    //   print(response.body);
-    //   //return Album.fromJson(json.decode(response.body));
-    // } else {
-    //   // If the server did not return a 201 CREATED response,
-    //   // then throw an exception.
-    //   throw Exception('Failed to load album');
-    // }
   }
 
   Future<void> resigterAction(Store<AppState> store) async {
@@ -181,5 +186,19 @@ class UserActions {
       store.dispatch(
           SetUserStateAction(UserState(isLoading: false, isError: true)));
     }
+  }
+
+  void logoutAction(Store<AppState> store) {
+    print("logout");
+    store.dispatch(SetUserStateAction(
+      UserState(
+        token: "",
+        isError: false,
+        errorMessage: "",
+        isSuccess: false,
+        isLoading: false,
+        user: null,
+      ),
+    ));
   }
 }

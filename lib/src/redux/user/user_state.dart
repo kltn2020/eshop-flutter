@@ -22,9 +22,9 @@ class UserState {
 
   //factory constructor will be later used to fill the initial main state.
   factory UserState.initial() => UserState(
-        isError: null,
+        isError: false,
         errorMessage: null,
-        isSuccess: null,
+        isSuccess: false,
         isLoading: false,
         user: null,
         token: null,

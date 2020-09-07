@@ -16,6 +16,18 @@ class _CartState extends State<Cart> {
 
   final List<String> items = ['apple', 'banana', 'orange', 'lemon'];
 
+  var applyVoucher;
+
+  _navigateAndDisplaySelection(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    final result = await Navigator.pushNamed(context, '/voucher-apply');
+
+    setState(() {
+      applyVoucher = result;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +57,7 @@ class _CartState extends State<Cart> {
               Row(
                 children: [
                   Checkbox(
-                    checkColor: Theme.of(context).primaryColor,
+                    activeColor: Theme.of(context).primaryColor,
                     value: selectAllCheck,
                     onChanged: (bool value) {
                       setState(() {
@@ -114,10 +126,10 @@ class _CartState extends State<Cart> {
               ),
               new GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, "/voucher-apply");
+                  _navigateAndDisplaySelection(context);
                 },
-                child: new Text(
-                  "Apply Voucher >",
+                child: Text(
+                  applyVoucher == null ? "Apply Voucher >" : applyVoucher,
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.w700,
@@ -132,6 +144,7 @@ class _CartState extends State<Cart> {
         onPressed: () => Navigator.pushNamed(context, "/checkout"),
         tooltip: 'Click to checkout',
         child: Text("Buy"),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -194,7 +207,12 @@ class ProductInCart extends StatelessWidget {
                   ),
                 ],
               ),
-              IconButton(icon: Icon(Icons.delete), onPressed: onDelete)
+              IconButton(
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.redAccent,
+                  ),
+                  onPressed: onDelete)
             ],
           ),
           Row(

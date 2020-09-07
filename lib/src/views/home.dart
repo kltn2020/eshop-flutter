@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                       child: CarouselSlider(
                         options: CarouselOptions(
                           aspectRatio: 16 / 9,
-                          autoPlay: true,
+                          autoPlay: false,
                         ),
                         items: bannerAdSlider.map((i) {
                           return Builder(

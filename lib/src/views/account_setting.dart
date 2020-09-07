@@ -1,6 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:ecommerce_flutter/src/redux/store.dart';
+import 'package:ecommerce_flutter/src/redux/user/user_actions.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
-class AccountSetting extends StatelessWidget {
+class AccountSetting extends StatefulWidget {
+  AccountSetting({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _AccountSettingState createState() => _AccountSettingState();
+}
+
+class _AccountSettingState extends State<AccountSetting> {
+  final email = TextEditingController();
+  final password = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    email.dispose();
+    password.dispose();
+
+    super.dispose();
+  }
+
+  void _onLogout() {
+    print("Ready to logout");
+    Redux.store.dispatch(new UserActions().logoutAction);
+
+    if (Redux.store.state.userState.token == "")
+      Navigator.pushReplacementNamed(context, '/login');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +78,9 @@ class AccountSetting extends StatelessWidget {
             ),
           ),
           FlatButton(
-            onPressed: null,
+            onPressed: () {
+              _onLogout();
+            },
             child: Container(
               height: 50,
               decoration: BoxDecoration(
