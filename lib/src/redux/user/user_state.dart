@@ -23,11 +23,11 @@ class UserState {
   //factory constructor will be later used to fill the initial main state.
   factory UserState.initial() => UserState(
         isError: false,
-        errorMessage: null,
+        errorMessage: "",
         isSuccess: false,
         isLoading: false,
         user: null,
-        token: null,
+        token: "",
       );
 
   //copyWith method will be later used to get a copy of our UserState to update this piece of the main state.

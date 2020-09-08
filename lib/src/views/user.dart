@@ -75,8 +75,13 @@ class _UserState extends State<User> {
                     fontSize: 18,
                   ),
                 ),
-                Text(
-                  "View order history",
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/order-history');
+                  },
+                  child: Text(
+                    "View order history",
+                  ),
                 )
               ],
             ),

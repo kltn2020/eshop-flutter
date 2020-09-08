@@ -302,7 +302,7 @@ class ProductInCheckOut extends StatelessWidget {
               ),
               Column(
                 children: [
-                  Text("$title"),
+                  Text(title),
                 ],
               ),
               SizedBox(

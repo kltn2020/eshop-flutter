@@ -1,6 +1,8 @@
 import 'package:ecommerce_flutter/src/views/address_checkout.dart';
 import 'package:ecommerce_flutter/src/views/checkout.dart';
 import 'package:ecommerce_flutter/src/views/intro.dart';
+import 'package:ecommerce_flutter/src/views/order_detail.dart';
+import 'package:ecommerce_flutter/src/views/order_history.dart';
 import 'package:ecommerce_flutter/src/views/voucher_apply.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -53,8 +55,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Color.fromRGBO(79, 59, 120, 1),
         ),
         title: 'Shop',
-        initialRoute:
-            Redux.store.state.userState.token != null ? '/' : '/intro',
+        initialRoute: Redux.store.state.userState.token != "" ? '/' : '/intro',
         routes: {
           '/': (context) => HomePage(),
           '/intro': (context) => Intro(),
@@ -65,6 +66,8 @@ class MyApp extends StatelessWidget {
           '/login': (context) => Login(),
           '/register': (context) => Register(),
           '/favorite-list': (context) => FavoriteList(),
+          '/order-history': (context) => OrderHistory(),
+          '/order-detail': (context) => OrderDetail(),
           '/account-setting': (context) => AccountSetting(),
           '/account-info': (context) => AccountInfo(),
           '/address-list': (context) => AddressList(),
