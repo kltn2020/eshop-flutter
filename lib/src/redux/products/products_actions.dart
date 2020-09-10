@@ -33,21 +33,22 @@ class ProductActions {
       final response = await http.get(
           'https://rocky-sierra-70366.herokuapp.com/api/products?size=20&&page=1');
 
-      assert(response.statusCode == 200);
-      final jsonData = json.decode(response.body);
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
 
-      print(jsonData);
+        print(jsonData);
 
-      store.dispatch(
-        SetProductsStateAction(
-          ProductsState(
-            isLoading: false,
-            isSuccess: true,
-            //totalPages: jsonData['count'],
-            products: IProduct.listFromJson(jsonData.data['entries']),
+        store.dispatch(
+          SetProductsStateAction(
+            ProductsState(
+              isLoading: false,
+              isSuccess: true,
+              //totalPages: jsonData['count'],
+              products: IProduct.listFromJson(jsonData.data['entries']),
+            ),
           ),
-        ),
-      );
+        );
+      }
     } catch (error) {
       print(error);
       store.dispatch(SetProductsStateAction(

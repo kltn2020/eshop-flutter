@@ -149,7 +149,7 @@ class _ProductListState extends State<ProductList> {
                             )),
                             SizedBox(height: 20.0),
                             new Center(
-                              child: new Text(product.title,
+                              child: new Text(product.name,
                                   style: new TextStyle(
                                       fontSize: 18.0, color: Colors.white)),
                             ),
