@@ -1,9 +1,12 @@
+import 'package:ecommerce_flutter/src/models/Product.dart';
+import 'package:ecommerce_flutter/src/views/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:ecommerce_flutter/src/models/i_product.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
+import 'package:intl/intl.dart';
 
 class ProductList extends StatefulWidget {
   ProductList({Key key, this.title}) : super(key: key);
@@ -15,6 +18,8 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
+  bool typing = false;
+
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
@@ -30,73 +35,209 @@ class _ProductListState extends State<ProductList> {
     }
   }
 
-  void _onFetchProductsPressed() {
-    Redux.store
-        .dispatch(new ProductActions(page: 1, size: 20).getAllProductsAction);
+  final formatter = new NumberFormat("#,###");
+
+  Widget projectWidget() {
+    return FutureBuilder(
+      future: Redux.store
+          .dispatch(new ProductActions(page: 1, size: 20).getAllProductsAction),
+      builder: (context, projectSnap) {
+        if (projectSnap.connectionState == ConnectionState.none &&
+            projectSnap.hasData == null) {
+          print('project snapshot data is: ${projectSnap.data}');
+          return Container();
+        }
+        if (projectSnap.connectionState == ConnectionState.waiting) {
+          return LinearProgressIndicator(
+            backgroundColor: Color.fromRGBO(196, 187, 240, 0.5),
+            valueColor: new AlwaysStoppedAnimation<Color>(
+              Color.fromRGBO(146, 127, 191, 1),
+            ),
+          );
+        }
+        return Container(
+          child: StoreConnector<AppState, String>(
+            distinct: true,
+            converter: (store) => store.state.userState.token,
+            builder: (context, token) {
+              if (token == null) {
+                return Center(
+                  child: Column(
+                    children: <Widget>[
+                      Center(
+                        child: Text(
+                            "No authority! Please click button below to login"),
+                      ),
+                      Center(
+                        child: FlatButton(
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(context, '/login');
+                            },
+                            child: Text(
+                              "Back to Login",
+                              style: TextStyle(color: Colors.grey),
+                            )),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                return Container(
+                  child: StoreConnector<AppState, List<IProduct>>(
+                    distinct: true,
+                    converter: (store) => store.state.productsState.products,
+                    builder: (context, products) {
+                      return Container(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              GridView.count(
+                                physics: ClampingScrollPhysics(),
+                                crossAxisCount: 2,
+                                shrinkWrap: true,
+                                childAspectRatio: 1 / 1.4,
+                                children: products.map((product) {
+                                  print(product.images[0]['url']);
+
+                                  return Stack(
+                                    children: <Widget>[
+                                      Container(
+                                        margin: EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              color: Colors.grey[300]),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Hero(
+                                              tag: product.id,
+                                              child: AspectRatio(
+                                                aspectRatio: 1 / 1,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height: 100,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        fit: BoxFit.fitHeight,
+                                                        image: NetworkImage(
+                                                            product.images[0]
+                                                                ['url']),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.all(8),
+                                              child: Text(
+                                                product.name,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            Text(
+                                              formatter.format(product.price),
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color.fromRGBO(
+                                                    146, 127, 191, 1),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductPage(
+                                                    product: product,
+                                                  ),
+                                                ));
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+            },
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
       appBar: AppBar(
-        elevation: 0.1,
-        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-        title: Text(widget.title),
-      ),
-      //drawer: DrawerMenu(),
-      body: Column(
-        children: <Widget>[
-          RaisedButton(
-            child: Text("Fetch Products"),
-            onPressed: _onFetchProductsPressed,
-          ),
-          StoreConnector<AppState, bool>(
-            distinct: true,
-            converter: (store) => store.state.productsState.isLoading,
-            builder: (context, isLoading) {
-              if (isLoading) {
-                return LinearProgressIndicator();
-              } else {
-                return SizedBox.shrink();
-              }
+        backgroundColor: Colors.white,
+        title: typing
+            ? TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
+                  hintText: 'Search',
+                ),
+              )
+            : Text(
+                "Eshop",
+                style: TextStyle(
+                  color: Color.fromRGBO(79, 59, 120, 1),
+                  fontWeight: FontWeight.w900,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 32,
+                ),
+              ),
+        leading: IconButton(
+          icon: Icon(typing ? Icons.done : Icons.search),
+          color: Color.fromRGBO(146, 127, 191, 1),
+          onPressed: () {
+            setState(() {
+              typing = !typing;
+            });
+          },
+        ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/cart');
             },
+            icon: Icon(Icons.shopping_cart),
+            color: Color.fromRGBO(146, 127, 191, 1),
           ),
-          StoreConnector<AppState, bool>(
-            distinct: true,
-            converter: (store) => store.state.productsState.isError,
-            builder: (context, isError) {
-              if (isError) {
-                return Text("Failed to get products");
-              } else {
-                return SizedBox.shrink();
-              }
-            },
-          ),
-          Expanded(
-              child: StoreConnector<AppState, List<IProduct>>(
-                  distinct: true,
-                  converter: (store) => store.state.productsState.products,
-                  builder: (context, products) {
-                    // return ListView(
-                    //   children: _buildProducts(products),
-                    // );
-                    return Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        padding: EdgeInsets.all(3.0),
-                        children: _buildProducts(products),
-                      ),
-                    );
-                  }))
         ],
       ),
-
+      body: projectWidget(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             title: Text('Home'),
@@ -106,7 +247,33 @@ class _ProductListState extends State<ProductList> {
             title: Text('Product'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
+            icon: Stack(
+              children: <Widget>[
+                Icon(Icons.notifications),
+                Positioned(
+                  right: 0,
+                  child: Container(
+                    padding: EdgeInsets.all(1),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    constraints: BoxConstraints(
+                      minWidth: 12,
+                      minHeight: 12,
+                    ),
+                    child: new Text(
+                      '1',
+                      style: new TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                )
+              ],
+            ),
             title: Text('Notification'),
           ),
           BottomNavigationBarItem(
@@ -119,51 +286,5 @@ class _ProductListState extends State<ProductList> {
         onTap: _onItemTapped,
       ),
     );
-  }
-
-  List<Widget> _buildProducts(List<IProduct> products) {
-    if (products != null)
-      return products
-          .map((product) => Card(
-              elevation: 1.0,
-              margin: new EdgeInsets.all(8.0),
-              child: Container(
-                  decoration:
-                      BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
-                  child: InkWell(
-                      splashColor: Colors.blue.withAlpha(30),
-                      onTap: () {
-                        print('Card tapped.');
-                      },
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          verticalDirection: VerticalDirection.down,
-                          children: <Widget>[
-                            SizedBox(height: 30.0),
-                            Center(
-                                child: Icon(
-                              Icons.book,
-                              size: 30.0,
-                              color: Colors.black,
-                            )),
-                            SizedBox(height: 20.0),
-                            new Center(
-                              child: new Text(product.name,
-                                  style: new TextStyle(
-                                      fontSize: 18.0, color: Colors.white)),
-                            ),
-                            SizedBox(height: 20.0),
-                            new Center(
-                              child: new Text(
-                                product.price.toString(),
-                                style: new TextStyle(
-                                    fontSize: 20, color: Colors.red),
-                              ),
-                            )
-                          ])))))
-          .toList();
-    else
-      return null;
   }
 }

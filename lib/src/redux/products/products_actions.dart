@@ -34,9 +34,7 @@ class ProductActions {
           'https://rocky-sierra-70366.herokuapp.com/api/products?size=20&&page=1');
 
       if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-
-        print(jsonData);
+        final jsonData = json.decode(response.body)['data'];
 
         store.dispatch(
           SetProductsStateAction(
@@ -44,7 +42,7 @@ class ProductActions {
               isLoading: false,
               isSuccess: true,
               //totalPages: jsonData['count'],
-              products: IProduct.listFromJson(jsonData.data['entries']),
+              products: IProduct.listFromJson(jsonData['entries']),
             ),
           ),
         );

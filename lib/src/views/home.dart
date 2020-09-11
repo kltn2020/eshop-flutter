@@ -1,9 +1,12 @@
 import 'package:ecommerce_flutter/src/models/Product.dart';
+import 'package:ecommerce_flutter/src/models/i_product.dart';
+import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/views/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:intl/intl.dart';
 
 import '../animations/fade_animation.dart';
 import '../widgets/CategoryItem.dart';
@@ -19,6 +22,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool typing = false;
+
+  final formatter = new NumberFormat("#,###");
 
   List bannerAdSlider = [
     "assets/banner1.jpg",
@@ -46,80 +51,160 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  List<Product> products = [
-    Product(
-        image: "assets/product1.jpg",
-        description:
-            "Repudiandae quibusdam quis harum odit.Autem sunt sit. Neque sapiente officia laudantium voluptatem dolores itaque dolore odio. Voluptatem reprehenderit beatae eum eligendi dolorem laborum voluptate nihil vel.",
-        price: "100",
-        productName: "iPad mini"),
-    Product(
-        image: "assets/product2.jpg",
-        description:
-            "Repudiandae quibusdam quis harum odit.Autem sunt sit. Neque sapiente officia laudantium voluptatem dolores itaque dolore odio. Voluptatem reprehenderit beatae eum eligendi dolorem laborum voluptate nihil vel.",
-        price: "100",
-        productName: "iPad Pro"),
-    Product(
-        image: "assets/product3.jpg",
-        description:
-            "Repudiandae quibusdam quis harum odit.Autem sunt sit. Neque sapiente officia laudantium voluptatem dolores itaque dolore odio. Voluptatem reprehenderit beatae eum eligendi dolorem laborum voluptate nihil vel.",
-        price: "100",
-        productName: "iPhone Pro Max"),
-    Product(
-        image: "assets/product4.jpg",
-        description:
-            "Repudiandae quibusdam quis harum odit.Autem sunt sit. Neque sapiente officia laudantium voluptatem dolores itaque dolore odio. Voluptatem reprehenderit beatae eum eligendi dolorem laborum voluptate nihil vel.",
-        price: "100",
-        productName: "Apple Watch Series 3"),
-    Product(
-        image: "assets/product5.jpg",
-        description:
-            "Repudiandae quibusdam quis harum odit.Autem sunt sit. Neque sapiente officia laudantium voluptatem dolores itaque dolore odio. Voluptatem reprehenderit beatae eum eligendi dolorem laborum voluptate nihil vel.",
-        price: "100",
-        productName: "Apple Watch Series 4"),
-    Product(
-        image: "assets/product6.jpg",
-        description:
-            "Repudiandae quibusdam quis harum odit.Autem sunt sit. Neque sapiente officia laudantium voluptatem dolores itaque dolore odio. Voluptatem reprehenderit beatae eum eligendi dolorem laborum voluptate nihil vel.",
-        price: "100",
-        productName: "Macbook Pro 16 inch"),
-    Product(
-        image: "assets/product7.jpg",
-        description:
-            "Repudiandae quibusdam quis harum odit.Autem sunt sit. Neque sapiente officia laudantium voluptatem dolores itaque dolore odio. Voluptatem reprehenderit beatae eum eligendi dolorem laborum voluptate nihil vel.",
-        price: "100",
-        productName: "Macbook Pro"),
-    Product(
-        image: "assets/product8.jpg",
-        description:
-            "Repudiandae quibusdam quis harum odit.Autem sunt sit. Neque sapiente officia laudantium voluptatem dolores itaque dolore odio. Voluptatem reprehenderit beatae eum eligendi dolorem laborum voluptate nihil vel.",
-        price: "100",
-        productName: "iMac 4k Retina"),
-    Product(
-        image: "assets/product9.jpg",
-        description:
-            "Repudiandae quibusdam quis harum odit.Autem sunt sit. Neque sapiente officia laudantium voluptatem dolores itaque dolore odio. Voluptatem reprehenderit beatae eum eligendi dolorem laborum voluptate nihil vel.",
-        price: "100",
-        productName: "T-Shirts"),
-    Product(
-        image: "assets/product10.jpg",
-        description:
-            "Repudiandae quibusdam quis harum odit.Autem sunt sit. Neque sapiente officia laudantium voluptatem dolores itaque dolore odio. Voluptatem reprehenderit beatae eum eligendi dolorem laborum voluptate nihil vel.",
-        price: "100",
-        productName: "Ethnic Wear - Dress"),
-    Product(
-        image: "assets/product11.jpg",
-        description:
-            "Repudiandae quibusdam quis harum odit.Autem sunt sit. Neque sapiente officia laudantium voluptatem dolores itaque dolore odio. Voluptatem reprehenderit beatae eum eligendi dolorem laborum voluptate nihil vel.",
-        price: "100",
-        productName: "Dress"),
-    Product(
-        image: "assets/product12.jpg",
-        description:
-            "Repudiandae quibusdam quis harum odit.Autem sunt sit. Neque sapiente officia laudantium voluptatem dolores itaque dolore odio. Voluptatem reprehenderit beatae eum eligendi dolorem laborum voluptate nihil vel.",
-        price: "100",
-        productName: "T-Shirt"),
-  ];
+  Widget projectWidget() {
+    return FutureBuilder(
+      future: Redux.store
+          .dispatch(new ProductActions(page: 1, size: 20).getAllProductsAction),
+      builder: (context, projectSnap) {
+        if (projectSnap.connectionState == ConnectionState.none &&
+            projectSnap.hasData == null) {
+          print('project snapshot data is: ${projectSnap.data}');
+          return Container();
+        }
+        if (projectSnap.connectionState == ConnectionState.waiting) {
+          return LinearProgressIndicator(
+            backgroundColor: Color.fromRGBO(196, 187, 240, 0.5),
+            valueColor: new AlwaysStoppedAnimation<Color>(
+              Color.fromRGBO(146, 127, 191, 1),
+            ),
+          );
+        }
+        return Container(
+          child: StoreConnector<AppState, String>(
+            distinct: true,
+            converter: (store) => store.state.userState.token,
+            builder: (context, token) {
+              if (token == null) {
+                return Center(
+                  child: Column(
+                    children: <Widget>[
+                      Center(
+                        child: Text(
+                            "No authority! Please click button below to login"),
+                      ),
+                      Center(
+                        child: FlatButton(
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(context, '/login');
+                            },
+                            child: Text(
+                              "Back to Login",
+                              style: TextStyle(color: Colors.grey),
+                            )),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                return Container(
+                  child: StoreConnector<AppState, List<IProduct>>(
+                    distinct: true,
+                    converter: (store) => store.state.productsState.products,
+                    builder: (context, products) {
+                      return Container(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              GridView.count(
+                                physics: ClampingScrollPhysics(),
+                                crossAxisCount: 2,
+                                shrinkWrap: true,
+                                childAspectRatio: 1 / 1.4,
+                                children: products.map((product) {
+                                  print(product.images[0]['url']);
+
+                                  return Stack(
+                                    children: <Widget>[
+                                      Container(
+                                        margin: EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              color: Colors.grey[300]),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Hero(
+                                              tag: product.id,
+                                              child: AspectRatio(
+                                                aspectRatio: 1 / 1,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height: 100,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        fit: BoxFit.fitHeight,
+                                                        image: NetworkImage(
+                                                            product.images[0]
+                                                                ['url']),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.all(8),
+                                              child: Text(
+                                                product.name,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            Text(
+                                              formatter.format(product.price),
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color.fromRGBO(
+                                                    146, 127, 191, 1),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductPage(
+                                                    product: product,
+                                                  ),
+                                                ));
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+            },
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -359,67 +444,7 @@ class _HomePageState extends State<HomePage> {
                       height: 20,
                     ),
 
-                    GridView.count(
-                      physics: ClampingScrollPhysics(),
-                      crossAxisCount: 2,
-                      shrinkWrap: true,
-                      childAspectRatio: 1 / 1.25,
-                      children: products.map((product) {
-                        return Stack(
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(color: Colors.grey[300]),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  Hero(
-                                    tag: product.image,
-                                    child: AspectRatio(
-                                      aspectRatio: 1 / 1,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image(
-                                          image: AssetImage(product.image),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    product.productName,
-                                  ),
-                                  Text(
-                                    "${product.price}\$",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color.fromRGBO(146, 127, 191, 1),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ProductPage(
-                                          product: product,
-                                        ),
-                                      ));
-                                },
-                              ),
-                            )
-                          ],
-                        );
-                      }).toList(),
-                    ),
+                    projectWidget(),
                   ],
                 ),
               ),

@@ -53,6 +53,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           fontFamily: 'Barlow',
           primaryColor: Color.fromRGBO(79, 59, 120, 1),
+          textTheme: Theme.of(context).textTheme.apply(
+                fontSizeFactor: 1.0,
+                fontSizeDelta: 2.0,
+              ),
         ),
         title: 'Shop',
         initialRoute: Redux.store.state.userState.token != "" ? '/' : '/intro',

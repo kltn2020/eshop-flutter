@@ -21,12 +21,12 @@ class IProduct {
   String material;
   String batteryCapacity;
   String description;
-  String sold;
-  String ratingAvg;
-  String ratingCount;
+  int sold;
+  double ratingAvg;
+  int ratingCount;
   int categoryId;
   int brandId;
-  List<String> images;
+  List<dynamic> images;
   int price;
   int discountPrice;
 
