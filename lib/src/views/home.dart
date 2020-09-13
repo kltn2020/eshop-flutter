@@ -112,8 +112,6 @@ class _HomePageState extends State<HomePage> {
                                 shrinkWrap: true,
                                 childAspectRatio: 1 / 1.4,
                                 children: products.map((product) {
-                                  print(product.images[0]['url']);
-
                                   return Stack(
                                     children: <Widget>[
                                       Container(
@@ -318,13 +316,25 @@ class _HomePageState extends State<HomePage> {
 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Categories",
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: Color.fromRGBO(54, 59, 78, 1),
-                          fontWeight: FontWeight.w700,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Categories",
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Color.fromRGBO(54, 59, 78, 1),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/category-list');
+                            },
+                            child: Text("See more >"),
+                          )
+                        ],
                       ),
                     ),
                     SizedBox(
@@ -334,15 +344,6 @@ class _HomePageState extends State<HomePage> {
                         shrinkWrap: true,
                         children: <Widget>[
                           CategoryItem(
-                              icon: Icons.smartphone,
-                              size: 70,
-                              margin: EdgeInsets.only(
-                                left: 10,
-                              ),
-                              padding: EdgeInsets.all(10),
-                              backgroundColor: Color.fromRGBO(196, 187, 240, 1),
-                              name: "Phone"),
-                          CategoryItem(
                             icon: Icons.computer,
                             size: 70,
                             margin: EdgeInsets.only(
@@ -353,72 +354,24 @@ class _HomePageState extends State<HomePage> {
                             name: "Laptop",
                           ),
                           CategoryItem(
-                            icon: Icons.headset,
+                            icon: Icons.mouse,
                             size: 70,
                             margin: EdgeInsets.only(
                               left: 10,
                             ),
                             padding: EdgeInsets.all(10),
                             backgroundColor: Color.fromRGBO(196, 187, 240, 1),
-                            name: "Headphone",
+                            name: "Mouse",
                           ),
                           CategoryItem(
-                              icon: Icons.smartphone,
-                              size: 70,
-                              margin: EdgeInsets.only(
-                                left: 10,
-                              ),
-                              padding: EdgeInsets.all(10),
-                              backgroundColor: Color.fromRGBO(196, 187, 240, 1),
-                              name: "Phone"),
-                          CategoryItem(
-                            icon: Icons.computer,
+                            icon: Icons.keyboard,
                             size: 70,
                             margin: EdgeInsets.only(
                               left: 10,
                             ),
                             padding: EdgeInsets.all(10),
                             backgroundColor: Color.fromRGBO(196, 187, 240, 1),
-                            name: "Laptop",
-                          ),
-                          CategoryItem(
-                            icon: Icons.headset,
-                            size: 70,
-                            margin: EdgeInsets.only(
-                              left: 10,
-                            ),
-                            padding: EdgeInsets.all(10),
-                            backgroundColor: Color.fromRGBO(196, 187, 240, 1),
-                            name: "Headphone",
-                          ),
-                          CategoryItem(
-                              icon: Icons.smartphone,
-                              size: 70,
-                              margin: EdgeInsets.only(
-                                left: 10,
-                              ),
-                              padding: EdgeInsets.all(10),
-                              backgroundColor: Color.fromRGBO(196, 187, 240, 1),
-                              name: "Phone"),
-                          CategoryItem(
-                            icon: Icons.computer,
-                            size: 70,
-                            margin: EdgeInsets.only(
-                              left: 10,
-                            ),
-                            padding: EdgeInsets.all(10),
-                            backgroundColor: Color.fromRGBO(196, 187, 240, 1),
-                            name: "Laptop",
-                          ),
-                          CategoryItem(
-                            icon: Icons.headset,
-                            size: 70,
-                            margin: EdgeInsets.only(
-                              left: 10,
-                            ),
-                            padding: EdgeInsets.all(10),
-                            backgroundColor: Color.fromRGBO(196, 187, 240, 1),
-                            name: "Headphone",
+                            name: "Keyboard",
                           ),
                         ],
                       ),

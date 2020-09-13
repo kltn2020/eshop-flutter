@@ -98,8 +98,6 @@ class _ProductListState extends State<ProductList> {
                                 shrinkWrap: true,
                                 childAspectRatio: 1 / 1.4,
                                 children: products.map((product) {
-                                  print(product.images[0]['url']);
-
                                   return Stack(
                                     children: <Widget>[
                                       Container(

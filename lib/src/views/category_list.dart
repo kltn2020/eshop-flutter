@@ -1,83 +1,284 @@
-import 'package:flutter/cupertino.dart';
+import 'package:ecommerce_flutter/src/widgets/VerticalTabs.dart';
 import 'package:flutter/material.dart';
 
-import '../animations/fade_animation.dart';
-// import '../widgets/drawer_menu.dart';
+class BrandList {
+  final String title;
+  final Image icon;
 
-class CategoryList extends StatefulWidget {
-  @override
-  _CategoryListState createState() => _CategoryListState();
+  BrandList({this.title, this.icon});
 }
 
-class _CategoryListState extends State<CategoryList> {
-  final List<String> _listItem = [
-    'assets/images/beauty.jpg',
-    'assets/images/clothes.jpg',
-    'assets/images/glass.jpg',
-    'assets/images/perfume.jpg',
-    'assets/images/tech.jpg',
-    'assets/images/tech-1.jpg',
-    'assets/images/tech.jpg',
-    'assets/images/tech-1.jpg',
+class CategoryList extends StatelessWidget {
+  final productBrandList = [
+    BrandList(
+      title: "Apple",
+      icon: Image(
+        image: AssetImage('assets/brands/apple32.png'),
+      ),
+    ),
+    BrandList(
+      title: "Microsoft",
+      icon: Image(
+        image: AssetImage('assets/brands/microsoft32.png'),
+      ),
+    ),
+    BrandList(
+      title: "DELL",
+      icon: Image(
+        image: AssetImage('assets/brands/dell32.png'),
+      ),
+    ),
+    BrandList(
+      title: "Asus",
+      icon: Image(
+        image: AssetImage('assets/brands/asus32.png'),
+      ),
+    ),
+    BrandList(
+      title: "Acer",
+      icon: Image(
+        image: AssetImage('assets/brands/acer32.png'),
+      ),
+    ),
+    BrandList(
+      title: "LG",
+      icon: Image(
+        image: AssetImage('assets/brands/lg32.png'),
+      ),
+    ),
+    BrandList(
+      title: "Lenovo",
+      icon: Image(
+        image: AssetImage('assets/brands/lenovo32.png'),
+      ),
+    ),
   ];
 
-  final List<FadeAnimation> _appBarActions = [
-    FadeAnimation(
-        1.2,
-        IconButton(
-            icon: Icon(Icons.favorite, color: Colors.white), onPressed: () {})),
-    FadeAnimation(
-        1.3,
-        IconButton(
-            icon: Icon(Icons.shopping_cart, color: Colors.white),
-            onPressed: () {})),
+  final mouseBrandList = [
+    BrandList(
+      title: "Apple",
+      icon: Image(
+        image: AssetImage('assets/brands/apple32.png'),
+      ),
+    ),
+    BrandList(
+      title: "Microsoft",
+      icon: Image(
+        image: AssetImage('assets/brands/microsoft32.png'),
+      ),
+    ),
+    BrandList(
+      title: "Asus",
+      icon: Image(
+        image: AssetImage('assets/brands/asus32.png'),
+      ),
+    ),
+    BrandList(
+      title: "Logitech",
+      icon: Image(
+        image: AssetImage('assets/brands/logitech32.png'),
+      ),
+    ),
+  ];
+
+  final keyboardBrandList = [
+    BrandList(
+      title: "Apple",
+      icon: Image(
+        image: AssetImage('assets/brands/apple32.png'),
+      ),
+    ),
+    BrandList(
+      title: "Microsoft",
+      icon: Image(
+        image: AssetImage('assets/brands/microsoft32.png'),
+      ),
+    ),
+    BrandList(
+      title: "Asus",
+      icon: Image(
+        image: AssetImage('assets/brands/asus32.png'),
+      ),
+    ),
+    BrandList(
+      title: "Logitech",
+      icon: Image(
+        image: AssetImage('assets/brands/logitech32.png'),
+      ),
+    ),
+    BrandList(
+      title: "Corsair",
+      icon: Image(
+        image: AssetImage('assets/brands/corsair32.png'),
+      ),
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[600],
-      //drawer: DrawerMenu(),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        actions: _appBarActions,
-        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
+        ),
+        title: Text(
+          "Category List",
+          style: TextStyle(
+            color: Color.fromRGBO(79, 59, 120, 1),
+            fontWeight: FontWeight.w900,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
       ),
       body: SafeArea(
           child: Container(
-              padding: EdgeInsets.all(20.0),
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                children: _listItem
-                    .map((item) => Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                    image: AssetImage(item),
-                                    fit: BoxFit.cover)),
-                            child: Transform.translate(
-                              offset: Offset(50, -50),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 65, vertical: 63),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white),
-                                child: Icon(
-                                  Icons.favorite_border,
-                                  size: 15,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              ))),
+        child: VerticalTabs(
+          tabsWidth: 130,
+          itemExtent: 100,
+          direction: TextDirection.ltr,
+          contentScrollAxis: Axis.vertical,
+          changePageDuration: Duration(milliseconds: 500),
+          indicatorColor: Colors.purple,
+          tabs: <Tab>[
+            Tab(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.star_border,
+                      size: 32,
+                    ),
+                    Text("Recommended"),
+                  ],
+                ),
+              ),
+            ),
+            Tab(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.laptop,
+                      size: 32,
+                    ),
+                    Text("Laptop"),
+                  ],
+                ),
+              ),
+            ),
+            Tab(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.mouse,
+                      size: 32,
+                    ),
+                    Text("Mouse"),
+                  ],
+                ),
+              ),
+            ),
+            Tab(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.keyboard,
+                      size: 32,
+                    ),
+                    Text("Keyboard"),
+                  ],
+                ),
+              ),
+            ),
+          ],
+          contents: <Widget>[
+            tabsContent(
+              'Recommended',
+            ),
+            tabsContent('Laptop', brandListContainer(productBrandList)),
+            tabsContent('Mouse', brandListContainer(mouseBrandList)),
+            tabsContent('Keyboard', brandListContainer(keyboardBrandList)),
+          ],
+        ),
+      )),
+    );
+  }
+
+  Widget brandListContainer(List<BrandList> brandList) {
+    return Container(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            GridView.count(
+              physics: ClampingScrollPhysics(),
+              crossAxisCount: 3,
+              shrinkWrap: true,
+              primary: false,
+              padding: const EdgeInsets.all(10),
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              children: brandList.map((brand) {
+                return Stack(
+                  children: <Widget>[
+                    Container(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            brand.icon,
+                            Text(brand.title),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          print("$brand.title");
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget tabsContent(String caption, [Widget content]) {
+    return Container(
+      margin: EdgeInsets.all(1),
+      padding: EdgeInsets.all(2),
+      child: Column(
+        children: <Widget>[
+          Text(
+            caption,
+            style: TextStyle(fontSize: 25),
+          ),
+          Divider(
+            height: 20,
+            color: Colors.black45,
+          ),
+          content != null ? content : Container(),
+        ],
+      ),
     );
   }
 }
