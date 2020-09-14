@@ -1,11 +1,11 @@
 import 'package:meta/meta.dart';
-import 'package:ecommerce_flutter/src/models/i_post.dart';
+import 'package:ecommerce_flutter/src/models/Post.dart';
 
 @immutable
 class PostsState {
   final bool isError;
   final bool isLoading;
-  final List<IPost> posts;
+  final List<Post> posts;
 
   PostsState({
     this.isError,
@@ -24,7 +24,7 @@ class PostsState {
   PostsState copyWith({
     @required bool isError,
     @required bool isLoading,
-    @required List<IPost> posts,
+    @required List<Post> posts,
   }) {
     return PostsState(
       isError: isError ?? this.isError,

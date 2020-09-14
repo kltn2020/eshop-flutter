@@ -1,10 +1,10 @@
-class IPost {
+class Post {
   int id;
   int userId;
   String title;
   String body;
 
-  IPost.fromJson(Map<String, dynamic> json) {
+  Post.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     id = json['id'];
     userId = json['userId'];
@@ -12,9 +12,9 @@ class IPost {
     body = json['body'];
   }
 
-  static List<IPost> listFromJson(List<dynamic> json) {
+  static List<Post> listFromJson(List<dynamic> json) {
     return json == null
-        ? List<IPost>()
-        : json.map((value) => IPost.fromJson(value)).toList();
+        ? List<Post>()
+        : json.map((value) => Post.fromJson(value)).toList();
   }
 }

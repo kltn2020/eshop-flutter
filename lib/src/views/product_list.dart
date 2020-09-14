@@ -1,9 +1,8 @@
-import 'package:ecommerce_flutter/src/models/Product.dart';
 import 'package:ecommerce_flutter/src/views/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:ecommerce_flutter/src/models/i_product.dart';
+import 'package:ecommerce_flutter/src/models/Product.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:intl/intl.dart';
@@ -83,7 +82,7 @@ class _ProductListState extends State<ProductList> {
                 );
               } else {
                 return Container(
-                  child: StoreConnector<AppState, List<IProduct>>(
+                  child: StoreConnector<AppState, List<Product>>(
                     distinct: true,
                     converter: (store) => store.state.productsState.products,
                     builder: (context, products) {

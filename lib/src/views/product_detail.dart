@@ -1,9 +1,14 @@
-import 'package:ecommerce_flutter/src/models/i_product.dart';
+import 'package:ecommerce_flutter/src/models/Favorite.dart';
+import 'package:ecommerce_flutter/src/models/Product.dart';
+import 'package:ecommerce_flutter/src/redux/favorite/favorite_actions.dart';
+import 'package:ecommerce_flutter/src/redux/favorite/favorite_state.dart';
+import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 
 class ProductPage extends StatelessWidget {
-  final IProduct product;
+  final Product product;
   ProductPage({@required this.product});
 
   final formatter = new NumberFormat("#,###");
@@ -112,20 +117,101 @@ class ProductPage extends StatelessWidget {
                     Text("Review count: " +
                         formatter.format(product.ratingCount)),
                     Text("Sold: " + formatter.format(product.sold)),
-                    FlatButton(
-                      onPressed: null,
-                      child: Container(
-                        padding: EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(50),
-                          ),
-                        ),
-                        child: Icon(Icons.favorite_border),
+
+                    Container(
+                      child: StoreConnector<AppState, FavoriteState>(
+                        distinct: true,
+                        converter: (store) => store.state.favoriteState,
+                        builder: (context, favoriteState) {
+                          return favoriteState.favoriteList.product
+                                      .where((iproduct) =>
+                                          iproduct.id == product.id)
+                                      .toList()
+                                      .length >
+                                  0
+                              ? FlatButton(
+                                  onPressed: () {
+                                    Redux.store.dispatch(
+                                      FavoriteActions(
+                                              token: Redux
+                                                  .store.state.userState.token,
+                                              product: product)
+                                          .deleteFavoriteAction,
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(50),
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.favorite,
+                                      color: Color.fromRGBO(196, 187, 240, 1),
+                                    ),
+                                  ),
+                                )
+                              : FlatButton(
+                                  onPressed: () {
+                                    Redux.store.dispatch(
+                                      FavoriteActions(
+                                              token: Redux
+                                                  .store.state.userState.token,
+                                              product: product)
+                                          .addFavoriteAction,
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(50),
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.favorite_border,
+                                    ),
+                                  ),
+                                );
+                        },
                       ),
-                    )
+                    ),
+
+                    // FlatButton(
+                    //   onPressed: null,
+                    //   child: Container(
+                    //     padding: EdgeInsets.all(4),
+                    //     decoration: BoxDecoration(
+                    //       color: Colors.white,
+                    //       border: Border.all(),
+                    //       borderRadius: BorderRadius.all(
+                    //         Radius.circular(50),
+                    //       ),
+                    //     ),
+                    //     child: StoreConnector<AppState, Favorite>(
+                    //         distinct: true,
+                    //         converter: (store) =>
+                    //             store.state.favoriteState.favoriteList,
+                    //         builder: (context, favoriteList) {
+                    //           return favoriteList.product
+                    //                       .where((iproduct) =>
+                    //                           iproduct.id == product.id)
+                    //                       .toList()
+                    //                       .length >
+                    //                   0
+                    //               ? Icon(
+                    //                   Icons.favorite,
+                    //                   color: Color.fromRGBO(196, 187, 240, 1),
+                    //                 )
+                    //               : Icon(Icons.favorite_border);
+                    //         }),
+                    //   ),
+                    // )
                   ],
                 ),
               ),

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:redux/redux.dart';
 import 'package:meta/meta.dart';
-import 'package:ecommerce_flutter/src/models/i_post.dart';
+import 'package:ecommerce_flutter/src/models/Post.dart';
 import 'package:ecommerce_flutter/src/redux/posts/posts_state.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:http/http.dart' as http;
@@ -26,7 +26,7 @@ Future<void> fetchPostsAction(Store<AppState> store) async {
       SetPostsStateAction(
         PostsState(
           isLoading: false,
-          posts: IPost.listFromJson(jsonData),
+          posts: Post.listFromJson(jsonData),
         ),
       ),
     );

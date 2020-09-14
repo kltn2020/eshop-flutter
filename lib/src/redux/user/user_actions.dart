@@ -4,7 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:ecommerce_flutter/src/models/i_user.dart';
+import 'package:ecommerce_flutter/src/models/User.dart';
 import 'package:ecommerce_flutter/src/redux/user/user_state.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 
@@ -124,7 +124,7 @@ class UserActions {
             UserState(
               isLoading: false,
               isSuccess: true,
-              user: IUser.fromJson(parseJwtPayLoad(jsonData['token'])),
+              user: User.fromJson(parseJwtPayLoad(jsonData['token'])),
               token: jsonData['token'],
             ),
           ),
@@ -175,7 +175,7 @@ class UserActions {
             UserState(
               isLoading: false,
               isSuccess: true,
-              user: IUser.fromJson(parseJwtPayLoad(jsonData['token'])),
+              user: User.fromJson(parseJwtPayLoad(jsonData['token'])),
             ),
           ),
         );

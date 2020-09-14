@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:redux/redux.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:ecommerce_flutter/src/models/i_product.dart';
+import 'package:ecommerce_flutter/src/models/Product.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_state.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 
@@ -42,7 +41,7 @@ class ProductActions {
               isLoading: false,
               isSuccess: true,
               //totalPages: jsonData['count'],
-              products: IProduct.listFromJson(jsonData['entries']),
+              products: Product.listFromJson(jsonData['entries']),
             ),
           ),
         );

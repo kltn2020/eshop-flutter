@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-import 'package:ecommerce_flutter/src/models/i_user.dart';
+import 'package:ecommerce_flutter/src/models/User.dart';
 
 @immutable
 class UserState {
@@ -8,7 +8,7 @@ class UserState {
   final String errorMessage;
   final bool isLoading;
   final bool isSuccess;
-  final IUser user;
+  final User user;
   final String token;
 
   UserState({
@@ -36,7 +36,7 @@ class UserState {
     @required String errorMessage,
     @required bool isLoading,
     @required bool isSuccess,
-    @required IUser user,
+    @required User user,
     @required String token,
   }) {
     return UserState(
