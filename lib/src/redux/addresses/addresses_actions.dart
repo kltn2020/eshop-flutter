@@ -17,15 +17,9 @@ class SetAddressesStateAction {
 
 class AddressesActions {
   String token;
-  // String phoneNumber;
-  // String locate;
-  // bool isPrimary;
 
   AddressesActions({
     this.token,
-    // this.phoneNumber,
-    // this.locate,
-    // this.isPrimary,
   });
 
   Future<void> getAllAddressesAction(Store<AppState> store) async {
@@ -40,13 +34,12 @@ class AddressesActions {
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        print(jsonData);
+        // print(jsonData);
         store.dispatch(
           SetAddressesStateAction(
             AddressesState(
               isLoading: false,
               isSuccess: true,
-              //totalPages: jsonData['count'],
               addresses: Address.listFromJson(jsonData['data']),
             ),
           ),
@@ -73,7 +66,10 @@ class AddressesActions {
     try {
       final response = await http.post(
           'https://rocky-sierra-70366.herokuapp.com/api/address',
-          headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer $token",
+            "Content-Type": "application/json",
+          },
           body: jsonEncode(<String, dynamic>{
             'locate': locate,
             'phone_number': phoneNumber,
@@ -82,21 +78,18 @@ class AddressesActions {
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        print(jsonData);
+        // print(jsonData);
 
-        // print(store.state.addressesState.addressesList.product.length);
-
-        // Address newAddressesList = store.state.addressesState.addressesList;
-
-        // newAddressesList.product.add(product);
-        // print("newAddressesList");
+        var newAddressesList =
+            new List<Address>.from(store.state.addressesState.addresses)
+              ..add(Address.fromJson(jsonData['data']));
 
         store.dispatch(
           SetAddressesStateAction(
             AddressesState(
               isLoading: false,
               isSuccess: true,
-              // addresses: newAddressesList,
+              addresses: newAddressesList,
             ),
           ),
         );
@@ -110,34 +103,93 @@ class AddressesActions {
     }
   }
 
-  Future<void> deleteAddressesAction(Store<AppState> store) async {
-    print("delete-addresses-action");
+  Future<void> updateAddressesAction(Store<AppState> store, int id,
+      String token, String phoneNumber, String locate, bool isPrimary) async {
+    print("update-addresses-action");
     store.dispatch(SetAddressesStateAction(AddressesState(isLoading: true)));
 
-    // String productID = product.id.toString();
+    print(jsonEncode(<String, dynamic>{
+      'locate': locate,
+      'phone_number': phoneNumber,
+      'is_primary': isPrimary,
+    }));
 
     try {
-      final response = await http.delete(
-        'https://rocky-sierra-70366.herokuapp.com/api/address',
-        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
-      );
+      final response = await http.put(
+          'https://rocky-sierra-70366.herokuapp.com/api/address/$id',
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer $token",
+            "Content-Type": "application/json",
+          },
+          body: jsonEncode(<String, dynamic>{
+            'locate': locate,
+            'phone_number': phoneNumber,
+            'is_primary': isPrimary,
+          }));
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         print(jsonData);
 
-        // Addresses newAddressesList = store.state.addressesState.addressesList;
-
-        // newAddressesList.product
-        //     .removeWhere((iproduct) => iproduct.id == product.id);
-        // print("newAddressesList");
+        //Clone array
+        var newAddressesList =
+            new List<Address>.from(store.state.addressesState.addresses);
+        //Set all address isPrimary to false if new info have isPrimary = true
+        if (isPrimary)
+          newAddressesList.forEach((element) {
+            element.isPrimary = false;
+          });
+        //Find item with id and replace it with new info
+        newAddressesList[
+                newAddressesList.indexWhere((element) => element.id == id)] =
+            Address.fromJson(jsonData['data']);
 
         store.dispatch(
           SetAddressesStateAction(
             AddressesState(
               isLoading: false,
               isSuccess: true,
-              // addressesList: newAddressesList,
+              addresses: newAddressesList,
+            ),
+          ),
+        );
+      } else {
+        throw response.body;
+      }
+    } catch (error) {
+      print(error);
+      store.dispatch(SetAddressesStateAction(
+          AddressesState(isLoading: false, isError: true)));
+    }
+  }
+
+  Future<void> deleteAddressesAction(Store<AppState> store, int id) async {
+    print("delete-addresses-action");
+    store.dispatch(SetAddressesStateAction(AddressesState(isLoading: true)));
+
+    try {
+      final response = await http.delete(
+        'https://rocky-sierra-70366.herokuapp.com/api/address/$id',
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+      );
+
+      print(response.statusCode);
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        print(jsonData);
+
+        var newAddressesList =
+            new List<Address>.from(store.state.addressesState.addresses)
+              ..removeWhere((element) => element.id == id);
+
+        store.dispatch(
+          SetAddressesStateAction(
+            AddressesState(
+              isLoading: false,
+              isSuccess: true,
+              addresses: newAddressesList,
             ),
           ),
         );

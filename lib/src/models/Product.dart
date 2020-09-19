@@ -33,6 +33,7 @@ class Product {
   Product.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     id = json['id'];
+    sku = json['sku'];
     name = json['name'];
     cpu = json['cpu'];
     gpu = json['gpu'];

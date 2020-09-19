@@ -76,8 +76,6 @@ class FavoriteActions {
         final jsonData = json.decode(response.body);
         print(jsonData);
 
-        print(store.state.favoriteState.favoriteList.product.length);
-
         Favorite newFavoriteList = store.state.favoriteState.favoriteList;
 
         newFavoriteList.product.add(product);
@@ -120,7 +118,6 @@ class FavoriteActions {
 
         newFavoriteList.product
             .removeWhere((iproduct) => iproduct.id == product.id);
-        print("newFavoriteList");
 
         store.dispatch(
           SetFavoriteStateAction(
