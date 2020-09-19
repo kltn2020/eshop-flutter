@@ -1,4 +1,7 @@
+import 'package:ecommerce_flutter/src/redux/addresses/addresses_actions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ecommerce_flutter/src/redux/store.dart';
 
 class AddressCreate extends StatefulWidget {
   // static String get routeName => '@routes/home-page';
@@ -10,19 +13,32 @@ class AddressCreate extends StatefulWidget {
 }
 
 class _AddressCreateState extends State<AddressCreate> {
-  var _currencies = [
-    "Food",
-    "Transport",
-    "Personal",
-    "Shopping",
-    "Medical",
-    "Rent",
-    "Movie",
-    "Salary"
-  ];
+  // var _currencies = [
+  //   "Food",
+  //   "Transport",
+  //   "Personal",
+  //   "Shopping",
+  //   "Medical",
+  //   "Rent",
+  //   "Movie",
+  //   "Salary"
+  // ];
 
-  String _currentCitySelectedValue = "Food";
-  String _currentDistrictSelectedValue = "Food";
+  // String _currentCitySelectedValue = "Food";
+  // String _currentDistrictSelectedValue = "Food";
+
+  var _isPrimary = [true, false];
+  bool _currentIsPrimary = true;
+
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _locateController = TextEditingController();
+
+  @override
+  void dispose() {
+    _phoneNumberController.dispose();
+    _locateController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,96 +66,98 @@ class _AddressCreateState extends State<AddressCreate> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  focusColor: Color.fromRGBO(146, 127, 191, 1),
-                  labelText: 'Name',
-                ),
-              ),
+              // TextField(
+              //   decoration: InputDecoration(
+              //     border: OutlineInputBorder(),
+              //     focusColor: Color.fromRGBO(146, 127, 191, 1),
+              //     labelText: 'Name',
+              //   ),
+              // ),
               SizedBox(
-                height: 30,
+                height: 10,
               ),
               TextField(
+                controller: _phoneNumberController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   fillColor: Colors.white,
                   focusColor: Color.fromRGBO(146, 127, 191, 1),
-                  labelText: 'Number',
+                  labelText: 'Phone Number',
                 ),
               ),
-              SizedBox(
-                height: 30,
-              ),
-              FormField<String>(
-                builder: (FormFieldState<String> state) {
-                  return InputDecorator(
-                    decoration: InputDecoration(
-                        labelStyle: TextStyle(color: Colors.grey),
-                        errorStyle:
-                            TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                        hintText: 'City',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0))),
-                    isEmpty: _currentCitySelectedValue == null,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        value: _currentCitySelectedValue,
-                        isDense: true,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            _currentCitySelectedValue = newValue;
-                          });
-                        },
-                        items: _currencies.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              FormField<String>(
-                builder: (FormFieldState<String> state) {
-                  return InputDecorator(
-                    decoration: InputDecoration(
-                        labelStyle: TextStyle(color: Colors.grey),
-                        errorStyle:
-                            TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                        hintText: 'District',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0))),
-                    isEmpty: _currentDistrictSelectedValue == '',
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        value: _currentDistrictSelectedValue,
-                        isDense: true,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            _currentDistrictSelectedValue = newValue;
-                          });
-                        },
-                        items: _currencies.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  );
-                },
-              ),
+              // SizedBox(
+              //   height: 30,
+              // ),
+              // FormField<String>(
+              //   builder: (FormFieldState<String> state) {
+              //     return InputDecorator(
+              //       decoration: InputDecoration(
+              //           labelStyle: TextStyle(color: Colors.grey),
+              //           errorStyle:
+              //               TextStyle(color: Colors.redAccent, fontSize: 16.0),
+              //           hintText: 'City',
+              //           border: OutlineInputBorder(
+              //               borderRadius: BorderRadius.circular(5.0))),
+              //       isEmpty: _currentCitySelectedValue == null,
+              //       child: DropdownButtonHideUnderline(
+              //         child: DropdownButton<String>(
+              //           value: _currentCitySelectedValue,
+              //           isDense: true,
+              //           onChanged: (String newValue) {
+              //             setState(() {
+              //               _currentCitySelectedValue = newValue;
+              //             });
+              //           },
+              //           items: _currencies.map((String value) {
+              //             return DropdownMenuItem<String>(
+              //               value: value,
+              //               child: Text(value),
+              //             );
+              //           }).toList(),
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // ),
+              // SizedBox(
+              //   height: 30,
+              // ),
+              // FormField<String>(
+              //   builder: (FormFieldState<String> state) {
+              //     return InputDecorator(
+              //       decoration: InputDecoration(
+              //           labelStyle: TextStyle(color: Colors.grey),
+              //           errorStyle:
+              //               TextStyle(color: Colors.redAccent, fontSize: 16.0),
+              //           hintText: 'District',
+              //           border: OutlineInputBorder(
+              //               borderRadius: BorderRadius.circular(5.0))),
+              //       isEmpty: _currentDistrictSelectedValue == '',
+              //       child: DropdownButtonHideUnderline(
+              //         child: DropdownButton<String>(
+              //           value: _currentDistrictSelectedValue,
+              //           isDense: true,
+              //           onChanged: (String newValue) {
+              //             setState(() {
+              //               _currentDistrictSelectedValue = newValue;
+              //             });
+              //           },
+              //           items: _currencies.map((String value) {
+              //             return DropdownMenuItem<String>(
+              //               value: value,
+              //               child: Text(value),
+              //             );
+              //           }).toList(),
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // ),
               SizedBox(
                 height: 30,
               ),
               TextField(
+                controller: _locateController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   focusColor: Color.fromRGBO(146, 127, 191, 1),
@@ -149,8 +167,52 @@ class _AddressCreateState extends State<AddressCreate> {
               SizedBox(
                 height: 30,
               ),
+              FormField<bool>(
+                builder: (FormFieldState<bool> state) {
+                  return InputDecorator(
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(color: Colors.grey),
+                      errorStyle:
+                          TextStyle(color: Colors.redAccent, fontSize: 16.0),
+                      hintText: 'City',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
+                    isEmpty: _currentIsPrimary == null,
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<bool>(
+                        value: _currentIsPrimary,
+                        isDense: true,
+                        onChanged: (bool newValue) {
+                          setState(() {
+                            _currentIsPrimary = newValue;
+                          });
+                        },
+                        items: _isPrimary.map((bool value) {
+                          return DropdownMenuItem<bool>(
+                            value: value,
+                            child: Text(value == true ? "True" : "False"),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(
+                height: 30,
+              ),
               FlatButton(
-                onPressed: null,
+                onPressed: () {
+                  AddressesActions().addAddressesAction(
+                    Redux.store,
+                    Redux.store.state.userState.token,
+                    _phoneNumberController.text,
+                    _locateController.text,
+                    _currentIsPrimary,
+                  );
+                },
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(
