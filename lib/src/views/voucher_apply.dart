@@ -1,4 +1,8 @@
+import 'package:ecommerce_flutter/src/models/Voucher.dart';
+import 'package:ecommerce_flutter/src/redux/store.dart';
+import 'package:ecommerce_flutter/src/redux/vouchers/vouchers_actions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class VoucherApply extends StatelessWidget {
   @override
@@ -18,180 +22,213 @@ class VoucherApply extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(
-        child: ListView(
-          children: [
-            FlatButton(
-              onPressed: () {
-                Navigator.pop(context, null);
+      body: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.all(32),
+            child: TextField(
+              controller: null,
+              onSubmitted: (value) {
+                print(value);
+                Redux.store.dispatch(new VoucherActions()
+                    .checkVoucherAction(Redux.store, value));
               },
-              child: Container(
-                padding: EdgeInsets.all(16),
-                color: Colors.redAccent,
-                child: Center(
-                  child: Text(
-                    "Remove Voucher",
-                    style: TextStyle(color: Colors.white),
-                  ),
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context, 'Voucher 1');
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Voucher 1",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
+          ),
+          // FlatButton(
+          //   onPressed: () {
+          //     // Redux.store.dispatch(
+          //     //     new VoucherActions().checkVoucherAction(Redux.store, value));
+          //   },
+          //   child: Container(
+          //     height: 50,
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(50),
+          //       gradient: LinearGradient(colors: [
+          //         Color.fromRGBO(146, 127, 191, 1),
+          //         Color.fromRGBO(79, 59, 120, 1)
+          //       ], begin: Alignment.topRight, end: Alignment.bottomLeft),
+          //     ),
+          //     child: Center(
+          //       child: Text(
+          //         "Check coder",
+          //         style: TextStyle(
+          //             color: Colors.white, fontWeight: FontWeight.bold),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // projectWidget(),
+          StoreConnector<AppState, bool>(
+            distinct: true,
+            converter: (store) => store.state.vouchersState.isLoading,
+            builder: (context, isLoading) {
+              if (isLoading) {
+                return LinearProgressIndicator();
+              } else {
+                return SizedBox.shrink();
+              }
+            },
+          ),
+          StoreConnector<AppState, bool>(
+            distinct: true,
+            converter: (store) => store.state.vouchersState.isError,
+            builder: (context, isError) {
+              // if (isError != null) {
+              //   return Text("Something's wrong");
+              // } else {
+              //   return SizedBox.shrink();
+              // }
+              return Container();
+            },
+          ),
+
+          StoreConnector<AppState, Voucher>(
+            distinct: true,
+            converter: (store) => store.state.vouchersState.voucher,
+            builder: (context, voucher) {
+              // return ListView(
+              //   children: _buildProducts(products),
+              // );
+              if (voucher != null && voucher.code != null) {
+                return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.all(16),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pop(context, voucher);
+                      },
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Voucher code: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              Text(voucher.code),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "Category ID: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(voucher.categoryId.toString()),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "Discount: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(voucher.value.toString()),
+                              Text("%"),
+                            ],
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Discount: %"),
-                        Text("Category: Laptop"),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "start date",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Text(
-                          " - ",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Text(
-                          "end date",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
-              // indent: 20,
-              // endIndent: 0,
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context, 'Voucher 2');
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Voucher 2",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Discount: %"),
-                        Text("Category: Laptop"),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "start date",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Text(
-                          " - ",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Text(
-                          "end date",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
-              // indent: 20,
-              // endIndent: 0,
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context, 'Voucher 3');
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Voucher 3",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Discount: %"),
-                        Text("Category: Laptop"),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "start date",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Text(
-                          " - ",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Text(
-                          "end date",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
-              // indent: 20,
-              // endIndent: 0,
-            ),
-          ],
-        ),
+                    ));
+              } else {
+                return Container(
+                  child: Text("No data"),
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
   }
 }
+
+// Widget projectWidget() {
+//   return FutureBuilder(
+//     // future: Redux.store
+//     //     .dispatch(new VoucherActions().getAllVouchersAction(Redux.store)),
+//     builder: (context, projectSnap) {
+//       if (projectSnap.connectionState == ConnectionState.none &&
+//           projectSnap.hasData == null) {
+//         print('project snapshot data is: ${projectSnap.data}');
+//         return Container();
+//       }
+//       if (projectSnap.connectionState == ConnectionState.waiting) {
+//         return LinearProgressIndicator(
+//           backgroundColor: Color.fromRGBO(196, 187, 240, 0.5),
+//           valueColor: new AlwaysStoppedAnimation<Color>(
+//             Color.fromRGBO(146, 127, 191, 1),
+//           ),
+//         );
+//       }
+//       return Container(
+//         child: StoreConnector<AppState, String>(
+//           distinct: true,
+//           converter: (store) => store.state.userState.token,
+//           builder: (context, token) {
+//             if (token == null) {
+//               return Center(
+//                 child: Column(
+//                   children: <Widget>[
+//                     Center(
+//                       child: Text(
+//                           "No authority! Please click button below to login"),
+//                     ),
+//                     Center(
+//                       child: FlatButton(
+//                           onPressed: () {
+//                             Navigator.pushReplacementNamed(context, '/login');
+//                           },
+//                           child: Text(
+//                             "Back to Login",
+//                             style: TextStyle(color: Colors.grey),
+//                           )),
+//                     ),
+//                   ],
+//                 ),
+//               );
+//             } else {
+//               return Container(
+//                 child: StoreConnector<AppState, List<Voucher>>(
+//                   distinct: true,
+//                   converter: (store) => store.state.vouchersState.vouchers,
+//                   builder: (context, vouchers) {
+//                     return Container(
+//                       padding: EdgeInsets.symmetric(vertical: 32),
+//                       child: SingleChildScrollView(
+//                         child: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: vouchers.map((voucher) {
+//                             print(voucher);
+//                             return Container();
+//                           }).toList(),
+//                         ),
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               );
+//             }
+//           },
+//         ),
+//       );
+//     },
+//   );
+// }

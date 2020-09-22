@@ -1,19 +1,5 @@
+import 'package:ecommerce_flutter/src/models/Address.dart';
 import 'package:flutter/material.dart';
-
-class Address {
-  String name;
-  String number;
-  String addressDetail;
-
-  Address(this.name, this.number, this.addressDetail);
-
-  Address.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    name = json['name'];
-    number = json['number'];
-    addressDetail = json['addressDetail'];
-  }
-}
 
 class CheckOut extends StatefulWidget {
   // static String get routeName => '@routes/home-page';
@@ -40,7 +26,7 @@ class _CheckOutState extends State<CheckOut> {
       print(result);
 
       setState(() {
-        shippingAddress = Address.fromJson(result);
+        shippingAddress = result;
       });
 
       print(shippingAddress);
@@ -112,16 +98,12 @@ class _CheckOutState extends State<CheckOut> {
                             Column(
                               children: [
                                 shippingAddress != null &&
-                                        shippingAddress.name != null
-                                    ? Text(shippingAddress.name)
-                                    : Text("Name"),
-                                shippingAddress != null &&
-                                        shippingAddress.number != null
-                                    ? Text(shippingAddress.number)
+                                        shippingAddress.phoneNumber != null
+                                    ? Text(shippingAddress.phoneNumber)
                                     : Text("Number"),
                                 shippingAddress != null &&
-                                        shippingAddress.addressDetail != null
-                                    ? Text(shippingAddress.addressDetail)
+                                        shippingAddress.locate != null
+                                    ? Text(shippingAddress.locate)
                                     : Text("Address Detail"),
                               ],
                             ),

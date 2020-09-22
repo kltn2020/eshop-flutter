@@ -124,12 +124,12 @@ class _CartState extends State<Cart> {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              new GestureDetector(
+              GestureDetector(
                 onTap: () {
                   _navigateAndDisplaySelection(context);
                 },
                 child: Text(
-                  applyVoucher == null ? "Apply Voucher >" : applyVoucher,
+                  applyVoucher == null ? "Apply Voucher >" : applyVoucher.code,
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.w700,

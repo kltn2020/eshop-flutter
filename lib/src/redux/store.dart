@@ -27,6 +27,11 @@ import 'package:ecommerce_flutter/src/redux/addresses/addresses_actions.dart';
 import 'package:ecommerce_flutter/src/redux/addresses/addresses_reducer.dart';
 import 'package:ecommerce_flutter/src/redux/addresses/addresses_state.dart';
 
+//Voucher
+import 'package:ecommerce_flutter/src/redux/vouchers/vouchers_actions.dart';
+import 'package:ecommerce_flutter/src/redux/vouchers/vouchers_reducer.dart';
+import 'package:ecommerce_flutter/src/redux/vouchers/vouchers_state.dart';
+
 //appReducer: the root reducer of our entire application is where we use all of our reducers
 AppState appReducer(AppState state, dynamic action) {
   if (action is SetPostsStateAction) {
@@ -59,6 +64,12 @@ AppState appReducer(AppState state, dynamic action) {
     return state.copyWith(addressesState: nextAddressesState);
   }
 
+  if (action is SetVouchersStateAction) {
+    final nextVouchersState = vouchersReducer(state.vouchersState, action);
+
+    return state.copyWith(vouchersState: nextVouchersState);
+  }
+
   return state;
 }
 
@@ -70,6 +81,7 @@ class AppState {
   final UserState userState;
   final FavoriteState favoriteState;
   final AddressesState addressesState;
+  final VouchersState vouchersState;
 
   AppState({
     @required this.postsState,
@@ -77,6 +89,7 @@ class AppState {
     @required this.userState,
     @required this.favoriteState,
     @required this.addressesState,
+    @required this.vouchersState,
   });
 
   AppState copyWith({
@@ -85,6 +98,7 @@ class AppState {
     UserState userState,
     FavoriteState favoriteState,
     AddressesState addressesState,
+    VouchersState vouchersState,
   }) {
     return AppState(
       postsState: postsState ?? this.postsState,
@@ -92,6 +106,7 @@ class AppState {
       userState: userState ?? this.userState,
       favoriteState: favoriteState ?? this.favoriteState,
       addressesState: addressesState ?? this.addressesState,
+      vouchersState: vouchersState ?? this.vouchersState,
     );
   }
 }
@@ -116,6 +131,7 @@ class Redux {
     final userStateInitial = UserState.initial();
     final favoriteStateInitial = FavoriteState.initial();
     final addressesStateInitial = AddressesState.initial();
+    final vouchersStateInitial = VouchersState.initial();
 
     _store = Store<AppState>(
       appReducer,
@@ -126,6 +142,7 @@ class Redux {
         userState: userStateInitial,
         favoriteState: favoriteStateInitial,
         addressesState: addressesStateInitial,
+        vouchersState: vouchersStateInitial,
       ),
     );
   }
