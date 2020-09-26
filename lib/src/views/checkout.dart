@@ -1,5 +1,12 @@
 import 'package:ecommerce_flutter/src/models/Address.dart';
+import 'package:ecommerce_flutter/src/models/Cart.dart';
+import 'package:ecommerce_flutter/src/models/Product.dart';
+import 'package:ecommerce_flutter/src/models/Voucher.dart';
+import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
+import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:intl/intl.dart';
 
 class CheckOut extends StatefulWidget {
   // static String get routeName => '@routes/home-page';
@@ -11,11 +18,12 @@ class CheckOut extends StatefulWidget {
 }
 
 class _CheckOutState extends State<CheckOut> {
-  final List<String> items = ['apple', 'banana', 'orange', 'lemon'];
+  final formatter = new NumberFormat("#,###");
 
   var paymentType = "Choose type of payment";
 
   Address shippingAddress;
+  // Voucher voucher;
 
   _navigateAndDisplayAddressSelection(BuildContext context) async {
     // Navigator.push returns a Future that completes after calling
@@ -28,8 +36,6 @@ class _CheckOutState extends State<CheckOut> {
       setState(() {
         shippingAddress = result;
       });
-
-      print(shippingAddress);
     }
   }
 
@@ -47,6 +53,8 @@ class _CheckOutState extends State<CheckOut> {
 
   @override
   Widget build(BuildContext context) {
+    final Voucher voucher = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -93,18 +101,24 @@ class _CheckOutState extends State<CheckOut> {
                         width: double.infinity,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 shippingAddress != null &&
                                         shippingAddress.phoneNumber != null
                                     ? Text(shippingAddress.phoneNumber)
-                                    : Text("Number"),
+                                    : Text(
+                                        "Number",
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
                                 shippingAddress != null &&
                                         shippingAddress.locate != null
                                     ? Text(shippingAddress.locate)
-                                    : Text("Address Detail"),
+                                    : Text(
+                                        "Address Detail",
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
                               ],
                             ),
                             Icon(Icons.navigate_next),
@@ -130,13 +144,7 @@ class _CheckOutState extends State<CheckOut> {
                         fontSize: 18,
                       ),
                     ),
-                    ...items
-                        .map(
-                          (item) => ProductInCheckOut(
-                            title: item,
-                          ),
-                        )
-                        .toList(),
+                    cartWidget(),
                     SizedBox(
                       height: 10,
                     ),
@@ -187,53 +195,132 @@ class _CheckOutState extends State<CheckOut> {
                       padding: EdgeInsets.symmetric(
                         horizontal: 24,
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Cart total: 10000"),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text("Shipping total: 10000"),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "Order total: 20000",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          FlatButton(
-                            onPressed: null,
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                gradient: LinearGradient(
-                                    colors: [
-                                      Color.fromRGBO(146, 127, 191, 1),
-                                      Color.fromRGBO(79, 59, 120, 1)
-                                    ],
-                                    begin: Alignment.topRight,
-                                    end: Alignment.bottomLeft),
+                      child: StoreConnector<AppState, Cart>(
+                        distinct: true,
+                        converter: (store) => store.state.cartState.cart,
+                        builder: (context, cart) {
+                          int cartTotal = cart.products.fold(
+                              0,
+                              (previousValue, element) =>
+                                  previousValue +
+                                  element.quantity *
+                                      element.product.discountPrice);
+                          int shippingFee = 20000;
+
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text("Cart total: "),
+                                  Text(
+                                    formatter.format(cartTotal),
+                                  ),
+                                ],
                               ),
-                              child: Center(
-                                child: Text(
-                                  "Checkout",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                children: [
+                                  Text("Shipping total: "),
+                                  Text(
+                                    formatter.format(shippingFee),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Order total: ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                  Text(
+                                    formatter.format(cartTotal + shippingFee),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  CartActions().checkoutCartAction(
+                                      Redux.store, shippingAddress, voucher);
+                                },
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    gradient: LinearGradient(
+                                        colors: [
+                                          Color.fromRGBO(146, 127, 191, 1),
+                                          Color.fromRGBO(79, 59, 120, 1)
+                                        ],
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Checkout",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ],
+                              SizedBox(
+                                height: 20,
+                              ),
+                              StoreConnector<AppState, bool>(
+                                distinct: true,
+                                converter: (store) =>
+                                    store.state.cartState.isLoading,
+                                builder: (context, isLoading) {
+                                  if (isLoading == true) {
+                                    return LinearProgressIndicator(
+                                      backgroundColor:
+                                          Color.fromRGBO(196, 187, 240, 0.5),
+                                      valueColor:
+                                          new AlwaysStoppedAnimation<Color>(
+                                        Color.fromRGBO(146, 127, 191, 1),
+                                      ),
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                },
+                              ),
+                              StoreConnector<AppState, bool>(
+                                distinct: true,
+                                converter: (store) =>
+                                    store.state.cartState.checkoutSuccessed,
+                                builder: (context, checkoutSuccessed) {
+                                  if (checkoutSuccessed == true) {
+                                    return Text(
+                                      "Checkout Success",
+                                      style: TextStyle(color: Colors.green),
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                },
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -248,15 +335,16 @@ class _CheckOutState extends State<CheckOut> {
 }
 
 class ProductInCheckOut extends StatelessWidget {
-  final String title;
-
-  final int number;
+  final Product product;
+  final int quantity;
 
   ProductInCheckOut({
     Key key,
-    this.title,
-    this.number,
+    this.product,
+    this.quantity,
   }) : super(key: key);
+
+  final formatter = new NumberFormat("#,###");
 
   @override
   Widget build(BuildContext context) {
@@ -268,44 +356,183 @@ class ProductInCheckOut extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Image.network(
+            product.images[0]['url'],
+            height: 50,
+            width: 50,
+          ),
+          // Text(
+          //   product.name,
+          //   overflow: TextOverflow.ellipsis,
+          // ),
+          SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: Text(
+              product.name,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
           Row(
             children: [
-              // Image(
-              //   image: AssetImage('assets/banner1.jpg'),
-              //   height: 128,
-              //   width: 128,
-              // ),
-              Icon(
-                Icons.laptop,
-                size: 64,
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Column(
-                children: [
-                  Text(title),
-                ],
-              ),
-              SizedBox(
-                width: 30,
+              Text(
+                "x ",
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
               ),
               Text(
-                "x 1",
+                quantity.toString(),
                 style: TextStyle(
                   color: Colors.grey,
                 ),
               ),
             ],
           ),
-          Text(
-            "Total: 1000000",
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-            ),
+          SizedBox(
+            width: 20,
+          ),
+          Row(
+            children: [
+              Text(
+                "= ",
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                formatter.format(product.discountPrice),
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
+}
+
+Widget cartWidget() {
+  return Container(
+    child: StoreConnector<AppState, Cart>(
+      distinct: true,
+      converter: (store) => store.state.cartState.cart,
+      builder: (context, cart) {
+        return Container(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: cart.products != null
+                  ? cart.products.map((item) {
+                      return ProductInCheckOut(
+                        product: item.product,
+                        quantity: item.quantity,
+                      );
+                    }).toList()
+                  : [Text("There's nothing in cart")],
+            ),
+          ),
+        );
+      },
+    ),
+  );
+
+  // return FutureBuilder(
+  //   future: Redux.store.dispatch(CartActions().getAllCartAction),
+  //   builder: (context, projectSnap) {
+  //     if (projectSnap.connectionState == ConnectionState.none &&
+  //         projectSnap.hasData == null) {
+  //       print('project snapshot data is: ${projectSnap.data}');
+  //       return Container();
+  //     }
+  //     if (projectSnap.connectionState == ConnectionState.waiting) {
+  //       return LinearProgressIndicator(
+  //         backgroundColor: Color.fromRGBO(196, 187, 240, 0.5),
+  //         valueColor: new AlwaysStoppedAnimation<Color>(
+  //           Color.fromRGBO(146, 127, 191, 1),
+  //         ),
+  //       );
+  //     }
+  //     return Container(
+  //       child: StoreConnector<AppState, String>(
+  //         distinct: true,
+  //         converter: (store) => store.state.userState.token,
+  //         builder: (context, token) {
+  //           if (token == null) {
+  //             return Center(
+  //               child: Column(
+  //                 children: <Widget>[
+  //                   Center(
+  //                     child: Text(
+  //                         "No authority! Please click button below to login"),
+  //                   ),
+  //                   Center(
+  //                     child: FlatButton(
+  //                         onPressed: () {
+  //                           Navigator.pushReplacementNamed(context, '/login');
+  //                         },
+  //                         child: Text(
+  //                           "Back to Login",
+  //                           style: TextStyle(color: Colors.grey),
+  //                         )),
+  //                   ),
+  //                 ],
+  //               ),
+  //             );
+  //           } else {
+  //             return Column(
+  //               children: [
+  //                 StoreConnector<AppState, bool>(
+  //                     distinct: true,
+  //                     converter: (store) => store.state.cartState.isLoading,
+  //                     builder: (context, isLoading) {
+  //                       if (isLoading == true) {
+  //                         return LinearProgressIndicator(
+  //                           backgroundColor: Color.fromRGBO(196, 187, 240, 0.5),
+  //                           valueColor: new AlwaysStoppedAnimation<Color>(
+  //                             Color.fromRGBO(146, 127, 191, 1),
+  //                           ),
+  //                         );
+  //                       } else {
+  //                         return Container();
+  //                       }
+  //                     }),
+  //                 Container(
+  //                   child: StoreConnector<AppState, Cart>(
+  //                     distinct: true,
+  //                     converter: (store) => store.state.cartState.cart,
+  //                     builder: (context, cart) {
+  //                       return Container(
+  //                         child: SingleChildScrollView(
+  //                           child: Column(
+  //                             crossAxisAlignment: CrossAxisAlignment.start,
+  //                             children: cart.products != null
+  //                                 ? cart.products.map((item) {
+  //                                     return ProductInCheckOut(
+  //                                       product: item.product,
+  //                                       quantity: item.quantity,
+  //                                     );
+  //                                   }).toList()
+  //                                 : [Text("There's nothing in cart")],
+  //                           ),
+  //                         ),
+  //                       );
+  //                     },
+  //                   ),
+  //                 ),
+  //               ],
+  //             );
+  //           }
+  //         },
+  //       ),
+  //     );
+  //   },
+  // );
 }

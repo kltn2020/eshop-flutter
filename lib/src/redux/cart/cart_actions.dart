@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:ecommerce_flutter/src/models/Address.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
+import 'package:ecommerce_flutter/src/models/Voucher.dart';
 import 'package:redux/redux.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
@@ -32,7 +34,11 @@ class CartActions {
   Future<void> getAllCartAction(Store<AppState> store) async {
     print("get-cart-action");
 
-    store.dispatch(SetCartStateAction(CartState(isLoading: true)));
+    store.dispatch(SetCartStateAction(CartState(
+        isLoading: true,
+        isSuccess: false,
+        isError: false,
+        checkoutSuccessed: false)));
 
     var token = store.state.userState.token;
 
@@ -69,7 +75,8 @@ class CartActions {
   Future<void> addCartAction(
       Store<AppState> store, Product product, int quantity) async {
     print("add-cart-action");
-    store.dispatch(SetCartStateAction(CartState(isLoading: true)));
+    store.dispatch(SetCartStateAction(
+        CartState(isLoading: true, isSuccess: false, isError: false)));
 
     var token = store.state.userState.token;
 
@@ -114,7 +121,8 @@ class CartActions {
 
   Future<void> deleteCartAction(Store<AppState> store, Product product) async {
     print("delete-cart-action");
-    store.dispatch(SetCartStateAction(CartState(isLoading: true)));
+    store.dispatch(SetCartStateAction(
+        CartState(isLoading: true, isSuccess: false, isError: false)));
 
     var token = store.state.userState.token;
 
@@ -149,6 +157,67 @@ class CartActions {
         //   ),
         // );
         store.dispatch(CartActions().getAllCartAction(store));
+      } else {
+        throw response.body;
+      }
+    } catch (error) {
+      print(error);
+      store.dispatch(
+          SetCartStateAction(CartState(isLoading: false, isError: true)));
+    }
+  }
+
+  Future<void> checkoutCartAction(
+      Store<AppState> store, Address address, Voucher voucher) async {
+    print("checkout-cart-action");
+    store.dispatch(SetCartStateAction(
+        CartState(isLoading: true, isSuccess: false, isError: false)));
+
+    var token = store.state.userState.token;
+
+    print(voucher.code);
+
+    try {
+      final response = voucher != null
+          ? await http.post(
+              'https://rocky-sierra-70366.herokuapp.com/api/orders',
+              headers: {
+                HttpHeaders.authorizationHeader: "Bearer $token",
+                "Content-Type": "application/json",
+              },
+              body: jsonEncode(<String, dynamic>{
+                'address_id': address.id,
+                'voucher_code': voucher.code,
+              }))
+          : await http.post(
+              'https://rocky-sierra-70366.herokuapp.com/api/orders',
+              headers: {
+                HttpHeaders.authorizationHeader: "Bearer $token",
+                "Content-Type": "application/json",
+              },
+              body: jsonEncode(<String, dynamic>{
+                'address_id': address.id,
+              }));
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+
+        // Cart newCartList = store.state.cartState.cart;
+
+        // print("herer");
+        // newCartList.products
+        //     .removeWhere((iproduct) => iproduct.product.id == product.id);
+
+        store.dispatch(
+          SetCartStateAction(
+            CartState(
+              isLoading: false,
+              isSuccess: true,
+              checkoutSuccessed: true,
+            ),
+          ),
+        );
+        // store.dispatch(CartActions().getAllCartAction(store));
       } else {
         throw response.body;
       }

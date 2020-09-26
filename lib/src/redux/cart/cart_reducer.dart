@@ -11,5 +11,6 @@ cartReducer(CartState prevState, SetCartStateAction action) {
     totalItems: payload.totalItems,
     totalPages: payload.totalPages,
     cart: payload.cart,
+    checkoutSuccessed: payload.checkoutSuccessed,
   );
 }

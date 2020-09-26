@@ -1,3 +1,4 @@
+import 'package:ecommerce_flutter/src/models/Cart.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/views/product_detail.dart';
@@ -158,10 +159,13 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                             Text(
-                                              product.price != null
-                                                  ? formatter
-                                                      .format(product.price)
-                                                  : "Contact",
+                                              product.discountPrice != null
+                                                  ? formatter.format(
+                                                      product.discountPrice)
+                                                  : (product.price != null
+                                                      ? formatter
+                                                          .format(product.price)
+                                                      : "Contact"),
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w700,
@@ -243,7 +247,44 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               Navigator.pushNamed(context, '/cart');
             },
-            icon: Icon(Icons.shopping_cart),
+            icon: StoreConnector<AppState, Cart>(
+              distinct: true,
+              converter: (store) => store.state.cartState.cart,
+              builder: (context, cart) {
+                return Stack(
+                  children: <Widget>[
+                    Icon(Icons.shopping_cart),
+                    Positioned(
+                      right: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 12,
+                          minHeight: 12,
+                        ),
+                        child: Text(
+                          cart.products
+                              .fold(
+                                  0,
+                                  (previousValue, element) =>
+                                      previousValue + element.quantity)
+                              .toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
             color: Color.fromRGBO(146, 127, 191, 1),
           ),
         ],

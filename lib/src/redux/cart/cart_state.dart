@@ -10,6 +10,7 @@ class CartState {
   final int totalItems;
   final int totalPages;
   final Cart cart;
+  final bool checkoutSuccessed;
 
   CartState({
     this.isError,
@@ -18,6 +19,7 @@ class CartState {
     this.totalItems,
     this.totalPages,
     this.cart,
+    this.checkoutSuccessed,
   });
 
   //factory constructor will be later used to fill the initial main state.
@@ -28,6 +30,7 @@ class CartState {
         totalItems: null,
         totalPages: null,
         cart: null,
+        checkoutSuccessed: false,
       );
 
   //copyWith method will be later used to get a copy of our CartState to update this piece of the main state.
@@ -38,6 +41,7 @@ class CartState {
     @required int totalItems,
     @required int totalPages,
     @required Cart cart,
+    @required bool checkoutSuccessed,
   }) {
     return CartState(
       isError: isError ?? this.isError,
@@ -46,6 +50,7 @@ class CartState {
       totalPages: totalPages ?? this.totalPages,
       totalItems: totalItems ?? this.totalItems,
       cart: cart ?? this.cart,
+      checkoutSuccessed: checkoutSuccessed ?? this.checkoutSuccessed,
     );
   }
 }

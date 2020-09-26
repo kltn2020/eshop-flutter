@@ -1,4 +1,5 @@
 import 'package:ecommerce_flutter/src/models/Cart.dart';
+import 'package:ecommerce_flutter/src/models/Voucher.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,8 @@ class _CartViewState extends State<CartView> {
       applyVoucher = result;
     });
   }
+
+  final formatter = new NumberFormat("#,###");
 
   @override
   Widget build(BuildContext context) {
@@ -118,34 +121,59 @@ class _CartViewState extends State<CartView> {
         child: Container(
           height: 50.0,
           padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Total: 10000000",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  _navigateAndDisplaySelection(context);
-                },
-                child: Text(
-                  applyVoucher == null ? "Apply Voucher >" : applyVoucher.code,
-                  style: TextStyle(
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w700,
+          child: StoreConnector<AppState, Cart>(
+            distinct: true,
+            converter: (store) => store.state.cartState.cart,
+            builder: (context, cart) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "Total: ",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        formatter.format(cart.products.fold(
+                            0,
+                            (previousValue, element) =>
+                                previousValue +
+                                element.quantity *
+                                    element.product.discountPrice)),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ),
-            ],
+                  GestureDetector(
+                    onTap: () {
+                      _navigateAndDisplaySelection(context);
+                    },
+                    child: Text(
+                      applyVoucher == null
+                          ? "Apply Voucher >"
+                          : applyVoucher.code,
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, "/checkout"),
+        onPressed: () =>
+            Navigator.pushNamed(context, "/checkout", arguments: applyVoucher),
         tooltip: 'Click to checkout',
         child: Text("Buy"),
         backgroundColor: Theme.of(context).primaryColor,
@@ -326,7 +354,7 @@ Widget projectWidget() {
                                       return ProductInCart(
                                         imageURL: item.product.images[0]['url'],
                                         title: item.product.name,
-                                        price: item.product.price,
+                                        price: item.product.discountPrice,
                                         check: false,
                                         number: item.quantity,
                                         onAdd: () {
