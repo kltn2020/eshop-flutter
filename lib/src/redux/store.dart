@@ -32,6 +32,11 @@ import 'package:ecommerce_flutter/src/redux/vouchers/vouchers_actions.dart';
 import 'package:ecommerce_flutter/src/redux/vouchers/vouchers_reducer.dart';
 import 'package:ecommerce_flutter/src/redux/vouchers/vouchers_state.dart';
 
+//Cart
+import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
+import 'package:ecommerce_flutter/src/redux/cart/cart_reducer.dart';
+import 'package:ecommerce_flutter/src/redux/cart/cart_state.dart';
+
 //appReducer: the root reducer of our entire application is where we use all of our reducers
 AppState appReducer(AppState state, dynamic action) {
   if (action is SetPostsStateAction) {
@@ -70,6 +75,12 @@ AppState appReducer(AppState state, dynamic action) {
     return state.copyWith(vouchersState: nextVouchersState);
   }
 
+  if (action is SetCartStateAction) {
+    final nextCartState = cartReducer(state.cartState, action);
+
+    return state.copyWith(cartState: nextCartState);
+  }
+
   return state;
 }
 
@@ -82,6 +93,7 @@ class AppState {
   final FavoriteState favoriteState;
   final AddressesState addressesState;
   final VouchersState vouchersState;
+  final CartState cartState;
 
   AppState({
     @required this.postsState,
@@ -90,6 +102,7 @@ class AppState {
     @required this.favoriteState,
     @required this.addressesState,
     @required this.vouchersState,
+    @required this.cartState,
   });
 
   AppState copyWith({
@@ -99,6 +112,7 @@ class AppState {
     FavoriteState favoriteState,
     AddressesState addressesState,
     VouchersState vouchersState,
+    CartState cartState,
   }) {
     return AppState(
       postsState: postsState ?? this.postsState,
@@ -107,6 +121,7 @@ class AppState {
       favoriteState: favoriteState ?? this.favoriteState,
       addressesState: addressesState ?? this.addressesState,
       vouchersState: vouchersState ?? this.vouchersState,
+      cartState: cartState ?? this.cartState,
     );
   }
 }
@@ -132,6 +147,7 @@ class Redux {
     final favoriteStateInitial = FavoriteState.initial();
     final addressesStateInitial = AddressesState.initial();
     final vouchersStateInitial = VouchersState.initial();
+    final cartStateInitial = CartState.initial();
 
     _store = Store<AppState>(
       appReducer,
@@ -143,6 +159,7 @@ class Redux {
         favoriteState: favoriteStateInitial,
         addressesState: addressesStateInitial,
         vouchersState: vouchersStateInitial,
+        cartState: cartStateInitial,
       ),
     );
   }

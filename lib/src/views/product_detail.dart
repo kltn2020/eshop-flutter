@@ -1,5 +1,6 @@
 import 'package:ecommerce_flutter/src/models/Favorite.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
+import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/redux/favorite/favorite_actions.dart';
 import 'package:ecommerce_flutter/src/redux/favorite/favorite_state.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
@@ -97,7 +98,9 @@ class ProductPage extends StatelessWidget {
                   vertical: 0,
                 ),
                 child: Text(
-                  formatter.format(product.price),
+                  product.price != null
+                      ? formatter.format(product.price)
+                      : "Contact",
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.w700,
@@ -317,6 +320,7 @@ class ProductPage extends StatelessWidget {
                             ],
                           ),
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 "GPU: ",
@@ -325,7 +329,7 @@ class ProductPage extends StatelessWidget {
                                 ),
                               ),
                               product.gpu != null
-                                  ? Text(product.gpu)
+                                  ? Flexible(child: Text(product.gpu))
                                   : Text(""),
                             ],
                           ),
@@ -341,6 +345,7 @@ class ProductPage extends StatelessWidget {
                             ],
                           ),
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 "RAM: ",
@@ -349,7 +354,7 @@ class ProductPage extends StatelessWidget {
                                 ),
                               ),
                               product.ram != null
-                                  ? Text(product.ram)
+                                  ? Flexible(child: Text(product.ram))
                                   : Text(""),
                             ],
                           ),
@@ -375,7 +380,7 @@ class ProductPage extends StatelessWidget {
                                 ),
                               ),
                               product.newFeature != null
-                                  ? Text(product.newFeature)
+                                  ? Flexible(child: Text(product.newFeature))
                                   : Text(""),
                             ],
                           ),
@@ -751,7 +756,10 @@ class ProductPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: null,
+        onPressed: () {
+          Redux.store
+              .dispatch(CartActions().addCartAction(Redux.store, product, 1));
+        },
         icon: Icon(Icons.add_shopping_cart),
         label: Text("Add to cart"),
         backgroundColor: Color.fromRGBO(79, 59, 120, 1),

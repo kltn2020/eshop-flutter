@@ -103,6 +103,8 @@ class UserActions {
     )));
     try {
       print("Login");
+      print(email);
+      print(password);
       final response = await http.post(
         'https://rocky-sierra-70366.herokuapp.com/api/auth/login',
         body: {
@@ -157,16 +159,20 @@ class UserActions {
 
     try {
       final response = await http.post(
-          'https://rocky-sierra-70366.herokuapp.com/api/auth/register',
-          body: {
-            'email': '$email',
-            'password': '$password',
-            'password_confirmation': '$passwordConfirmation',
-          });
+        'https://rocky-sierra-70366.herokuapp.com/api/auth/register',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(<String, dynamic>{
+          'email': email,
+          'password': password,
+          'password_confirmation': passwordConfirmation,
+        }),
+      );
       final statusCode = response.statusCode;
       print('Response Status code: $statusCode');
 
-      assert(response.statusCode == 200, "Something wrong");
+      assert(response.statusCode == 200, response.body);
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ecommerce_flutter/src/redux/favorite/favorite_actions.dart';
 import 'package:redux/redux.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
@@ -29,8 +30,8 @@ class ProductActions {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
     try {
-      final response = await http.get(
-          'https://rocky-sierra-70366.herokuapp.com/api/products?size=20&&page=1');
+      final response = await http
+          .get('https://rocky-sierra-70366.herokuapp.com/api/products');
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body)['data'];
@@ -45,6 +46,8 @@ class ProductActions {
             ),
           ),
         );
+
+        store.dispatch(FavoriteActions().getAllFavoriteAction(store));
       }
     } catch (error) {
       print(error);

@@ -38,8 +38,7 @@ class _ProductListState extends State<ProductList> {
 
   Widget projectWidget() {
     return FutureBuilder(
-      future: Redux.store
-          .dispatch(new ProductActions(page: 1, size: 20).getAllProductsAction),
+      future: Redux.store.dispatch(ProductActions().getAllProductsAction),
       builder: (context, projectSnap) {
         if (projectSnap.connectionState == ConnectionState.none &&
             projectSnap.hasData == null) {
@@ -144,7 +143,10 @@ class _ProductListState extends State<ProductList> {
                                               ),
                                             ),
                                             Text(
-                                              formatter.format(product.price),
+                                              product.price != null
+                                                  ? formatter
+                                                      .format(product.price)
+                                                  : "Contact",
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w700,

@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
   Widget projectWidget() {
     return FutureBuilder(
       future: Redux.store
-          .dispatch(new ProductActions(page: 1, size: 20).getAllProductsAction),
+          .dispatch(ProductActions(page: 1, size: 20).getAllProductsAction),
       builder: (context, projectSnap) {
         if (projectSnap.connectionState == ConnectionState.none &&
             projectSnap.hasData == null) {
@@ -158,7 +158,10 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                             Text(
-                                              formatter.format(product.price),
+                                              product.price != null
+                                                  ? formatter
+                                                      .format(product.price)
+                                                  : "Contact",
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w700,
