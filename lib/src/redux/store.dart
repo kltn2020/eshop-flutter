@@ -37,6 +37,11 @@ import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_reducer.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_state.dart';
 
+//Order
+import 'package:ecommerce_flutter/src/redux/orders/orders_actions.dart';
+import 'package:ecommerce_flutter/src/redux/orders/orders_reducer.dart';
+import 'package:ecommerce_flutter/src/redux/orders/orders_state.dart';
+
 //appReducer: the root reducer of our entire application is where we use all of our reducers
 AppState appReducer(AppState state, dynamic action) {
   if (action is SetPostsStateAction) {
@@ -81,6 +86,12 @@ AppState appReducer(AppState state, dynamic action) {
     return state.copyWith(cartState: nextCartState);
   }
 
+  if (action is SetOrdersStateAction) {
+    final nextOrdersState = ordersReducer(state.ordersState, action);
+
+    return state.copyWith(ordersState: nextOrdersState);
+  }
+
   return state;
 }
 
@@ -94,6 +105,7 @@ class AppState {
   final AddressesState addressesState;
   final VouchersState vouchersState;
   final CartState cartState;
+  final OrdersState ordersState;
 
   AppState({
     @required this.postsState,
@@ -103,6 +115,7 @@ class AppState {
     @required this.addressesState,
     @required this.vouchersState,
     @required this.cartState,
+    @required this.ordersState,
   });
 
   AppState copyWith({
@@ -113,6 +126,7 @@ class AppState {
     AddressesState addressesState,
     VouchersState vouchersState,
     CartState cartState,
+    OrdersState ordersState,
   }) {
     return AppState(
       postsState: postsState ?? this.postsState,
@@ -122,6 +136,7 @@ class AppState {
       addressesState: addressesState ?? this.addressesState,
       vouchersState: vouchersState ?? this.vouchersState,
       cartState: cartState ?? this.cartState,
+      ordersState: ordersState ?? this.ordersState,
     );
   }
 }
@@ -148,6 +163,7 @@ class Redux {
     final addressesStateInitial = AddressesState.initial();
     final vouchersStateInitial = VouchersState.initial();
     final cartStateInitial = CartState.initial();
+    final ordersStateInitial = OrdersState.initial();
 
     _store = Store<AppState>(
       appReducer,
@@ -160,6 +176,7 @@ class Redux {
         addressesState: addressesStateInitial,
         vouchersState: vouchersStateInitial,
         cartState: cartStateInitial,
+        ordersState: ordersStateInitial,
       ),
     );
   }

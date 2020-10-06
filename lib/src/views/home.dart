@@ -1,5 +1,7 @@
 import 'package:ecommerce_flutter/src/models/Cart.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
+import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
+import 'package:ecommerce_flutter/src/redux/favorite/favorite_actions.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/views/product_detail.dart';
 import 'package:flutter/material.dart';
@@ -53,8 +55,14 @@ class _HomePageState extends State<HomePage> {
 
   Widget projectWidget() {
     return FutureBuilder(
-      future: Redux.store
-          .dispatch(ProductActions(page: 1, size: 20).getAllProductsAction),
+      future: Future.wait(<Future>[
+        Redux.store.dispatch(CartActions().getAllCartAction(Redux.store)),
+        Redux.store.dispatch(
+            FavoriteActions(token: Redux.store.state.userState.token)
+                .getAllFavoriteAction),
+        Redux.store
+            .dispatch(ProductActions(page: 1, size: 20).getAllProductsAction),
+      ]),
       builder: (context, projectSnap) {
         if (projectSnap.connectionState == ConnectionState.none &&
             projectSnap.hasData == null) {
@@ -251,38 +259,40 @@ class _HomePageState extends State<HomePage> {
               distinct: true,
               converter: (store) => store.state.cartState.cart,
               builder: (context, cart) {
-                return Stack(
-                  children: <Widget>[
-                    Icon(Icons.shopping_cart),
-                    Positioned(
-                      right: 0,
-                      child: Container(
-                        padding: EdgeInsets.all(1),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        constraints: BoxConstraints(
-                          minWidth: 12,
-                          minHeight: 12,
-                        ),
-                        child: Text(
-                          cart.products
-                              .fold(
-                                  0,
-                                  (previousValue, element) =>
-                                      previousValue + element.quantity)
-                              .toString(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 8,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    )
-                  ],
-                );
+                return cart != null
+                    ? Stack(
+                        children: <Widget>[
+                          Icon(Icons.shopping_cart),
+                          Positioned(
+                            right: 0,
+                            child: Container(
+                              padding: EdgeInsets.all(1),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              constraints: BoxConstraints(
+                                minWidth: 12,
+                                minHeight: 12,
+                              ),
+                              child: Text(
+                                cart.products
+                                    .fold(
+                                        0,
+                                        (previousValue, element) =>
+                                            previousValue + element.quantity)
+                                    .toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 8,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    : Container();
               },
             ),
             color: Color.fromRGBO(146, 127, 191, 1),
