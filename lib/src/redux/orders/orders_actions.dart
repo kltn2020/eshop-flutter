@@ -80,7 +80,6 @@ class OrderActions {
             OrdersState(
               isLoading: false,
               isSuccess: true,
-              //totalPages: jsonData['count'],
               order: Order.fromJson(jsonData),
             ),
           ),
