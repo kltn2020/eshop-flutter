@@ -29,8 +29,7 @@ class ProductActions {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
     try {
-      final response = await http
-          .get('https://rocky-sierra-70366.herokuapp.com/api/products');
+      final response = await http.get('http://35.213.174.112/api/products');
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body)['data'];

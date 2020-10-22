@@ -35,7 +35,7 @@ class FavoriteActions {
     store.dispatch(SetFavoriteStateAction(FavoriteState(isLoading: true)));
     try {
       final response = await http.get(
-        'https://rocky-sierra-70366.herokuapp.com/api/products/like',
+        'http://35.213.174.112/api/products/like',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -68,7 +68,7 @@ class FavoriteActions {
 
     try {
       final response = await http.post(
-        'https://rocky-sierra-70366.herokuapp.com/api/products/$productID/like',
+        'http://35.213.174.112/api/products/$productID/like',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -106,7 +106,7 @@ class FavoriteActions {
 
     try {
       final response = await http.delete(
-        'https://rocky-sierra-70366.herokuapp.com/api/products/$productID/like',
+        'http://35.213.174.112/api/products/$productID/like',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 

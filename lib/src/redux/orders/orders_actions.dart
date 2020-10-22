@@ -36,7 +36,7 @@ class OrderActions {
 
     try {
       final response = await http.get(
-        'https://rocky-sierra-70366.herokuapp.com/api/orders',
+        'http://35.213.174.112/api/orders',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -68,7 +68,7 @@ class OrderActions {
 
     try {
       final response = await http.get(
-        'https://rocky-sierra-70366.herokuapp.com/api/orders/$orderId',
+        'http://35.213.174.112/api/orders/$orderId',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 

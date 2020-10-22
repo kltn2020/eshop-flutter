@@ -44,7 +44,7 @@ class CartActions {
 
     try {
       final response = await http.get(
-        'https://rocky-sierra-70366.herokuapp.com/api/shopping/my-cart',
+        'http://35.213.174.112/api/shopping/my-cart',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -83,14 +83,12 @@ class CartActions {
     String productID = product.id.toString();
 
     try {
-      final response = await http.put(
-          'https://rocky-sierra-70366.herokuapp.com/api/shopping/$productID',
-          headers: {
-            HttpHeaders.authorizationHeader: "Bearer $token"
-          },
-          body: {
-            'quantity': '$quantity',
-          });
+      final response = await http
+          .put('http://35.213.174.112/api/shopping/$productID', headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token"
+      }, body: {
+        'quantity': '$quantity',
+      });
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
@@ -129,14 +127,12 @@ class CartActions {
     String productID = product.id.toString();
 
     try {
-      final response = await http.put(
-          'https://rocky-sierra-70366.herokuapp.com/api/shopping/$productID',
-          headers: {
-            HttpHeaders.authorizationHeader: "Bearer $token"
-          },
-          body: {
-            'quantity': '0',
-          });
+      final response = await http
+          .put('http://35.213.174.112/api/shopping/$productID', headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token"
+      }, body: {
+        'quantity': '0',
+      });
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
@@ -179,8 +175,7 @@ class CartActions {
 
     try {
       final response = voucher != null
-          ? await http.post(
-              'https://rocky-sierra-70366.herokuapp.com/api/orders',
+          ? await http.post('http://35.213.174.112/api/orders',
               headers: {
                 HttpHeaders.authorizationHeader: "Bearer $token",
                 "Content-Type": "application/json",
@@ -189,8 +184,7 @@ class CartActions {
                 'address_id': address.id,
                 'voucher_code': voucher.code,
               }))
-          : await http.post(
-              'https://rocky-sierra-70366.herokuapp.com/api/orders',
+          : await http.post('http://35.213.174.112/api/orders',
               headers: {
                 HttpHeaders.authorizationHeader: "Bearer $token",
                 "Content-Type": "application/json",

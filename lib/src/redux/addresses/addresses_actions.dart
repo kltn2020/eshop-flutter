@@ -28,7 +28,7 @@ class AddressesActions {
     store.dispatch(SetAddressesStateAction(AddressesState(isLoading: true)));
     try {
       final response = await http.get(
-        'https://rocky-sierra-70366.herokuapp.com/api/address',
+        'http://35.213.174.112/api/address',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -64,8 +64,7 @@ class AddressesActions {
     }));
 
     try {
-      final response = await http.post(
-          'https://rocky-sierra-70366.herokuapp.com/api/address',
+      final response = await http.post('http://35.213.174.112/api/address',
           headers: {
             HttpHeaders.authorizationHeader: "Bearer $token",
             "Content-Type": "application/json",
@@ -115,8 +114,7 @@ class AddressesActions {
     }));
 
     try {
-      final response = await http.put(
-          'https://rocky-sierra-70366.herokuapp.com/api/address/$id',
+      final response = await http.put('http://35.213.174.112/api/address/$id',
           headers: {
             HttpHeaders.authorizationHeader: "Bearer $token",
             "Content-Type": "application/json",
@@ -169,7 +167,7 @@ class AddressesActions {
 
     try {
       final response = await http.delete(
-        'https://rocky-sierra-70366.herokuapp.com/api/address/$id',
+        'http://35.213.174.112/api/address/$id',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 

@@ -76,6 +76,51 @@ class ErrorMessage {
   }
 }
 
+class ErrorDetail {
+  String email;
+  String passwordConfirmation;
+
+  ErrorDetail({
+    this.email,
+    this.passwordConfirmation,
+  });
+
+  factory ErrorDetail.fromJson(Map<String, dynamic> json) {
+    if (json != null) {
+      return ErrorDetail(
+        email: json['email'] != null ? json['email'][0] : null,
+        passwordConfirmation: json['password_confirmation'] != null
+            ? json['password_confirmation'][0]
+            : null,
+      );
+    } else
+      return null;
+  }
+}
+
+class ErrorRegisterMessage {
+  String message;
+  int status;
+  ErrorDetail errors;
+
+  ErrorRegisterMessage({
+    this.message,
+    this.status,
+    this.errors,
+  });
+
+  factory ErrorRegisterMessage.fromJson(Map<dynamic, dynamic> json) {
+    if (json != null) {
+      print(json['errors']);
+      return ErrorRegisterMessage(
+          message: json['message'],
+          status: json['status'],
+          errors: ErrorDetail.fromJson(json['errors']));
+    } else
+      return null;
+  }
+}
+
 @immutable
 class SetUserStateAction {
   final UserState userState;
@@ -106,7 +151,7 @@ class UserActions {
       print(email);
       print(password);
       final response = await http.post(
-        'https://rocky-sierra-70366.herokuapp.com/api/auth/login',
+        'http://35.213.174.112/api/auth/login',
         body: {
           'email': '$email',
           'password': '$password',
@@ -159,7 +204,7 @@ class UserActions {
 
     try {
       final response = await http.post(
-        'https://rocky-sierra-70366.herokuapp.com/api/auth/register',
+        'http://35.213.174.112/api/auth/register',
         headers: {
           "Content-Type": "application/json",
         },
@@ -172,10 +217,9 @@ class UserActions {
       final statusCode = response.statusCode;
       print('Response Status code: $statusCode');
 
-      assert(response.statusCode == 200, response.body);
+      // assert(response.statusCode == 200, response.body);
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-
         store.dispatch(
           SetUserStateAction(
             UserState(
@@ -185,12 +229,26 @@ class UserActions {
             ),
           ),
         );
-      }
+      } else
+        throw response.body;
     } catch (error) {
-      print(123);
       print(error);
+      final jsonData = json.decode(error);
+
+      print(ErrorRegisterMessage.fromJson(jsonData['error']).errors);
+
+      var detailError = ErrorRegisterMessage.fromJson(jsonData['error']).errors;
+
       store.dispatch(
-          SetUserStateAction(UserState(isLoading: false, isError: true)));
+        SetUserStateAction(
+          UserState(
+              isLoading: false,
+              isError: true,
+              errorMessage: detailError.email != null
+                  ? 'Email ${detailError.email}'
+                  : 'Password ${detailError.passwordConfirmation}'),
+        ),
+      );
     }
   }
 
