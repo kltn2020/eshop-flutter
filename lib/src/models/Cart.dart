@@ -3,11 +3,13 @@ import 'package:ecommerce_flutter/src/models/Product.dart';
 class ProductInCart {
   Product product;
   int quantity;
+  bool check;
 
   ProductInCart.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     product = Product.fromJson(json['product']);
     quantity = json['quantity'];
+    check = true;
   }
 
   static List<ProductInCart> listFromJson(List<dynamic> json) {
@@ -30,10 +32,4 @@ class Cart {
     insertedAt = json['inserted_at'];
     updatedAt = json['updated_at'];
   }
-
-  // static List<Cart> listFromJson(List<dynamic> json) {
-  //   return json == null
-  //       ? List<Cart>()
-  //       : json.map((value) => Cart.fromJson(value)).toList();
-  // }
 }

@@ -31,6 +31,20 @@ class CartActions {
     this.size,
   });
 
+  bool checkProductInCartAction(Store<AppState> store, int productId) {
+    Cart newCart = store.state.cartState.cart;
+    newCart.products
+            .firstWhere((element) => element.product.id == productId)
+            .check =
+        !newCart.products
+            .firstWhere((element) => element.product.id == productId)
+            .check;
+
+    store.dispatch(SetCartStateAction(CartState(
+      cart: newCart,
+    )));
+  }
+
   Future<void> getAllCartAction(Store<AppState> store) async {
     print("get-cart-action");
 

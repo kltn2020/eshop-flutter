@@ -115,7 +115,7 @@ class _CartViewState extends State<CartView> {
       //     ),
       //   ),
       // ),
-      body: projectWidget(),
+      body: Project(),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Container(
@@ -279,121 +279,138 @@ class ProductInCart extends StatelessWidget {
   }
 }
 
-Widget projectWidget() {
-  return FutureBuilder(
-    future: Redux.store.dispatch(CartActions().getAllCartAction),
-    builder: (context, projectSnap) {
-      if (projectSnap.connectionState == ConnectionState.none &&
-          projectSnap.hasData == null) {
-        print('project snapshot data is: ${projectSnap.data}');
-        return Container();
-      }
-      if (projectSnap.connectionState == ConnectionState.waiting) {
-        return LinearProgressIndicator(
-          backgroundColor: Color.fromRGBO(196, 187, 240, 0.5),
-          valueColor: new AlwaysStoppedAnimation<Color>(
-            Color.fromRGBO(146, 127, 191, 1),
-          ),
-        );
-      }
-      return Container(
-        child: StoreConnector<AppState, String>(
-          distinct: true,
-          converter: (store) => store.state.userState.token,
-          builder: (context, token) {
-            if (token == null) {
-              return Center(
-                child: Column(
-                  children: <Widget>[
-                    Center(
-                      child: Text(
-                          "No authority! Please click button below to login"),
-                    ),
-                    Center(
-                      child: FlatButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(context, '/login');
-                          },
-                          child: Text(
-                            "Back to Login",
-                            style: TextStyle(color: Colors.grey),
-                          )),
-                    ),
-                  ],
-                ),
-              );
-            } else {
-              return Column(
-                children: [
-                  StoreConnector<AppState, bool>(
-                      distinct: true,
-                      converter: (store) => store.state.cartState.isLoading,
-                      builder: (context, isLoading) {
-                        if (isLoading == true) {
-                          return LinearProgressIndicator(
-                            backgroundColor: Color.fromRGBO(196, 187, 240, 0.5),
-                            valueColor: new AlwaysStoppedAnimation<Color>(
-                              Color.fromRGBO(146, 127, 191, 1),
+class Project extends StatefulWidget {
+  Project({Key key}) : super(key: key);
+
+  @override
+  _ProjectState createState() => _ProjectState();
+}
+
+class _ProjectState extends State<Project> {
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: Redux.store.dispatch(CartActions().getAllCartAction),
+      builder: (context, projectSnap) {
+        if (projectSnap.connectionState == ConnectionState.none &&
+            projectSnap.hasData == null) {
+          print('project snapshot data is: ${projectSnap.data}');
+          return Container();
+        }
+        if (projectSnap.connectionState == ConnectionState.waiting) {
+          return LinearProgressIndicator(
+            backgroundColor: Color.fromRGBO(196, 187, 240, 0.5),
+            valueColor: new AlwaysStoppedAnimation<Color>(
+              Color.fromRGBO(146, 127, 191, 1),
+            ),
+          );
+        }
+        return Container(
+          child: StoreConnector<AppState, String>(
+            distinct: true,
+            converter: (store) => store.state.userState.token,
+            builder: (context, token) {
+              if (token == null) {
+                return Center(
+                  child: Column(
+                    children: <Widget>[
+                      Center(
+                        child: Text(
+                            "No authority! Please click button below to login"),
+                      ),
+                      Center(
+                        child: FlatButton(
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(context, '/login');
+                            },
+                            child: Text(
+                              "Back to Login",
+                              style: TextStyle(color: Colors.grey),
+                            )),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                return Column(
+                  children: [
+                    StoreConnector<AppState, bool>(
+                        distinct: true,
+                        converter: (store) => store.state.cartState.isLoading,
+                        builder: (context, isLoading) {
+                          if (isLoading == true) {
+                            return LinearProgressIndicator(
+                              backgroundColor:
+                                  Color.fromRGBO(196, 187, 240, 0.5),
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                Color.fromRGBO(146, 127, 191, 1),
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        }),
+                    Container(
+                      child: StoreConnector<AppState, Cart>(
+                        distinct: true,
+                        converter: (store) => store.state.cartState.cart,
+                        builder: (context, cart) {
+                          return Container(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: cart.products != null
+                                    ? cart.products.map((item) {
+                                        return ProductInCart(
+                                          imageURL: item.product.images[0]
+                                              ['url'],
+                                          title: item.product.name,
+                                          price: item.product.discountPrice,
+                                          check: item.check,
+                                          number: item.quantity,
+                                          onChecked: (bool newValue) {
+                                            Redux.store.dispatch(CartActions()
+                                                .checkProductInCartAction(
+                                                    Redux.store,
+                                                    item.product.id));
+                                          },
+                                          onAdd: () {
+                                            Redux.store.dispatch(
+                                              CartActions().addCartAction(
+                                                  Redux.store,
+                                                  item.product,
+                                                  item.quantity + 1),
+                                            );
+                                          },
+                                          onSubtract: () {
+                                            Redux.store.dispatch(
+                                              CartActions().addCartAction(
+                                                  Redux.store,
+                                                  item.product,
+                                                  item.quantity - 1),
+                                            );
+                                          },
+                                          onDelete: () {
+                                            Redux.store.dispatch(
+                                              CartActions().deleteCartAction(
+                                                  Redux.store, item.product),
+                                            );
+                                          },
+                                        );
+                                      }).toList()
+                                    : [Text("There's nothing in cart")],
+                              ),
                             ),
                           );
-                        } else {
-                          return Container();
-                        }
-                      }),
-                  Container(
-                    child: StoreConnector<AppState, Cart>(
-                      distinct: true,
-                      converter: (store) => store.state.cartState.cart,
-                      builder: (context, cart) {
-                        return Container(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: cart.products != null
-                                  ? cart.products.map((item) {
-                                      return ProductInCart(
-                                        imageURL: item.product.images[0]['url'],
-                                        title: item.product.name,
-                                        price: item.product.discountPrice,
-                                        check: false,
-                                        number: item.quantity,
-                                        onAdd: () {
-                                          Redux.store.dispatch(
-                                            CartActions().addCartAction(
-                                                Redux.store,
-                                                item.product,
-                                                item.quantity + 1),
-                                          );
-                                        },
-                                        onSubtract: () {
-                                          Redux.store.dispatch(
-                                            CartActions().addCartAction(
-                                                Redux.store,
-                                                item.product,
-                                                item.quantity - 1),
-                                          );
-                                        },
-                                        onDelete: () {
-                                          Redux.store.dispatch(
-                                            CartActions().deleteCartAction(
-                                                Redux.store, item.product),
-                                          );
-                                        },
-                                      );
-                                    }).toList()
-                                  : [Text("There's nothing in cart")],
-                            ),
-                          ),
-                        );
-                      },
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              );
-            }
-          },
-        ),
-      );
-    },
-  );
+                  ],
+                );
+              }
+            },
+          ),
+        );
+      },
+    );
+  }
 }
