@@ -78,10 +78,12 @@ class ErrorMessage {
 
 class ErrorDetail {
   String email;
+  String password;
   String passwordConfirmation;
 
   ErrorDetail({
     this.email,
+    this.password,
     this.passwordConfirmation,
   });
 
@@ -89,6 +91,7 @@ class ErrorDetail {
     if (json != null) {
       return ErrorDetail(
         email: json['email'] != null ? json['email'][0] : null,
+        password: json['password'] != null ? json['password'][0] : null,
         passwordConfirmation: json['password_confirmation'] != null
             ? json['password_confirmation'][0]
             : null,
@@ -161,9 +164,6 @@ class UserActions {
       print('Response Status code: $statusCode');
       print(response.body);
 
-      //assert(response.statusCode == 200);
-      // final jsonData = json.decode(response.body);
-      // print(jsonData[]);
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         store.dispatch(
@@ -200,7 +200,12 @@ class UserActions {
   }
 
   Future<void> resigterAction(Store<AppState> store) async {
-    store.dispatch(SetUserStateAction(UserState(isLoading: true)));
+    store.dispatch(SetUserStateAction(UserState(
+      isLoading: true,
+      isError: false,
+      isSuccess: false,
+      errorMessage: "",
+    )));
 
     try {
       final response = await http.post(
@@ -246,10 +251,22 @@ class UserActions {
               isError: true,
               errorMessage: detailError.email != null
                   ? 'Email ${detailError.email}'
-                  : 'Password ${detailError.passwordConfirmation}'),
+                  : detailError.password != null
+                      ? 'Password ${detailError.password}'
+                      : 'Password ${detailError.passwordConfirmation}'),
         ),
       );
     }
+  }
+
+  void resetStateAction(Store<AppState> store) {
+    store.dispatch(SetUserStateAction(
+      UserState(
+        isError: false,
+        errorMessage: "",
+        isSuccess: false,
+      ),
+    ));
   }
 
   void logoutAction(Store<AppState> store) {
