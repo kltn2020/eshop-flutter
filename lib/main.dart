@@ -36,17 +36,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   title: 'Flutter Demo',
-    //   theme: ThemeData(
-    //     primarySwatch: Colors.blue,
-    //   ),
-    //   initialRoute: '/',
-    //   home: StoreProvider<AppState>(
-    //     store: Redux.store,
-    //     child: MyHomePage(title: 'Flutter Demo Home Page'),
-    //   ),
-    // );
     return StoreProvider<AppState>(
       store: Redux.store,
       child: MaterialApp(

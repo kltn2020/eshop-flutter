@@ -39,7 +39,8 @@ class _ProductListState extends State<ProductList> {
 
   Widget projectWidget() {
     return FutureBuilder(
-      future: Redux.store.dispatch(ProductActions().getAllProductsAction),
+      future: Redux.store
+          .dispatch(ProductActions().getAllProductsAction(Redux.store, 1, 20)),
       builder: (context, projectSnap) {
         if (projectSnap.connectionState == ConnectionState.none &&
             projectSnap.hasData == null) {

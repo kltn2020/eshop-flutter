@@ -1,9 +1,11 @@
 import 'package:ecommerce_flutter/src/models/Cart.dart';
 import 'package:ecommerce_flutter/src/models/Favorite.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
+import 'package:ecommerce_flutter/src/models/Rating.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/redux/favorite/favorite_actions.dart';
 import 'package:ecommerce_flutter/src/redux/favorite/favorite_state.dart';
+import 'package:ecommerce_flutter/src/redux/ratings/ratings_actions.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -44,7 +46,7 @@ class ProductPage extends StatelessWidget {
                   children: <Widget>[
                     Icon(
                       Icons.shopping_cart,
-                      size: 36,
+                      size: 32,
                     ),
                     Positioned(
                       right: 0,
@@ -52,11 +54,11 @@ class ProductPage extends StatelessWidget {
                         padding: EdgeInsets.all(1),
                         decoration: BoxDecoration(
                           color: Colors.red,
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         constraints: BoxConstraints(
-                          minWidth: 12,
-                          minHeight: 12,
+                          minWidth: 16,
+                          minHeight: 16,
                         ),
                         child: Text(
                           cart.products
@@ -67,7 +69,7 @@ class ProductPage extends StatelessWidget {
                               .toString(),
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 8,
+                            fontSize: 12,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -653,115 +655,128 @@ class ProductPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Text(
-                    //   "No review at the moment. Be the first one ",
-                    //   style: TextStyle(),
-                    // ),
+
                     //Review
                     Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(50),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: StoreConnector<AppState, List<Rating>>(
+                        distinct: true,
+                        onInit: (store) => store.dispatch(RatingActions()
+                            .getAllRatingAction(store, product.id)),
+                        converter: (store) =>
+                            store.state.ratingState.ratingList,
+                        builder: (context, ratingList) {
+                          return Container(
+                            child: SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.symmetric(vertical: 8),
-                                    child: Text("Username"),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.star_border),
-                                      Icon(Icons.star_border),
-                                      Icon(Icons.star_border),
-                                      Icon(Icons.star_border),
-                                      Icon(Icons.star_border),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
-                                    child: Text("Review text...."),
-                                  ),
-                                  Text(
-                                    "Date",
-                                    style: TextStyle(color: Colors.grey),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: Divider(
-                        thickness: 1,
-                        color: Colors.grey[300],
-                      ),
-                    ),
+                                children: ratingList != null
+                                    ? ratingList.map((item) {
+                                        return Container(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: 48,
+                                                height: 48,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(50),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 8),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 8),
+                                                        child: Text(
+                                                            item.userEmail),
+                                                      ),
+                                                      Row(
+                                                        // children: [
+                                                        //   Icon(Icons
+                                                        //       .star_border),
+                                                        //   // (() {
+                                                        //   //   new List(item.point)
+                                                        //   //       .map((e) {
+                                                        //   //     return Icon(Icons
+                                                        //   //         .star_border);
+                                                        //   //   }).toList();
+                                                        //   // }()),
+                                                        // ],
 
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(50),
+                                                        children:
+                                                            new List(item.point)
+                                                                .map((e) {
+                                                          return Icon(
+                                                            Icons.star,
+                                                            color:
+                                                                Colors.orange,
+                                                          );
+                                                        }).toList(),
+
+                                                        // children: [
+                                                        //   Icon(Icons
+                                                        //       .star_border),
+                                                        //   Icon(Icons
+                                                        //       .star_border),
+                                                        //   Icon(Icons
+                                                        //       .star_border),
+                                                        //   Icon(Icons
+                                                        //       .star_border),
+                                                        //   Icon(Icons
+                                                        //       .star_border),
+                                                        // ],
+                                                      ),
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 8),
+                                                        child: Text(
+                                                            item.content != null
+                                                                ? item.content
+                                                                : ''),
+                                                      ),
+                                                      Text(
+                                                        item.updatedAt != null
+                                                            ? item.updatedAt
+                                                            : '',
+                                                        style: TextStyle(
+                                                            color: Colors.grey),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                        // Padding(
+                                        //   padding: EdgeInsets.symmetric(vertical: 8),
+                                        //   child: Divider(
+                                        //     thickness: 1,
+                                        //     color: Colors.grey[300],
+                                        //   ),
+                                        // );
+                                      }).toList()
+                                    : [],
                               ),
                             ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.symmetric(vertical: 8),
-                                    child: Text("Username"),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.star_border),
-                                      Icon(Icons.star_border),
-                                      Icon(Icons.star_border),
-                                      Icon(Icons.star_border),
-                                      Icon(Icons.star_border),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
-                                    child: Text("Review text...."),
-                                  ),
-                                  Text(
-                                    "Date",
-                                    style: TextStyle(color: Colors.grey),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
+                          );
+                        },
                       ),
                     ),
                     //End Reviews
@@ -779,7 +794,6 @@ class ProductPage extends StatelessWidget {
         },
         icon: Icon(
           Icons.add_shopping_cart,
-          size: 36,
         ),
         label: Text("Add to cart"),
         backgroundColor: Color.fromRGBO(79, 59, 120, 1),

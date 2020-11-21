@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:redux/redux.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
@@ -20,16 +21,21 @@ class ProductActions {
   int size;
 
   ProductActions({
-    this.token,
     this.page,
     this.size,
   });
 
-  Future<void> getAllProductsAction(Store<AppState> store) async {
+  Future<void> getAllProductsAction(
+      Store<AppState> store, int page, int size) async {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
     try {
-      final response = await http.get('http://35.213.174.112/api/products');
+      var token = store.state.userState.token;
+
+      final response = await http.get(
+        'http://35.213.174.112/api/products',
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+      );
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body)['data'];
@@ -39,14 +45,12 @@ class ProductActions {
             ProductsState(
               isLoading: false,
               isSuccess: true,
-              //totalPages: jsonData['count'],
               products: Product.listFromJson(jsonData['entries']),
             ),
           ),
         );
       }
     } catch (error) {
-      print(error);
       store.dispatch(SetProductsStateAction(
           ProductsState(isLoading: false, isError: true)));
     }
