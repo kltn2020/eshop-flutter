@@ -280,7 +280,10 @@ class _ProductListState extends State<ProductList> {
               builder: (context, cart) {
                 return Stack(
                   children: <Widget>[
-                    Icon(Icons.shopping_cart),
+                    Icon(
+                      Icons.shopping_cart,
+                      size: 36,
+                    ),
                     Positioned(
                       right: 0,
                       child: Container(

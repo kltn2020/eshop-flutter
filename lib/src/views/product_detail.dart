@@ -42,7 +42,10 @@ class ProductPage extends StatelessWidget {
               builder: (context, cart) {
                 return Stack(
                   children: <Widget>[
-                    Icon(Icons.shopping_cart),
+                    Icon(
+                      Icons.shopping_cart,
+                      size: 36,
+                    ),
                     Positioned(
                       right: 0,
                       child: Container(
@@ -774,7 +777,10 @@ class ProductPage extends StatelessWidget {
           Redux.store
               .dispatch(CartActions().addCartAction(Redux.store, product, 1));
         },
-        icon: Icon(Icons.add_shopping_cart),
+        icon: Icon(
+          Icons.add_shopping_cart,
+          size: 36,
+        ),
         label: Text("Add to cart"),
         backgroundColor: Color.fromRGBO(79, 59, 120, 1),
       ),

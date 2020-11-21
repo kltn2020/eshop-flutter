@@ -262,7 +262,10 @@ class _HomePageState extends State<HomePage> {
                 return cart != null
                     ? Stack(
                         children: <Widget>[
-                          Icon(Icons.shopping_cart),
+                          Icon(
+                            Icons.shopping_cart,
+                            size: 36,
+                          ),
                           Positioned(
                             right: 0,
                             child: Container(
