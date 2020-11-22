@@ -11,7 +11,7 @@ class OrderDetail extends StatefulWidget {
   // static String get routeName => '@routes/home-page';
   final int orderId;
 
-  OrderDetail({Key key, @required this.orderId}) : super(key: key);
+  OrderDetail({Key key, this.orderId}) : super(key: key);
 
   @override
   _OrderDetailState createState() => _OrderDetailState();

@@ -7,6 +7,7 @@ import 'package:ecommerce_flutter/src/redux/favorite/favorite_state.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/redux/ratings/ratings_actions.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
+import 'package:ecommerce_flutter/src/views/rating_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
@@ -615,7 +616,13 @@ class ProductPage extends StatelessWidget {
                         ),
                         FlatButton(
                           onPressed: () {
-                            print("See more");
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RatingList(
+                                    productId: product.id,
+                                  ),
+                                ));
                           },
                           child: Container(
                             child: Text("See more >"),
@@ -629,7 +636,7 @@ class ProductPage extends StatelessWidget {
                       child: StoreConnector<AppState, List<Rating>>(
                         distinct: true,
                         onInit: (store) => store.dispatch(RatingActions()
-                            .getAllRatingAction(store, product.id)),
+                            .getAllRatingAction(store, product.id, '5')),
                         converter: (store) =>
                             store.state.ratingState.ratingList,
                         builder: (context, ratingList) {
@@ -638,7 +645,7 @@ class ProductPage extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: ratingList != null
-                                    ? ratingList.take(5).map((item) {
+                                    ? ratingList.map((item) {
                                         return Container(
                                           child: Column(
                                             children: [
@@ -741,9 +748,11 @@ class ProductPage extends StatelessWidget {
 
               //Recommend product list
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 10,
+                  bottom: 70,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

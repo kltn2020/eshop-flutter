@@ -29,14 +29,15 @@ class RatingActions {
     this.size,
   });
 
-  Future<void> getAllRatingAction(Store<AppState> store, int productId) async {
+  Future<void> getAllRatingAction(
+      Store<AppState> store, int productId, String size) async {
     store.dispatch(SetRatingStateAction(RatingState(isLoading: true)));
 
     try {
       var token = store.state.userState.token;
 
       final response = await http.get(
-        'http://35.213.174.112/api/products/$productId/reviews',
+        'http://35.213.174.112/api/products/$productId/reviews?size=$size',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
