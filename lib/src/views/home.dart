@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                                 physics: ClampingScrollPhysics(),
                                 crossAxisCount: 2,
                                 shrinkWrap: true,
-                                childAspectRatio: 1 / 1.4,
+                                childAspectRatio: 1 / 1.55,
                                 children: products.map((product) {
                                   return Stack(
                                     children: <Widget>[
@@ -159,28 +159,76 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.all(8),
+                                              padding: EdgeInsets.only(
+                                                left: 8,
+                                                right: 8,
+                                                top: 8,
+                                              ),
                                               child: Text(
                                                 product.name,
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
-                                            Text(
-                                              product.discountPrice != null
-                                                  ? formatter.format(
-                                                      product.discountPrice)
-                                                  : (product.price != null
-                                                      ? formatter
-                                                          .format(product.price)
-                                                      : "Contact"),
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color.fromRGBO(
-                                                    146, 127, 191, 1),
-                                              ),
-                                            ),
+                                            product.discountPrice != null
+                                                ? Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 15,
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Text(
+                                                          formatter.format(product
+                                                              .discountPrice),
+                                                          style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    146,
+                                                                    127,
+                                                                    191,
+                                                                    1),
+                                                          ),
+                                                        ),
+                                                        product.price != null
+                                                            ? Text(
+                                                                formatter.format(
+                                                                    product
+                                                                        .price),
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .lineThrough,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              )
+                                                            : Container(),
+                                                      ],
+                                                    ),
+                                                  )
+                                                : Text(
+                                                    (product.price != null
+                                                        ? formatter.format(
+                                                            product.price)
+                                                        : "Contact"),
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Color.fromRGBO(
+                                                          146, 127, 191, 1),
+                                                    ),
+                                                  )
                                           ],
                                         ),
                                       ),

@@ -96,7 +96,7 @@ class _ProductListState extends State<ProductList> {
                                 physics: ClampingScrollPhysics(),
                                 crossAxisCount: 2,
                                 shrinkWrap: true,
-                                childAspectRatio: 1 / 1.4,
+                                childAspectRatio: 1 / 1.55,
                                 children: products.map((product) {
                                   return Stack(
                                     children: <Widget>[
@@ -137,7 +137,11 @@ class _ProductListState extends State<ProductList> {
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.all(8),
+                                              padding: EdgeInsets.only(
+                                                left: 8,
+                                                right: 8,
+                                                top: 8,
+                                              ),
                                               child: Text(
                                                 product.name,
                                                 maxLines: 2,
@@ -148,7 +152,9 @@ class _ProductListState extends State<ProductList> {
                                                 ? Container(
                                                     padding:
                                                         EdgeInsets.symmetric(
-                                                            horizontal: 8),
+                                                      horizontal: 8,
+                                                      vertical: 15,
+                                                    ),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
