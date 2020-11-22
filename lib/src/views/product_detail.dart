@@ -1,10 +1,10 @@
 import 'package:ecommerce_flutter/src/models/Cart.dart';
-import 'package:ecommerce_flutter/src/models/Favorite.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
 import 'package:ecommerce_flutter/src/models/Rating.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/redux/favorite/favorite_actions.dart';
 import 'package:ecommerce_flutter/src/redux/favorite/favorite_state.dart';
+import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/redux/ratings/ratings_actions.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +139,6 @@ class ProductPage extends StatelessWidget {
                     Text("Review count: " +
                         formatter.format(product.ratingCount)),
                     Text("Sold: " + formatter.format(product.sold)),
-
                     Container(
                       child: StoreConnector<AppState, FavoriteState>(
                         distinct: true,
@@ -203,37 +202,6 @@ class ProductPage extends StatelessWidget {
                         },
                       ),
                     ),
-
-                    // FlatButton(
-                    //   onPressed: null,
-                    //   child: Container(
-                    //     padding: EdgeInsets.all(4),
-                    //     decoration: BoxDecoration(
-                    //       color: Colors.white,
-                    //       border: Border.all(),
-                    //       borderRadius: BorderRadius.all(
-                    //         Radius.circular(50),
-                    //       ),
-                    //     ),
-                    //     child: StoreConnector<AppState, Favorite>(
-                    //         distinct: true,
-                    //         converter: (store) =>
-                    //             store.state.favoriteState.favoriteList,
-                    //         builder: (context, favoriteList) {
-                    //           return favoriteList.product
-                    //                       .where((iproduct) =>
-                    //                           iproduct.id == product.id)
-                    //                       .toList()
-                    //                       .length >
-                    //                   0
-                    //               ? Icon(
-                    //                   Icons.favorite,
-                    //                   color: Color.fromRGBO(196, 187, 240, 1),
-                    //                 )
-                    //               : Icon(Icons.favorite_border);
-                    //         }),
-                    //   ),
-                    // )
                   ],
                 ),
               ),
@@ -670,107 +638,94 @@ class ProductPage extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: ratingList != null
-                                    ? ratingList.map((item) {
+                                    ? ratingList.take(5).map((item) {
                                         return Container(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                          child: Column(
                                             children: [
-                                              Container(
-                                                width: 48,
-                                                height: 48,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(50),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: 48,
+                                                    height: 48,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(),
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(50),
+                                                      ),
+                                                    ),
                                                   ),
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 8),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Container(
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        8),
+                                                            child: Text(
+                                                                item.userEmail),
+                                                          ),
+                                                          Row(
+                                                            children: new List(
+                                                                    item.point)
+                                                                .map((e) {
+                                                              return Icon(
+                                                                Icons.star,
+                                                                color: Colors
+                                                                    .orange,
+                                                              );
+                                                            }).toList(),
+                                                          ),
+                                                          Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        8),
+                                                            child: Text(
+                                                                item.content !=
+                                                                        null
+                                                                    ? item
+                                                                        .content
+                                                                    : ''),
+                                                          ),
+                                                          Text(
+                                                            item.updatedAt !=
+                                                                    null
+                                                                ? item.updatedAt
+                                                                : '',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .grey),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(bottom: 8),
+                                                child: Divider(
+                                                  thickness: 1,
+                                                  color: Colors.grey[300],
                                                 ),
                                               ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 8),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 8),
-                                                        child: Text(
-                                                            item.userEmail),
-                                                      ),
-                                                      Row(
-                                                        // children: [
-                                                        //   Icon(Icons
-                                                        //       .star_border),
-                                                        //   // (() {
-                                                        //   //   new List(item.point)
-                                                        //   //       .map((e) {
-                                                        //   //     return Icon(Icons
-                                                        //   //         .star_border);
-                                                        //   //   }).toList();
-                                                        //   // }()),
-                                                        // ],
-
-                                                        children:
-                                                            new List(item.point)
-                                                                .map((e) {
-                                                          return Icon(
-                                                            Icons.star,
-                                                            color:
-                                                                Colors.orange,
-                                                          );
-                                                        }).toList(),
-
-                                                        // children: [
-                                                        //   Icon(Icons
-                                                        //       .star_border),
-                                                        //   Icon(Icons
-                                                        //       .star_border),
-                                                        //   Icon(Icons
-                                                        //       .star_border),
-                                                        //   Icon(Icons
-                                                        //       .star_border),
-                                                        //   Icon(Icons
-                                                        //       .star_border),
-                                                        // ],
-                                                      ),
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 8),
-                                                        child: Text(
-                                                            item.content != null
-                                                                ? item.content
-                                                                : ''),
-                                                      ),
-                                                      Text(
-                                                        item.updatedAt != null
-                                                            ? item.updatedAt
-                                                            : '',
-                                                        style: TextStyle(
-                                                            color: Colors.grey),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
                                             ],
                                           ),
                                         );
-                                        // Padding(
-                                        //   padding: EdgeInsets.symmetric(vertical: 8),
-                                        //   child: Divider(
-                                        //     thickness: 1,
-                                        //     color: Colors.grey[300],
-                                        //   ),
-                                        // );
                                       }).toList()
                                     : [],
                               ),
@@ -783,6 +738,137 @@ class ProductPage extends StatelessWidget {
                   ],
                 ),
               ),
+
+              //Recommend product list
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Similar Products",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color.fromRGBO(79, 59, 120, 0.8),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 250,
+                      child: StoreConnector<AppState, List<Product>>(
+                          distinct: true,
+                          onInit: Redux.store.dispatch(ProductActions()
+                              .getContentBaseRecommendAction(
+                                  Redux.store, 1, 20)),
+                          converter: (store) => store
+                              .state.productsState.recommendContentProducts,
+                          builder: (context, recommendContentProducts) {
+                            return Container(
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children:
+                                    recommendContentProducts.map((product) {
+                                  return Container(
+                                    width: 200,
+                                    margin: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border:
+                                          Border.all(color: Colors.grey[300]),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 100,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                fit: BoxFit.fitHeight,
+                                                image: NetworkImage(
+                                                    product.images[0]['url']),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(8),
+                                          child: Text(
+                                            product.name,
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        product.discountPrice != null
+                                            ? Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 8),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Text(
+                                                      formatter.format(product
+                                                          .discountPrice),
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Color.fromRGBO(
+                                                            146, 127, 191, 1),
+                                                      ),
+                                                    ),
+                                                    product.price != null
+                                                        ? Text(
+                                                            formatter.format(
+                                                                product.price),
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.grey,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                              fontSize: 12,
+                                                            ),
+                                                          )
+                                                        : Container(),
+                                                  ],
+                                                ),
+                                              )
+                                            : Text(
+                                                (product.price != null
+                                                    ? formatter
+                                                        .format(product.price)
+                                                    : "Contact"),
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Color.fromRGBO(
+                                                      146, 127, 191, 1),
+                                                ),
+                                              )
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            );
+                          }),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),

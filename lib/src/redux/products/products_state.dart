@@ -10,6 +10,7 @@ class ProductsState {
   final int totalItems;
   final int totalPages;
   final List<Product> products;
+  final List<Product> recommendContentProducts;
 
   ProductsState({
     this.isError,
@@ -18,6 +19,7 @@ class ProductsState {
     this.totalItems,
     this.totalPages,
     this.products,
+    this.recommendContentProducts,
   });
 
   //factory constructor will be later used to fill the initial main state.
@@ -28,6 +30,7 @@ class ProductsState {
         totalItems: null,
         totalPages: null,
         products: const [],
+        recommendContentProducts: const [],
       );
 
   //copyWith method will be later used to get a copy of our ProductsState to update this piece of the main state.
@@ -38,6 +41,7 @@ class ProductsState {
     @required int totalItems,
     @required int totalPages,
     @required List<Product> products,
+    @required List<Product> recommendContentProducts,
   }) {
     return ProductsState(
       isError: isError ?? this.isError,
@@ -46,6 +50,8 @@ class ProductsState {
       totalPages: totalPages ?? this.totalPages,
       totalItems: totalItems ?? this.totalItems,
       products: products ?? this.products,
+      recommendContentProducts:
+          recommendContentProducts ?? this.recommendContentProducts,
     );
   }
 }
