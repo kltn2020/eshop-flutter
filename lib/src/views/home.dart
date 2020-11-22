@@ -60,8 +60,8 @@ class _HomePageState extends State<HomePage> {
         Redux.store.dispatch(
             FavoriteActions(token: Redux.store.state.userState.token)
                 .getAllFavoriteAction),
-        Redux.store
-            .dispatch(ProductActions(page: 1, size: 20).getAllProductsAction),
+        Redux.store.dispatch(
+            ProductActions().getAllProductsAction(Redux.store, 1, 20)),
       ]),
       builder: (context, projectSnap) {
         if (projectSnap.connectionState == ConnectionState.none &&
@@ -264,7 +264,7 @@ class _HomePageState extends State<HomePage> {
                         children: <Widget>[
                           Icon(
                             Icons.shopping_cart,
-                            size: 36,
+                            size: 32,
                           ),
                           Positioned(
                             right: 0,
@@ -272,11 +272,11 @@ class _HomePageState extends State<HomePage> {
                               padding: EdgeInsets.all(1),
                               decoration: BoxDecoration(
                                 color: Colors.red,
-                                borderRadius: BorderRadius.circular(6),
+                                borderRadius: BorderRadius.circular(8),
                               ),
                               constraints: BoxConstraints(
-                                minWidth: 12,
-                                minHeight: 12,
+                                minWidth: 16,
+                                minHeight: 16,
                               ),
                               child: Text(
                                 cart.products
@@ -287,7 +287,7 @@ class _HomePageState extends State<HomePage> {
                                     .toString(),
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 8,
+                                  fontSize: 12,
                                 ),
                                 textAlign: TextAlign.center,
                               ),

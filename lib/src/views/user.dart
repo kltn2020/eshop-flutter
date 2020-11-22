@@ -62,7 +62,7 @@ class _UserState extends State<User> {
                   children: <Widget>[
                     Icon(
                       Icons.shopping_cart,
-                      size: 36,
+                      size: 32,
                     ),
                     Positioned(
                       right: 0,
@@ -70,11 +70,11 @@ class _UserState extends State<User> {
                         padding: EdgeInsets.all(1),
                         decoration: BoxDecoration(
                           color: Colors.red,
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         constraints: BoxConstraints(
-                          minWidth: 12,
-                          minHeight: 12,
+                          minWidth: 16,
+                          minHeight: 16,
                         ),
                         child: Text(
                           cart.products
@@ -85,7 +85,7 @@ class _UserState extends State<User> {
                               .toString(),
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 8,
+                            fontSize: 12,
                           ),
                           textAlign: TextAlign.center,
                         ),

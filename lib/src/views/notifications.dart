@@ -85,7 +85,7 @@ class _NotificationsState extends State<Notifications> {
                     children: <Widget>[
                       Icon(
                         Icons.shopping_cart,
-                        size: 36,
+                        size: 32,
                       ),
                       Positioned(
                         right: 0,
@@ -93,11 +93,11 @@ class _NotificationsState extends State<Notifications> {
                           padding: EdgeInsets.all(1),
                           decoration: BoxDecoration(
                             color: Colors.red,
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           constraints: BoxConstraints(
-                            minWidth: 12,
-                            minHeight: 12,
+                            minWidth: 16,
+                            minHeight: 16,
                           ),
                           child: Text(
                             cart.products
@@ -108,7 +108,7 @@ class _NotificationsState extends State<Notifications> {
                                 .toString(),
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 8,
+                              fontSize: 12,
                             ),
                             textAlign: TextAlign.center,
                           ),
