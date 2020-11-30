@@ -637,6 +637,7 @@ class ProductPage extends StatelessWidget {
                         distinct: true,
                         onInit: (store) => store.dispatch(RatingActions()
                             .getAllRatingAction(store, product.id, '5')),
+                        rebuildOnChange: true,
                         converter: (store) =>
                             store.state.ratingState.ratingList,
                         builder: (context, ratingList) {
@@ -780,94 +781,106 @@ class ProductPage extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 children:
                                     recommendContentProducts.map((product) {
-                                  return Container(
-                                    width: 200,
-                                    margin: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border:
-                                          Border.all(color: Colors.grey[300]),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                fit: BoxFit.fitHeight,
-                                                image: NetworkImage(
-                                                    product.images[0]['url']),
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ProductPage(
+                                              product: product,
+                                            ),
+                                          ));
+                                    },
+                                    child: Container(
+                                      width: 200,
+                                      margin: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border:
+                                            Border.all(color: Colors.grey[300]),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  fit: BoxFit.fitHeight,
+                                                  image: NetworkImage(
+                                                      product.images[0]['url']),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(8),
-                                          child: Text(
-                                            product.name,
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis,
+                                          Padding(
+                                            padding: EdgeInsets.all(8),
+                                            child: Text(
+                                              product.name,
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                           ),
-                                        ),
-                                        product.discountPrice != null
-                                            ? Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 8),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Text(
-                                                      formatter.format(product
-                                                          .discountPrice),
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: Color.fromRGBO(
-                                                            146, 127, 191, 1),
+                                          product.discountPrice != null
+                                              ? Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 8),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Text(
+                                                        formatter.format(product
+                                                            .discountPrice),
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color: Color.fromRGBO(
+                                                              146, 127, 191, 1),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    product.price != null
-                                                        ? Text(
-                                                            formatter.format(
-                                                                product.price),
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.grey,
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .lineThrough,
-                                                              fontSize: 12,
-                                                            ),
-                                                          )
-                                                        : Container(),
-                                                  ],
-                                                ),
-                                              )
-                                            : Text(
-                                                (product.price != null
-                                                    ? formatter
-                                                        .format(product.price)
-                                                    : "Contact"),
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Color.fromRGBO(
-                                                      146, 127, 191, 1),
-                                                ),
-                                              )
-                                      ],
+                                                      product.price != null
+                                                          ? Text(
+                                                              formatter.format(
+                                                                  product
+                                                                      .price),
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors.grey,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .lineThrough,
+                                                                fontSize: 12,
+                                                              ),
+                                                            )
+                                                          : Container(),
+                                                    ],
+                                                  ),
+                                                )
+                                              : Text(
+                                                  (product.price != null
+                                                      ? formatter
+                                                          .format(product.price)
+                                                      : "Contact"),
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Color.fromRGBO(
+                                                        146, 127, 191, 1),
+                                                  ),
+                                                )
+                                        ],
+                                      ),
                                     ),
                                   );
                                 }).toList(),

@@ -11,5 +11,6 @@ productsReducer(ProductsState prevState, SetProductsStateAction action) {
     totalPages: payload.totalPages,
     products: payload.products,
     recommendContentProducts: payload.recommendContentProducts,
+    recommendCollabProducts: payload.recommendCollabProducts,
   );
 }

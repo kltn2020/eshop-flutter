@@ -78,4 +78,36 @@ class ProductActions {
           ProductsState(isLoading: false, isError: true)));
     }
   }
+
+  Future<void> getCollaborativeRecommendAction(
+      Store<AppState> store, int page, int size) async {
+    store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
+
+    try {
+      var token = store.state.userState.token;
+
+      final response = await http.get(
+        'http://35.213.174.112/api/products/collaborative_recommend',
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body)['data'];
+
+        store.dispatch(
+          SetProductsStateAction(
+            ProductsState(
+              isLoading: false,
+              isSuccess: true,
+              recommendContentProducts:
+                  Product.listFromJson(jsonData['entries']),
+            ),
+          ),
+        );
+      }
+    } catch (error) {
+      store.dispatch(SetProductsStateAction(
+          ProductsState(isLoading: false, isError: true)));
+    }
+  }
 }

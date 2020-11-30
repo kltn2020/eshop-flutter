@@ -51,6 +51,123 @@ class _CheckOutState extends State<CheckOut> {
     }
   }
 
+  _checkoutCart(BuildContext context, Voucher voucher) async {
+    CartActions()
+        .checkoutCartAction(Redux.store, shippingAddress, voucher)
+        .then(
+      (value) => _showMyDialog(value),
+      onError: (e) {
+        _showErrorDialog(e);
+      },
+    );
+  }
+
+  Future<void> _showMyDialog(void value) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Order Successfully !!!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.greenAccent[400],
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Image.asset("assets/undraw_order_confirmed.png"),
+                Text(
+                  "Your order has been confirmed",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+                Text(
+                  "You can follow & check it at order history now",
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'I got it! Return to Home',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color.fromRGBO(146, 127, 191, 1),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/');
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showErrorDialog(CheckoutErrorMessage e) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Order Error!!!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.redAccent,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Image.asset("assets/undraw_error.png"),
+                Text(
+                  e.message,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                  ),
+                ),
+                e.code == "VALIDATION_FAILED"
+                    ? Text(
+                        'You must choose an address',
+                        textAlign: TextAlign.center,
+                      )
+                    : Text(
+                        'You should apply a voucher',
+                        textAlign: TextAlign.center,
+                      ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'I will check it right now!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color.fromRGBO(146, 127, 191, 1),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Voucher voucher = ModalRoute.of(context).settings.arguments;
@@ -256,8 +373,7 @@ class _CheckOutState extends State<CheckOut> {
                               ),
                               FlatButton(
                                 onPressed: () {
-                                  CartActions().checkoutCartAction(
-                                      Redux.store, shippingAddress, voucher);
+                                  _checkoutCart(context, voucher);
                                 },
                                 child: Container(
                                   height: 50,
@@ -309,9 +425,26 @@ class _CheckOutState extends State<CheckOut> {
                                     store.state.cartState.checkoutSuccessed,
                                 builder: (context, checkoutSuccessed) {
                                   if (checkoutSuccessed == true) {
-                                    return Text(
-                                      "Checkout Success",
-                                      style: TextStyle(color: Colors.green),
+                                    return AlertDialog(
+                                      title: Text('AlertDialog Title'),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: <Widget>[
+                                            Text(
+                                                'This is a demo alert dialog.'),
+                                            Text(
+                                                'Would you like to approve of this message?'),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        RaisedButton(
+                                          child: Text('Approve'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
                                     );
                                   } else {
                                     return Container();

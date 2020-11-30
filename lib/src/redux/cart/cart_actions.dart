@@ -185,7 +185,7 @@ class CartActions {
 
     var token = store.state.userState.token;
 
-    print(voucher.code);
+    print(voucher);
 
     try {
       final response = voucher != null
@@ -195,7 +195,7 @@ class CartActions {
                 "Content-Type": "application/json",
               },
               body: jsonEncode(<String, dynamic>{
-                'address_id': address.id,
+                'address_id': address != null ? address.id : '',
                 'voucher_code': voucher.code,
               }))
           : await http.post('http://35.213.174.112/api/orders',
@@ -204,7 +204,8 @@ class CartActions {
                 "Content-Type": "application/json",
               },
               body: jsonEncode(<String, dynamic>{
-                'address_id': address.id,
+                'address_id': address != null ? address.id : '',
+                'voucher_code': "",
               }));
 
       if (response.statusCode == 200) {
@@ -233,6 +234,30 @@ class CartActions {
       print(error);
       store.dispatch(
           SetCartStateAction(CartState(isLoading: false, isError: true)));
+      throw (CheckoutErrorMessage.fromJson(json.decode(error)));
     }
+  }
+}
+
+class CheckoutErrorMessage {
+  String code;
+  String message;
+  String status;
+
+  CheckoutErrorMessage({
+    this.code,
+    this.message,
+    this.status,
+  });
+
+  factory CheckoutErrorMessage.fromJson(Map<String, dynamic> json) {
+    if (json != null) {
+      return CheckoutErrorMessage(
+        code: json['code'] != null ? json['code'] : null,
+        message: json['message'] != null ? json['message'] : null,
+        status: json['status'] != null ? json['status'] : null,
+      );
+    } else
+      return null;
   }
 }

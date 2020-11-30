@@ -25,7 +25,7 @@ class VoucherActions {
     print("check-voucher");
     try {
       final response = await http.get(
-        'https://rocky-sierra-70366.herokuapp.com/api/vouchers/check/$voucherCode',
+        'http://35.213.174.112/api/vouchers/check/$voucherCode',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
