@@ -106,7 +106,6 @@ class CartActions {
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        print(jsonData);
 
         // Cart newCartList = store.state.cartState.cartList;
 
@@ -184,8 +183,6 @@ class CartActions {
         CartState(isLoading: true, isSuccess: false, isError: false)));
 
     var token = store.state.userState.token;
-
-    print(voucher);
 
     try {
       final response = voucher != null

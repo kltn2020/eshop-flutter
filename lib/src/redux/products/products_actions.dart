@@ -20,6 +20,8 @@ class ProductActions {
       Store<AppState> store, int page, int size) async {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
+    print("begin");
+
     try {
       var token = store.state.userState.token;
 
@@ -37,6 +39,44 @@ class ProductActions {
               isLoading: false,
               isSuccess: true,
               products: Product.listFromJson(jsonData['entries']),
+            ),
+          ),
+        );
+      }
+    } catch (error) {
+      store.dispatch(SetProductsStateAction(
+          ProductsState(isLoading: false, isError: true)));
+    }
+  }
+
+  Future<void> getMoreProductsAction(
+      Store<AppState> store, int page, int size) async {
+    store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
+
+    print("begin-get-more");
+
+    try {
+      var token = store.state.userState.token;
+
+      final response = await http.get(
+        'http://35.213.174.112/api/products?page=$page',
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body)['data'];
+
+        var oldProductsList = store.state.productsState.products;
+        var newProductsListData = Product.listFromJson(jsonData['entries']);
+
+        var newProductList = [...oldProductsList, ...newProductsListData];
+
+        store.dispatch(
+          SetProductsStateAction(
+            ProductsState(
+              isLoading: false,
+              isSuccess: true,
+              products: page == 1 ? newProductsListData : newProductList,
             ),
           ),
         );

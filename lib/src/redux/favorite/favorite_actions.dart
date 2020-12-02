@@ -41,7 +41,6 @@ class FavoriteActions {
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        print(jsonData);
         store.dispatch(
           SetFavoriteStateAction(
             FavoriteState(
@@ -74,7 +73,6 @@ class FavoriteActions {
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        print(jsonData);
 
         Favorite newFavoriteList = store.state.favoriteState.favoriteList;
 
@@ -112,7 +110,6 @@ class FavoriteActions {
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        print(jsonData);
 
         Favorite newFavoriteList = store.state.favoriteState.favoriteList;
 
