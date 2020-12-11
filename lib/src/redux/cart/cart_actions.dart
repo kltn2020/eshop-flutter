@@ -31,18 +31,23 @@ class CartActions {
     this.size,
   });
 
-  bool checkProductInCartAction(Store<AppState> store, int productId) {
+  bool checkProductInCartAction(
+      Store<AppState> store, int productId, bool value) {
     Cart newCart = store.state.cartState.cart;
     newCart.products
-            .firstWhere((element) => element.product.id == productId)
-            .check =
-        !newCart.products
-            .firstWhere((element) => element.product.id == productId)
-            .check;
+        .firstWhere((element) => element.product.id == productId)
+        .check = value;
 
-    store.dispatch(SetCartStateAction(CartState(
-      cart: newCart,
-    )));
+    store.dispatch(
+      SetCartStateAction(
+        CartState(
+          isLoading: false,
+          isSuccess: true,
+          //totalPages: jsonData['count'],
+          cart: newCart,
+        ),
+      ),
+    );
   }
 
   Future<void> getAllCartAction(Store<AppState> store) async {
@@ -107,20 +112,8 @@ class CartActions {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
 
-        // Cart newCartList = store.state.cartState.cartList;
-
-        // newCartList.product.add(product);
         print("newCartList");
 
-        // store.dispatch(
-        //   SetCartStateAction(
-        //     CartState(
-        //       isLoading: false,
-        //       isSuccess: true,
-        //       // cartList: newCartList,
-        //     ),
-        //   ),
-        // );
         store.dispatch(CartActions().getAllCartAction(store));
       }
     } catch (error) {
@@ -149,22 +142,6 @@ class CartActions {
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-
-        // Cart newCartList = store.state.cartState.cart;
-
-        // print("herer");
-        // newCartList.products
-        //     .removeWhere((iproduct) => iproduct.product.id == product.id);
-
-        // store.dispatch(
-        //   SetCartStateAction(
-        //     CartState(
-        //       isLoading: false,
-        //       isSuccess: true,
-        //       cart: newCartList,
-        //     ),
-        //   ),
-        // );
         store.dispatch(CartActions().getAllCartAction(store));
       } else {
         throw response.body;
@@ -176,11 +153,87 @@ class CartActions {
     }
   }
 
+  Future<void> removeUncheckFromCart(
+      Store<AppState> store, List<ProductInCart> productList) async {
+    print("remove-uncheck-cart in cart");
+
+    store.dispatch(SetCartStateAction(
+        CartState(isLoading: true, isSuccess: false, isError: false)));
+
+    var token = store.state.userState.token;
+
+    try {
+      final responses = await Future.wait(productList.map((e) {
+        int productId = e.product.id;
+        print(productId);
+        return http
+            .put('http://35.213.174.112/api/shopping/$productId', headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token"
+        }, body: {
+          'quantity': '0',
+        });
+      }));
+
+      if (responses.contains((ele) => {ele.status != 200}))
+        throw ('Error when remove');
+    } catch (error) {
+      print(error);
+      store.dispatch(
+          SetCartStateAction(CartState(isLoading: false, isError: true)));
+    }
+  }
+
+  Future<void> addUncheckToNewCart(
+      Store<AppState> store, List<ProductInCart> productList) async {
+    print("add-uncheck-cart to new-cart");
+
+    store.dispatch(SetCartStateAction(
+        CartState(isLoading: true, isSuccess: false, isError: false)));
+
+    var token = store.state.userState.token;
+
+    try {
+      final responses = await Future.wait(productList.map((e) {
+        int productId = e.product.id;
+        print(productId);
+        return http
+            .put('http://35.213.174.112/api/shopping/$productId', headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token"
+        }, body: {
+          'quantity': e.quantity.toString(),
+        });
+      }));
+
+      if (responses.contains((ele) => {ele.status != 200}))
+        throw ('Error when remove');
+    } catch (error) {
+      print(error);
+      store.dispatch(
+          SetCartStateAction(CartState(isLoading: false, isError: true)));
+    }
+  }
+
   Future<void> checkoutCartAction(
       Store<AppState> store, Address address, Voucher voucher) async {
     print("checkout-cart-action");
-    store.dispatch(SetCartStateAction(
-        CartState(isLoading: true, isSuccess: false, isError: false)));
+    // var checkoutCart = Cart.clone(store.state.cartState.cart);
+    // checkoutCart.products = checkoutCart.products
+    //     .where((item) => item.check == true)
+    //     .map((item) => item)
+    //     .toList();
+
+    var uncheckCart = Cart.clone(store.state.cartState.cart);
+    uncheckCart.products = store.state.cartState.cart.products
+        .where((item) => item.check == false)
+        .map((item) => item)
+        .toList();
+
+    //print(checkoutCart.products.map((item) => item.product.name));
+    print(uncheckCart.products.map((item) => item.product.name));
+
+    //Remove from checkout cart
+
+    store.dispatch(removeUncheckFromCart(store, uncheckCart.products));
 
     var token = store.state.userState.token;
 
@@ -206,14 +259,6 @@ class CartActions {
               }));
 
       if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-
-        // Cart newCartList = store.state.cartState.cart;
-
-        // print("herer");
-        // newCartList.products
-        //     .removeWhere((iproduct) => iproduct.product.id == product.id);
-
         store.dispatch(
           SetCartStateAction(
             CartState(
@@ -223,12 +268,14 @@ class CartActions {
             ),
           ),
         );
-        // store.dispatch(CartActions().getAllCartAction(store));
+
+        store.dispatch(addUncheckToNewCart(store, uncheckCart.products));
       } else {
         throw response.body;
       }
     } catch (error) {
       print(error);
+      store.dispatch(addUncheckToNewCart(store, uncheckCart.products));
       store.dispatch(
           SetCartStateAction(CartState(isLoading: false, isError: true)));
       throw (CheckoutErrorMessage.fromJson(json.decode(error)));

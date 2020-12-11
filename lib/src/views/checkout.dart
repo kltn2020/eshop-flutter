@@ -316,12 +316,15 @@ class _CheckOutState extends State<CheckOut> {
                         distinct: true,
                         converter: (store) => store.state.cartState.cart,
                         builder: (context, cart) {
-                          int cartTotal = cart.products.fold(
-                              0,
-                              (previousValue, element) =>
-                                  previousValue +
-                                  element.quantity *
-                                      element.product.discountPrice);
+                          var tempCart = Cart.clone(cart);
+                          int cartTotal = tempCart.products
+                              .where((element) => element.check == true)
+                              .fold(
+                                  0,
+                                  (previousValue, element) =>
+                                      previousValue +
+                                      element.quantity *
+                                          element.product.discountPrice);
                           int shippingFee = 20000;
 
                           return Column(
@@ -564,10 +567,13 @@ Widget cartWidget() {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: cart.products != null
                   ? cart.products.map((item) {
-                      return ProductInCheckOut(
-                        product: item.product,
-                        quantity: item.quantity,
-                      );
+                      if (item.check)
+                        return ProductInCheckOut(
+                          product: item.product,
+                          quantity: item.quantity,
+                        );
+                      else
+                        return Container();
                     }).toList()
                   : [Text("There's nothing in cart")],
             ),

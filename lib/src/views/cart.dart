@@ -1,6 +1,6 @@
 import 'package:ecommerce_flutter/src/models/Cart.dart';
-import 'package:ecommerce_flutter/src/models/Voucher.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
+import 'package:ecommerce_flutter/src/redux/cart/cart_state.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -350,10 +350,12 @@ class _ProjectState extends State<Project> {
                           }
                         }),
                     Container(
-                      child: StoreConnector<AppState, Cart>(
+                      child: StoreConnector<AppState, CartState>(
                         distinct: true,
-                        converter: (store) => store.state.cartState.cart,
-                        builder: (context, cart) {
+                        rebuildOnChange: true,
+                        converter: (store) => store.state.cartState,
+                        builder: (context, cartState) {
+                          var cart = cartState.cart;
                           return Container(
                             child: SingleChildScrollView(
                               child: Column(
@@ -371,7 +373,8 @@ class _ProjectState extends State<Project> {
                                             Redux.store.dispatch(CartActions()
                                                 .checkProductInCartAction(
                                                     Redux.store,
-                                                    item.product.id));
+                                                    item.product.id,
+                                                    newValue));
                                           },
                                           onAdd: () {
                                             Redux.store.dispatch(

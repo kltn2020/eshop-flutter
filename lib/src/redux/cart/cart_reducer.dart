@@ -3,7 +3,6 @@ import 'package:ecommerce_flutter/src/redux/cart/cart_state.dart';
 
 cartReducer(CartState prevState, SetCartStateAction action) {
   final payload = action.cartState;
-  print("cart-reducer");
   return prevState.copyWith(
     isError: payload.isError,
     isLoading: payload.isLoading,
