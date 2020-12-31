@@ -423,10 +423,10 @@ class _NotificationsState extends State<Notifications> {
               icon: Icon(Icons.laptop),
               title: Text('Product'),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              title: Text('Notification'),
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.notifications),
+            //   title: Text('Notification'),
+            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
               title: Text('User'),

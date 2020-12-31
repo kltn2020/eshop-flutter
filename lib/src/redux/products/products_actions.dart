@@ -49,6 +49,37 @@ class ProductActions {
     }
   }
 
+  Future<void> getProductDetailAction(Store<AppState> store, int id) async {
+    store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
+
+    print('id $id');
+    try {
+      var token = store.state.userState.token;
+
+      final response = await http.get(
+        'http://35.213.174.112/api/products/$id',
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body)['data'];
+
+        store.dispatch(
+          SetProductsStateAction(
+            ProductsState(
+              isLoading: false,
+              isSuccess: true,
+              productDetail: Product.fromJson(jsonData),
+            ),
+          ),
+        );
+      }
+    } catch (error) {
+      store.dispatch(SetProductsStateAction(
+          ProductsState(isLoading: false, isError: true)));
+    }
+  }
+
   Future<void> getMoreProductsAction(
       Store<AppState> store, int page, int size) async {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
@@ -91,6 +122,7 @@ class ProductActions {
       Store<AppState> store, int page, int size) async {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
+    print('get-content-base');
     try {
       var token = store.state.userState.token;
 
@@ -122,12 +154,13 @@ class ProductActions {
   Future<void> getCollaborativeRecommendAction(
       Store<AppState> store, int page, int size) async {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
+    print('get-collab-recommend');
 
     try {
       var token = store.state.userState.token;
 
       final response = await http.get(
-        'http://35.213.174.112/api/products/collaborative_recommend',
+        'http://35.213.174.112/api/products/collaborative_recommend?size=$size',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -139,7 +172,7 @@ class ProductActions {
             ProductsState(
               isLoading: false,
               isSuccess: true,
-              recommendContentProducts:
+              recommendCollabProducts:
                   Product.listFromJson(jsonData['entries']),
             ),
           ),

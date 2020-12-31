@@ -520,36 +520,36 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.laptop),
             title: Text('Product'),
           ),
-          BottomNavigationBarItem(
-            icon: Stack(
-              children: <Widget>[
-                Icon(Icons.notifications),
-                Positioned(
-                  right: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    constraints: BoxConstraints(
-                      minWidth: 12,
-                      minHeight: 12,
-                    ),
-                    child: new Text(
-                      '1',
-                      style: new TextStyle(
-                        color: Colors.white,
-                        fontSize: 8,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            title: Text('Notification'),
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Stack(
+          //     children: <Widget>[
+          //       Icon(Icons.notifications),
+          //       Positioned(
+          //         right: 0,
+          //         child: Container(
+          //           padding: EdgeInsets.all(1),
+          //           decoration: BoxDecoration(
+          //             color: Colors.red,
+          //             borderRadius: BorderRadius.circular(6),
+          //           ),
+          //           constraints: BoxConstraints(
+          //             minWidth: 12,
+          //             minHeight: 12,
+          //           ),
+          //           child: new Text(
+          //             '1',
+          //             style: new TextStyle(
+          //               color: Colors.white,
+          //               fontSize: 8,
+          //             ),
+          //             textAlign: TextAlign.center,
+          //           ),
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          //   title: Text('Notification'),
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             title: Text('User'),

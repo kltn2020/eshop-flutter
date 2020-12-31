@@ -10,6 +10,7 @@ class ProductsState {
   final int totalItems;
   final int totalPages;
   final List<Product> products;
+  final Product productDetail;
   final List<Product> recommendContentProducts;
   final List<Product> recommendCollabProducts;
 
@@ -20,6 +21,7 @@ class ProductsState {
     this.totalItems,
     this.totalPages,
     this.products,
+    this.productDetail,
     this.recommendContentProducts,
     this.recommendCollabProducts,
   });
@@ -31,6 +33,7 @@ class ProductsState {
         isLoading: false,
         totalItems: null,
         totalPages: null,
+        productDetail: null,
         products: const [],
         recommendContentProducts: const [],
         recommendCollabProducts: const [],
@@ -43,6 +46,7 @@ class ProductsState {
     @required bool isSuccess,
     @required int totalItems,
     @required int totalPages,
+    @required Product productDetail,
     @required List<Product> products,
     @required List<Product> recommendContentProducts,
     @required List<Product> recommendCollabProducts,
@@ -53,6 +57,7 @@ class ProductsState {
       isLoading: isLoading ?? this.isLoading,
       totalPages: totalPages ?? this.totalPages,
       totalItems: totalItems ?? this.totalItems,
+      productDetail: productDetail ?? this.productDetail,
       products: products ?? this.products,
       recommendContentProducts:
           recommendContentProducts ?? this.recommendContentProducts,

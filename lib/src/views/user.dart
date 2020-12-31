@@ -277,10 +277,10 @@ class _UserState extends State<User> {
             icon: Icon(Icons.laptop),
             title: Text('Product'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            title: Text('Notification'),
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.notifications),
+          //   title: Text('Notification'),
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             title: Text('User'),
