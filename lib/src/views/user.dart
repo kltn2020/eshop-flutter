@@ -1,4 +1,5 @@
 import 'package:ecommerce_flutter/src/models/Cart.dart';
+import 'package:ecommerce_flutter/src/widgets/BottomNavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -18,22 +19,6 @@ class User extends StatefulWidget {
 class _UserState extends State<User> {
   //Search
   bool typing = false;
-
-  //Bottom Navigation
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/');
-        break;
-      case 1:
-        Navigator.pushReplacementNamed(context, '/product-list');
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(context, '/notifications');
-        break;
-      default:
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -266,30 +251,7 @@ class _UserState extends State<User> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.laptop),
-            title: Text('Product'),
-          ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.notifications),
-          //   title: Text('Notification'),
-          // ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text('User'),
-          ),
-        ],
-        currentIndex: 3,
-        selectedItemColor: Colors.purple[800],
-        onTap: _onItemTapped,
-      ),
+      bottomNavigationBar: bottomNavigationWidget(context, 2),
     );
   }
 }

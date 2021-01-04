@@ -4,6 +4,7 @@ import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/redux/favorite/favorite_actions.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/views/product_detail.dart';
+import 'package:ecommerce_flutter/src/widgets/BottomNavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
@@ -37,21 +38,6 @@ class _HomePageState extends State<HomePage> {
     "assets/banner7.jpg",
     "assets/banner8.jpg"
   ];
-
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 1:
-        Navigator.pushReplacementNamed(context, '/product-list');
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(context, '/notifications');
-        break;
-      case 3:
-        Navigator.pushReplacementNamed(context, '/user');
-        break;
-      default:
-    }
-  }
 
   Widget projectWidget() {
     return FutureBuilder(
@@ -509,56 +495,7 @@ class _HomePageState extends State<HomePage> {
           }
         },
       )),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.laptop),
-            title: Text('Product'),
-          ),
-          // BottomNavigationBarItem(
-          //   icon: Stack(
-          //     children: <Widget>[
-          //       Icon(Icons.notifications),
-          //       Positioned(
-          //         right: 0,
-          //         child: Container(
-          //           padding: EdgeInsets.all(1),
-          //           decoration: BoxDecoration(
-          //             color: Colors.red,
-          //             borderRadius: BorderRadius.circular(6),
-          //           ),
-          //           constraints: BoxConstraints(
-          //             minWidth: 12,
-          //             minHeight: 12,
-          //           ),
-          //           child: new Text(
-          //             '1',
-          //             style: new TextStyle(
-          //               color: Colors.white,
-          //               fontSize: 8,
-          //             ),
-          //             textAlign: TextAlign.center,
-          //           ),
-          //         ),
-          //       )
-          //     ],
-          //   ),
-          //   title: Text('Notification'),
-          // ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text('User'),
-          ),
-        ],
-        currentIndex: 0,
-        selectedItemColor: Colors.purple[800],
-        onTap: _onItemTapped,
-      ),
+      bottomNavigationBar: bottomNavigationWidget(context, 0),
     );
   }
 }
