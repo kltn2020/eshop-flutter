@@ -36,6 +36,72 @@ class _AddressDetailState extends State<AddressDetail> {
     super.dispose();
   }
 
+  _updateAddress(BuildContext context) async {
+    AddressesActions()
+        .updateAddressesAction(
+      Redux.store,
+      widget.address.id,
+      Redux.store.state.userState.token,
+      _phoneNumberController.text,
+      _locateController.text,
+      _currentIsPrimary,
+    )
+        .then(
+      (value) => _showSuccessDialog(value),
+      onError: (e) {
+        //_showErrorDialog(e);
+      },
+    );
+  }
+
+  Future<void> _showSuccessDialog(void value) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Update Successfully !!!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.greenAccent[400],
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Image.asset("assets/undraw_update_complete.png"),
+                Text(
+                  "Your address has been updated",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'Back to Address List',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color.fromRGBO(146, 127, 191, 1),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(); //pop dialog
+                Navigator.of(context).pop(); // pop screen
+                Navigator.pushReplacementNamed(context, '/address-list');
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,10 +235,11 @@ class _AddressDetailState extends State<AddressDetail> {
                 builder: (FormFieldState<bool> state) {
                   return InputDecorator(
                     decoration: InputDecoration(
+                      labelText: 'Primary Address?',
                       labelStyle: TextStyle(color: Colors.grey),
                       errorStyle:
                           TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                      hintText: 'City',
+                      hintText: 'Primary',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       ),
@@ -203,14 +270,7 @@ class _AddressDetailState extends State<AddressDetail> {
               ),
               FlatButton(
                 onPressed: () {
-                  AddressesActions().updateAddressesAction(
-                    Redux.store,
-                    widget.address.id,
-                    Redux.store.state.userState.token,
-                    _phoneNumberController.text,
-                    _locateController.text,
-                    _currentIsPrimary,
-                  );
+                  _updateAddress(context);
                 },
                 child: Container(
                   height: 50,

@@ -6,7 +6,7 @@ class User {
 
   User.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    id = json['id'];
+    id = json['user_id'];
     email = json['email'];
     role = json['role'];
   }

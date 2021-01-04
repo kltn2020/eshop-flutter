@@ -168,7 +168,10 @@ class AddressesActions {
     try {
       final response = await http.delete(
         'http://35.213.174.112/api/address/$id',
-        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+          "Content-Type": "application/json",
+        },
       );
 
       print(response.statusCode);
