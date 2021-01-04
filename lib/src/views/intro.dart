@@ -161,7 +161,22 @@ class SlideTile extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image.asset(imagePath),
+          if (MediaQuery.of(context).orientation == Orientation.portrait)
+            // is portrait
+            Image.asset(
+              imagePath,
+              fit: BoxFit.cover,
+            )
+          else
+            // is landscape
+            Expanded(
+              child: Container(
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           SizedBox(
             height: 40,
           ),
