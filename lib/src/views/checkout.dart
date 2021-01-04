@@ -2,6 +2,7 @@ import 'package:ecommerce_flutter/src/models/Address.dart';
 import 'package:ecommerce_flutter/src/models/Cart.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
 import 'package:ecommerce_flutter/src/models/Voucher.dart';
+import 'package:ecommerce_flutter/src/redux/addresses/addresses_actions.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class _CheckOutState extends State<CheckOut> {
   var paymentType = "Choose type of payment";
 
   Address shippingAddress;
+  Address primaryAddress;
   // Voucher voucher;
 
   _navigateAndDisplayAddressSelection(BuildContext context) async {
@@ -53,7 +55,8 @@ class _CheckOutState extends State<CheckOut> {
 
   _checkoutCart(BuildContext context, Voucher voucher) async {
     CartActions()
-        .checkoutCartAction(Redux.store, shippingAddress, voucher)
+        .checkoutCartAction(Redux.store,
+            shippingAddress != null ? shippingAddress : primaryAddress, voucher)
         .then(
       (value) => _showMyDialog(value),
       onError: (e) {
@@ -168,6 +171,52 @@ class _CheckOutState extends State<CheckOut> {
     );
   }
 
+  Future<void> _showMissingFieldDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Order Error!!!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.redAccent,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Image.asset("assets/undraw_error.png"),
+                Text(
+                  "You are missing field(s). Please recheck :)",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'I will check it right now!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color.fromRGBO(146, 127, 191, 1),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Voucher voucher = ModalRoute.of(context).settings.arguments;
@@ -214,33 +263,49 @@ class _CheckOutState extends State<CheckOut> {
                       onPressed: () {
                         _navigateAndDisplayAddressSelection(context);
                       },
-                      child: Container(
-                        width: double.infinity,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                shippingAddress != null &&
-                                        shippingAddress.phoneNumber != null
-                                    ? Text(shippingAddress.phoneNumber)
-                                    : Text(
-                                        "Number",
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                shippingAddress != null &&
-                                        shippingAddress.locate != null
-                                    ? Text(shippingAddress.locate)
-                                    : Text(
-                                        "Address Detail",
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                              ],
-                            ),
-                            Icon(Icons.navigate_next),
-                          ],
-                        ),
+                      child: StoreConnector<AppState, List<Address>>(
+                        distinct: true,
+                        onInit: (store) => store.dispatch(new AddressesActions()
+                            .getAllAddressesAction(Redux.store)),
+                        converter: (store) =>
+                            store.state.addressesState.addresses,
+                        builder: (context, addresses) {
+                          primaryAddress = addresses.firstWhere(
+                              (element) => element.isPrimary == true);
+
+                          if (addresses != null && primaryAddress != null) {
+                            return Container(
+                              width: double.infinity,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      shippingAddress != null &&
+                                              shippingAddress.phoneNumber !=
+                                                  null
+                                          ? Text(shippingAddress.phoneNumber)
+                                          : Text(
+                                              'Number: ${primaryAddress.phoneNumber}',
+                                            ),
+                                      shippingAddress != null &&
+                                              shippingAddress.locate != null
+                                          ? Text(shippingAddress.locate)
+                                          : Text(
+                                              'Address Detail: ${primaryAddress.locate}',
+                                            ),
+                                    ],
+                                  ),
+                                  Icon(Icons.navigate_next),
+                                ],
+                              ),
+                            );
+                          } else
+                            return Container();
+                        },
                       ),
                     ),
                     SizedBox(
@@ -375,8 +440,13 @@ class _CheckOutState extends State<CheckOut> {
                                 height: 20,
                               ),
                               FlatButton(
+                                disabledTextColor: Colors.grey,
+                                disabledColor: Colors.grey,
                                 onPressed: () {
-                                  _checkoutCart(context, voucher);
+                                  (paymentType == "Choose type of payment" ||
+                                          cart.products.length == 0)
+                                      ? _showMissingFieldDialog()
+                                      : _checkoutCart(context, voucher);
                                 },
                                 child: Container(
                                   height: 50,
@@ -416,38 +486,6 @@ class _CheckOutState extends State<CheckOut> {
                                           new AlwaysStoppedAnimation<Color>(
                                         Color.fromRGBO(146, 127, 191, 1),
                                       ),
-                                    );
-                                  } else {
-                                    return Container();
-                                  }
-                                },
-                              ),
-                              StoreConnector<AppState, bool>(
-                                distinct: true,
-                                converter: (store) =>
-                                    store.state.cartState.checkoutSuccessed,
-                                builder: (context, checkoutSuccessed) {
-                                  if (checkoutSuccessed == true) {
-                                    return AlertDialog(
-                                      title: Text('AlertDialog Title'),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: <Widget>[
-                                            Text(
-                                                'This is a demo alert dialog.'),
-                                            Text(
-                                                'Would you like to approve of this message?'),
-                                          ],
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        RaisedButton(
-                                          child: Text('Approve'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
                                     );
                                   } else {
                                     return Container();

@@ -24,23 +24,23 @@ class VoucherApply extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Container(
-            margin: EdgeInsets.all(32),
-            child: TextField(
-              controller: null,
-              onSubmitted: (value) {
-                print(value);
-                Redux.store.dispatch(new VoucherActions()
-                    .checkVoucherAction(Redux.store, value));
-              },
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                ),
-              ),
-            ),
-          ),
+          // Container(
+          //   margin: EdgeInsets.all(32),
+          //   child: TextField(
+          //     controller: null,
+          //     onSubmitted: (value) {
+          //       print(value);
+          //       Redux.store.dispatch(new VoucherActions()
+          //           .checkVoucherAction(Redux.store, value));
+          //     },
+          //     decoration: InputDecoration(
+          //       prefixIcon: Icon(Icons.search),
+          //       border: OutlineInputBorder(
+          //         borderRadius: BorderRadius.all(Radius.circular(50)),
+          //       ),
+          //     ),
+          //   ),
+          // ),
           // FlatButton(
           //   onPressed: () {
           //     // Redux.store.dispatch(
@@ -89,64 +89,75 @@ class VoucherApply extends StatelessWidget {
             },
           ),
 
-          StoreConnector<AppState, Voucher>(
+          StoreConnector<AppState, List<Voucher>>(
             distinct: true,
-            converter: (store) => store.state.vouchersState.voucher,
-            builder: (context, voucher) {
-              // return ListView(
-              //   children: _buildProducts(products),
-              // );
-              if (voucher != null && voucher.code != null) {
-                return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    padding: EdgeInsets.all(16),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1),
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context, voucher);
+            converter: (store) => store.state.vouchersState.vouchers,
+            onInit: (store) => store.dispatch(
+                new VoucherActions().getAllVoucherAction(Redux.store)),
+            builder: (context, vouchers) {
+              if (vouchers != null) {
+                return SingleChildScrollView(
+                  child: Column(
+                    children: vouchers.map(
+                      (voucher) {
+                        return Container(
+                          margin: EdgeInsets.symmetric(
+                            vertical: 16,
+                            horizontal: 8,
+                          ),
+                          padding: EdgeInsets.all(16),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1),
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pop(context, voucher);
+                            },
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Voucher code: ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    Text(voucher.code),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Category ID: ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    Text(voucher.categoryId.toString()),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Discount: ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    Text(voucher.value.toString()),
+                                    Text("%"),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
                       },
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Voucher code: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              Text(voucher.code),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "Category ID: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Text(voucher.categoryId.toString()),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "Discount: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Text(voucher.value.toString()),
-                              Text("%"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ));
+                    ).toList(),
+                  ),
+                );
               } else {
                 return Container(
                   child: Text("No data"),
