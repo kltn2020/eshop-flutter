@@ -6,6 +6,7 @@ import 'package:ecommerce_flutter/src/views/order_detail.dart';
 import 'package:ecommerce_flutter/src/views/order_history.dart';
 import 'package:ecommerce_flutter/src/views/rating_list.dart';
 import 'package:ecommerce_flutter/src/views/voucher_apply.dart';
+import 'package:ecommerce_flutter/src/views/voucher_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
           // '/address-detail': (context) => AddressDetail(),
           '/cart': (context) => CartView(),
           '/voucher-apply': (context) => VoucherApply(),
+          '/voucher-list': (context) => VoucherList(),
           '/checkout': (context) => CheckOut(),
           '/address-checkout': (context) => AddressCheckout(),
           '/payment-checkout': (context) => PaymentCheckout(),

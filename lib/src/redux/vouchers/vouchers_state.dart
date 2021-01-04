@@ -9,7 +9,7 @@ class VouchersState {
   final bool isSuccess;
   final int totalItems;
   final int totalPages;
-  //final List<Voucher> vouchers;
+  final List<Voucher> vouchers;
   final Voucher voucher;
 
   VouchersState({
@@ -18,7 +18,7 @@ class VouchersState {
     this.isSuccess,
     this.totalItems,
     this.totalPages,
-    //this.vouchers,
+    this.vouchers,
     this.voucher,
   });
 
@@ -29,7 +29,7 @@ class VouchersState {
         isLoading: false,
         totalItems: null,
         totalPages: null,
-        //vouchers: const [],
+        vouchers: const [],
         voucher: null,
       );
 
@@ -40,7 +40,7 @@ class VouchersState {
     @required bool isSuccess,
     @required int totalItems,
     @required int totalPages,
-    // @required List<Voucher> vouchers,
+    @required List<Voucher> vouchers,
     @required Voucher voucher,
   }) {
     return VouchersState(
@@ -49,7 +49,7 @@ class VouchersState {
       isLoading: isLoading ?? this.isLoading,
       totalPages: totalPages ?? this.totalPages,
       totalItems: totalItems ?? this.totalItems,
-      //vouchers: vouchers ?? this.vouchers,
+      vouchers: vouchers ?? this.vouchers,
       voucher: voucher ?? this.voucher,
     );
   }

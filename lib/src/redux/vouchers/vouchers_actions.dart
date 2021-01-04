@@ -53,4 +53,41 @@ class VoucherActions {
           VouchersState(isLoading: false, isError: true)));
     }
   }
+
+  Future<void> getAllVoucherAction(Store<AppState> store) async {
+    store.dispatch(SetVouchersStateAction(VouchersState(isLoading: true)));
+
+    String token = store.state.userState.token;
+
+    print("get-all-voucher");
+    try {
+      final response = await http.get(
+        'http://35.213.174.112/api/vouchers',
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body)['data'];
+
+        print(jsonData);
+        store.dispatch(
+          SetVouchersStateAction(
+            VouchersState(
+              isLoading: false,
+              isSuccess: true,
+              //totalPages: jsonData['count'],
+              vouchers: Voucher.listFromJson(jsonData['entries']),
+              //voucher: Voucher.fromJson(jsonData),
+            ),
+          ),
+        );
+      } else {
+        throw response.body;
+      }
+    } catch (error) {
+      print(error);
+      store.dispatch(SetVouchersStateAction(
+          VouchersState(isLoading: false, isError: true)));
+    }
+  }
 }

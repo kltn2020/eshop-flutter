@@ -43,9 +43,8 @@ Widget projectWidget() {
   final formatter = new NumberFormat("#,###");
 
   return FutureBuilder(
-    future: Redux.store.dispatch(
-        new FavoriteActions(token: Redux.store.state.userState.token)
-            .getAllFavoriteAction),
+    future: Redux.store
+        .dispatch(new FavoriteActions().getAllFavoriteAction(Redux.store)),
     builder: (context, projectSnap) {
       if (projectSnap.connectionState == ConnectionState.none &&
           projectSnap.hasData == null) {

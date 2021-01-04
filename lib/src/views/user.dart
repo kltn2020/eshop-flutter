@@ -214,10 +214,19 @@ class _UserState extends State<User> {
             SizedBox(
               height: 30,
             ),
-            SizedBox(
-              height: 200,
-              child: ListView(
+            SingleChildScrollView(
+              child: ListBody(
                 children: [
+                  ListTile(
+                    leading: Icon(
+                      Icons.label_outline,
+                      color: Colors.orangeAccent,
+                    ),
+                    title: Text("Voucher List"),
+                    onTap: () => {
+                      Navigator.pushNamed(context, '/voucher-list'),
+                    },
+                  ),
                   ListTile(
                     leading: Icon(
                       Icons.favorite_border,

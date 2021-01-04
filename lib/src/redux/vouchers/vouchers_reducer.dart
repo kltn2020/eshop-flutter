@@ -9,7 +9,7 @@ vouchersReducer(VouchersState prevState, SetVouchersStateAction action) {
     isSuccess: payload.isSuccess,
     totalItems: payload.totalItems,
     totalPages: payload.totalPages,
-    //vouchers: payload.vouchers,
+    vouchers: payload.vouchers,
     voucher: payload.voucher,
   );
 }
