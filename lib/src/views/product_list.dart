@@ -141,32 +141,50 @@ class _ProductListState extends State<ProductList> {
                                                         MainAxisAlignment
                                                             .spaceEvenly,
                                                     children: [
-                                                      AutoSizeText(
-                                                        formatter.format(product
-                                                            .discountPrice),
-                                                        style: TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: Color.fromRGBO(
-                                                              146, 127, 191, 1),
+                                                      Expanded(
+                                                        child: AutoSizeText(
+                                                          formatter.format(product
+                                                              .discountPrice),
+                                                          style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    146,
+                                                                    127,
+                                                                    191,
+                                                                    1),
+                                                          ),
+                                                          maxLines: 1,
                                                         ),
-                                                        maxLines: 1,
                                                       ),
                                                       product.price != null
-                                                          ? AutoSizeText(
-                                                              formatter.format(
-                                                                  product
-                                                                      .price),
-                                                              style: TextStyle(
-                                                                color:
-                                                                    Colors.grey,
-                                                                decoration:
-                                                                    TextDecoration
-                                                                        .lineThrough,
-                                                                fontSize: 12,
+                                                          ? Expanded(
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .only(
+                                                                  left: 10,
+                                                                ),
+                                                                child:
+                                                                    AutoSizeText(
+                                                                  formatter.format(
+                                                                      product
+                                                                          .price),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .lineThrough,
+                                                                    fontSize:
+                                                                        12,
+                                                                  ),
+                                                                  maxLines: 1,
+                                                                ),
                                                               ),
-                                                              maxLines: 1,
                                                             )
                                                           : Container(),
                                                     ],

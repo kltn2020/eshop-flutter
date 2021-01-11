@@ -162,17 +162,39 @@ Widget productInfo(
             horizontal: 20,
             vertical: 0,
           ),
-          child: Text(
-            productData.discountPrice != null
-                ? formatter.format(productData.discountPrice)
-                : (productData.price != null
-                    ? formatter.format(productData.price)
-                    : "Contact"),
-            style: TextStyle(
-              fontSize: 48,
-              fontWeight: FontWeight.w700,
-              color: Color.fromRGBO(196, 187, 240, 1),
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: AutoSizeText(
+                  formatter.format(productData.discountPrice),
+                  style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.w700,
+                    color: Color.fromRGBO(146, 127, 191, 1),
+                  ),
+                  maxLines: 1,
+                ),
+              ),
+              productData.price != null
+                  ? Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 10,
+                        ),
+                        child: AutoSizeText(
+                          formatter.format(productData.price),
+                          style: TextStyle(
+                            color: Colors.grey,
+                            decoration: TextDecoration.lineThrough,
+                            fontSize: 32,
+                          ),
+                          maxLines: 1,
+                        ),
+                      ),
+                    )
+                  : Container(),
+            ],
           ),
         ),
         //Review count - Sold - Favorite

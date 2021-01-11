@@ -43,7 +43,7 @@ class _CartViewState extends State<CartView> {
           color: Colors.black, //change your color here
         ),
         title: Text(
-          "Cart",
+          "Shopping Cart",
           style: TextStyle(
             color: Color.fromRGBO(79, 59, 120, 1),
             fontWeight: FontWeight.w900,
@@ -51,70 +51,6 @@ class _CartViewState extends State<CartView> {
           ),
         ),
       ),
-      // body: Container(
-      //   padding: EdgeInsets.symmetric(
-      //     horizontal: 0,
-      //     vertical: 32,
-      //   ),
-      //   child: SingleChildScrollView(
-      //     child: Column(
-      //       crossAxisAlignment: CrossAxisAlignment.center,
-      //       children: [
-      //         Row(
-      //           children: [
-      //             Checkbox(
-      //               activeColor: Theme.of(context).primaryColor,
-      //               value: selectAllCheck,
-      //               onChanged: (bool value) {
-      //                 setState(() {
-      //                   selectAllCheck = value;
-      //                 });
-      //               },
-      //             ),
-      //             Text("Check all"),
-      //           ],
-      //         ),
-      //         ...items
-      //             .map(
-      //               (item) => ProductInCart(
-      //                 title: item,
-      //                 check: selectAllCheck,
-      //                 onChecked: (bool value) {
-      //                   setState(
-      //                     () {
-      //                       selectAllCheck = value;
-      //                     },
-      //                   );
-      //                 },
-      //                 number: productCount,
-      //                 onAdd: () {
-      //                   setState(
-      //                     () {
-      //                       productCount++;
-      //                     },
-      //                   );
-      //                 },
-      //                 onSubtract: () {
-      //                   setState(
-      //                     () {
-      //                       productCount--;
-      //                     },
-      //                   );
-      //                 },
-      //                 onDelete: () {
-      //                   setState(
-      //                     () {
-      //                       productCount = 0;
-      //                     },
-      //                   );
-      //                 },
-      //               ),
-      //             )
-      //             .toList(),
-      //       ],
-      //     ),
-      //   ),
-      // ),
       body: Project(),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
@@ -133,7 +69,7 @@ class _CartViewState extends State<CartView> {
                       Text(
                         "Total: ",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -145,7 +81,7 @@ class _CartViewState extends State<CartView> {
                                 element.quantity *
                                     element.product.discountPrice)),
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.w700,
                         ),
                       ),

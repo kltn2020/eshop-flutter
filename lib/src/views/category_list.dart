@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ecommerce_flutter/src/widgets/VerticalTabs.dart';
 import 'package:flutter/material.dart';
 
@@ -151,7 +152,13 @@ class CategoryList extends StatelessWidget {
                       Icons.star_border,
                       size: 32,
                     ),
-                    Text("Recommended"),
+                    SizedBox(
+                      width: double.infinity,
+                      child: AutoSizeText(
+                        "Recommended",
+                        maxLines: 1,
+                      ),
+                    ),
                   ],
                 ),
               ),

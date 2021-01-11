@@ -474,7 +474,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "Products",
+                        "Daily discover",
                         style: TextStyle(
                           fontSize: 24,
                           color: Color.fromRGBO(54, 59, 78, 1),
