@@ -707,8 +707,8 @@ Widget productInfo(
                 child: StoreConnector<AppState, List<Rating>>(
                   distinct: true,
                   onInit: (store) => store.dispatch(RatingActions()
-                      .getAllRatingAction(store, productData.id, '5')),
-                  rebuildOnChange: false,
+                      .getAllRatingAction(store, productData.id, 1, 10)),
+                  rebuildOnChange: true,
                   converter: (store) => store.state.ratingState.ratingList,
                   builder: (context, ratingList) {
                     return Container(
@@ -716,7 +716,7 @@ Widget productInfo(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: ratingList != null
-                              ? ratingList.map((item) {
+                              ? ratingList.sublist(0, 5).map((item) {
                                   return Container(
                                     child: Column(
                                       children: [
@@ -762,8 +762,10 @@ Widget productInfo(
                                                       ),
                                                     ),
                                                     RatingBarIndicator(
-                                                      rating:
-                                                          item.point.toDouble(),
+                                                      rating: item.point != null
+                                                          ? item.point
+                                                              .toDouble()
+                                                          : 0.0,
                                                       itemBuilder:
                                                           (context, index) =>
                                                               Icon(

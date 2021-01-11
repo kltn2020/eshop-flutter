@@ -1,3 +1,5 @@
+import 'package:ecommerce_flutter/src/redux/store.dart';
+
 class Rating {
   int id;
   num point;
@@ -13,7 +15,9 @@ class Rating {
     content = json['content'];
     insertedAt = json['insertedAt'];
     updatedAt = json['updatedAt'];
-    userEmail = json['user']['email'];
+    userEmail = json['user'] != null
+        ? json['user']['email']
+        : Redux.store.state.userState.user.email;
   }
 
   static List<Rating> listFromJson(List<dynamic> json) {

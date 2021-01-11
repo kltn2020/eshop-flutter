@@ -66,7 +66,7 @@ class _ReviewCreateState extends State<ReviewCreate> {
                 height: 10,
               ),
               RatingBar.builder(
-                initialRating: 3,
+                initialRating: 0,
                 minRating: 1,
                 direction: Axis.horizontal,
                 allowHalfRating: false,

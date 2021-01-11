@@ -30,7 +30,7 @@ class RatingActions {
   });
 
   Future<void> getAllRatingAction(
-      Store<AppState> store, int productId, String size) async {
+      Store<AppState> store, int productId, int page, int size) async {
     store.dispatch(SetRatingStateAction(RatingState(isLoading: true)));
 
     print('get-rating-list');
@@ -69,36 +69,36 @@ class RatingActions {
     String productID = productId.toString();
 
     print(jsonEncode(<String, dynamic>{
-      'point': ratingPoint.toString(),
+      'point': ratingPoint,
       'content': content,
     }));
     try {
       final response = await http.post(
         'http://35.213.174.112/api/products/$productID/reviews',
-        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+          "Content-Type": "application/json",
+        },
         body: jsonEncode(<String, dynamic>{
-          'content': content,
           'point': ratingPoint,
+          'content': content,
         }),
       );
-
-      print(response.statusCode);
-      print(response.body);
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         print(jsonData);
 
-        //Rating newRatingList = store.state.ratingState.ratingList;
-
-        //newRatingList.product.add(product);
+        var newRatingList =
+            new List<Rating>.from(store.state.ratingState.ratingList)
+              ..insert(0, Rating.fromJson(jsonData['data']));
 
         store.dispatch(
           SetRatingStateAction(
             RatingState(
               isLoading: false,
               isSuccess: true,
-              //ratingList: newRatingList,
+              ratingList: newRatingList,
             ),
           ),
         );
