@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ecommerce_flutter/src/models/Cart.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_state.dart';
 import 'package:ecommerce_flutter/src/widgets/BottomNavigation.dart';
@@ -140,7 +141,7 @@ class _ProductListState extends State<ProductList> {
                                                         MainAxisAlignment
                                                             .spaceEvenly,
                                                     children: [
-                                                      Text(
+                                                      AutoSizeText(
                                                         formatter.format(product
                                                             .discountPrice),
                                                         style: TextStyle(
@@ -150,9 +151,10 @@ class _ProductListState extends State<ProductList> {
                                                           color: Color.fromRGBO(
                                                               146, 127, 191, 1),
                                                         ),
+                                                        maxLines: 1,
                                                       ),
                                                       product.price != null
-                                                          ? Text(
+                                                          ? AutoSizeText(
                                                               formatter.format(
                                                                   product
                                                                       .price),
@@ -164,6 +166,7 @@ class _ProductListState extends State<ProductList> {
                                                                         .lineThrough,
                                                                 fontSize: 12,
                                                               ),
+                                                              maxLines: 1,
                                                             )
                                                           : Container(),
                                                     ],

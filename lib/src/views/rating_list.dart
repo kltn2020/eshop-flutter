@@ -1,4 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:ecommerce_flutter/src/models/Rating.dart';
@@ -139,6 +141,13 @@ Widget projectWidget() {
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(50),
                                             ),
+                                            color: Color.fromRGBO(
+                                                146, 127, 191, 1),
+                                          ),
+                                          child: Center(
+                                            child: AutoSizeText(
+                                              rating.userEmail[0].toUpperCase(),
+                                            ),
                                           ),
                                         ),
                                         Expanded(
@@ -154,15 +163,17 @@ Widget projectWidget() {
                                                       vertical: 8),
                                                   child: Text(rating.userEmail),
                                                 ),
-                                                Row(
-                                                  children:
-                                                      new List(rating.point)
-                                                          .map((e) {
-                                                    return Icon(
-                                                      Icons.star,
-                                                      color: Colors.orange,
-                                                    );
-                                                  }).toList(),
+                                                RatingBarIndicator(
+                                                  rating:
+                                                      rating.point.toDouble(),
+                                                  itemBuilder:
+                                                      (context, index) => Icon(
+                                                    Icons.star,
+                                                    color: Colors.amber,
+                                                  ),
+                                                  itemCount: 5,
+                                                  itemSize: 20.0,
+                                                  direction: Axis.horizontal,
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsets.symmetric(

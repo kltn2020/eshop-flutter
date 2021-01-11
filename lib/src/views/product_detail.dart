@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ecommerce_flutter/src/models/Cart.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
 import 'package:ecommerce_flutter/src/models/Rating.dart';
@@ -8,8 +9,10 @@ import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_state.dart';
 import 'package:ecommerce_flutter/src/redux/ratings/ratings_actions.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
+import 'package:ecommerce_flutter/src/views/rating_create.dart';
 import 'package:ecommerce_flutter/src/views/rating_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 
@@ -683,7 +686,7 @@ Widget productInfo(
                   distinct: true,
                   onInit: (store) => store.dispatch(RatingActions()
                       .getAllRatingAction(store, productData.id, '5')),
-                  rebuildOnChange: true,
+                  rebuildOnChange: false,
                   converter: (store) => store.state.ratingState.ratingList,
                   builder: (context, ratingList) {
                     return Container(
@@ -709,6 +712,14 @@ Widget productInfo(
                                                 borderRadius: BorderRadius.all(
                                                   Radius.circular(50),
                                                 ),
+                                                color: Color.fromRGBO(
+                                                    146, 127, 191, 1),
+                                              ),
+                                              child: Center(
+                                                child: AutoSizeText(
+                                                  item.userEmail[0]
+                                                      .toUpperCase(),
+                                                ),
                                               ),
                                             ),
                                             Expanded(
@@ -723,18 +734,24 @@ Widget productInfo(
                                                       margin:
                                                           EdgeInsets.symmetric(
                                                               vertical: 8),
-                                                      child:
-                                                          Text(item.userEmail),
+                                                      child: AutoSizeText(
+                                                        item.userEmail,
+                                                        maxLines: 1,
+                                                      ),
                                                     ),
-                                                    Row(
-                                                      children:
-                                                          new List(item.point)
-                                                              .map((e) {
-                                                        return Icon(
-                                                          Icons.star,
-                                                          color: Colors.orange,
-                                                        );
-                                                      }).toList(),
+                                                    RatingBarIndicator(
+                                                      rating:
+                                                          item.point.toDouble(),
+                                                      itemBuilder:
+                                                          (context, index) =>
+                                                              Icon(
+                                                        Icons.star,
+                                                        color: Colors.amber,
+                                                      ),
+                                                      itemCount: 5,
+                                                      itemSize: 20.0,
+                                                      direction:
+                                                          Axis.horizontal,
                                                     ),
                                                     Padding(
                                                       padding:
@@ -774,6 +791,33 @@ Widget productInfo(
                       ),
                     );
                   },
+                ),
+              ),
+
+              FlatButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ReviewCreate(
+                          productId: productData.id,
+                        ),
+                      ));
+                },
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.white,
+                    border: Border.all(width: 1),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Create new Review",
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
               ),
               //End Reviews
@@ -915,7 +959,7 @@ Widget productInfo(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Others people like",
+                "You may also like",
                 style: TextStyle(
                   fontSize: 18,
                   color: Color.fromRGBO(79, 59, 120, 0.8),

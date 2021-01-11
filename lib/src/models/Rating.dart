@@ -1,6 +1,6 @@
 class Rating {
   int id;
-  int point;
+  num point;
   String content;
   String insertedAt;
   String updatedAt;

@@ -33,6 +33,7 @@ class RatingActions {
       Store<AppState> store, int productId, String size) async {
     store.dispatch(SetRatingStateAction(RatingState(isLoading: true)));
 
+    print('get-rating-list');
     try {
       var token = store.state.userState.token;
 
@@ -59,42 +60,55 @@ class RatingActions {
     }
   }
 
-  // Future<void> addRatingAction(Store<AppState> store) async {
-  //   print("add-rating-action");
-  //   store.dispatch(SetRatingStateAction(RatingState(isLoading: true)));
+  Future<void> addRatingAction(Store<AppState> store, int productId,
+      String content, int ratingPoint) async {
+    print("add-rating-action");
+    store.dispatch(SetRatingStateAction(RatingState(isLoading: true)));
 
-  //   String productID = product.id.toString();
+    String token = store.state.userState.token;
+    String productID = productId.toString();
 
-  //   try {
-  //     final response = await http.post(
-  //       'http://35.213.174.112/api/products/$productID/like',
-  //       headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
-  //     );
+    print(jsonEncode(<String, dynamic>{
+      'point': ratingPoint.toString(),
+      'content': content,
+    }));
+    try {
+      final response = await http.post(
+        'http://35.213.174.112/api/products/$productID/reviews',
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+        body: jsonEncode(<String, dynamic>{
+          'content': content,
+          'point': ratingPoint,
+        }),
+      );
 
-  //     if (response.statusCode == 200) {
-  //       final jsonData = json.decode(response.body);
-  //       print(jsonData);
+      print(response.statusCode);
+      print(response.body);
 
-  //       Rating newRatingList = store.state.ratingState.ratingList;
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        print(jsonData);
 
-  //       //newRatingList.product.add(product);
+        //Rating newRatingList = store.state.ratingState.ratingList;
 
-  //       store.dispatch(
-  //         SetRatingStateAction(
-  //           RatingState(
-  //             isLoading: false,
-  //             isSuccess: true,
-  //             ratingList: newRatingList,
-  //           ),
-  //         ),
-  //       );
-  //     }
-  //   } catch (error) {
-  //     print(error);
-  //     store.dispatch(
-  //         SetRatingStateAction(RatingState(isLoading: false, isError: true)));
-  //   }
-  // }
+        //newRatingList.product.add(product);
+
+        store.dispatch(
+          SetRatingStateAction(
+            RatingState(
+              isLoading: false,
+              isSuccess: true,
+              //ratingList: newRatingList,
+            ),
+          ),
+        );
+      }
+    } catch (error) {
+      print(error);
+      store.dispatch(
+          SetRatingStateAction(RatingState(isLoading: false, isError: true)));
+    }
+  }
 
   // Future<void> deleteRatingAction(Store<AppState> store) async {
   //   print("delete-rating-action");
