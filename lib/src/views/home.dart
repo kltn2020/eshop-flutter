@@ -46,8 +46,8 @@ class _HomePageState extends State<HomePage> {
         Redux.store.dispatch(
             FavoriteActions(token: Redux.store.state.userState.token)
                 .getAllFavoriteAction),
-        Redux.store.dispatch(
-            ProductActions().getAllProductsAction(Redux.store, 1, 20)),
+        Redux.store.dispatch(ProductActions()
+            .getCollaborativeRecommendAction(Redux.store, 1, 20)),
       ]),
       builder: (context, projectSnap) {
         if (projectSnap.connectionState == ConnectionState.none &&
@@ -93,7 +93,8 @@ class _HomePageState extends State<HomePage> {
                 return Container(
                   child: StoreConnector<AppState, List<Product>>(
                     distinct: true,
-                    converter: (store) => store.state.productsState.products,
+                    converter: (store) =>
+                        store.state.productsState.recommendCollabProducts,
                     builder: (context, products) {
                       return Container(
                         child: SingleChildScrollView(
@@ -183,7 +184,9 @@ class _HomePageState extends State<HomePage> {
                                                                     1),
                                                           ),
                                                         ),
-                                                        product.price != null
+                                                        product.price !=
+                                                                product
+                                                                    .discountPrice
                                                             ? Text(
                                                                 formatter.format(
                                                                     product

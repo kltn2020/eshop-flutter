@@ -176,7 +176,7 @@ Widget productInfo(
                   maxLines: 1,
                 ),
               ),
-              productData.price != null
+              productData.price != productData.discountPrice
                   ? Expanded(
                       child: Padding(
                         padding: EdgeInsets.only(
@@ -935,7 +935,7 @@ Widget productInfo(
                                                   146, 127, 191, 1),
                                             ),
                                           ),
-                                          product.price != null
+                                          product.price != product.discountPrice
                                               ? Text(
                                                   formatter
                                                       .format(product.price),
@@ -1057,7 +1057,7 @@ Widget productInfo(
                                                   146, 127, 191, 1),
                                             ),
                                           ),
-                                          product.price != null
+                                          product.price != product.discountPrice
                                               ? Text(
                                                   formatter
                                                       .format(product.price),

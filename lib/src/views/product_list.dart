@@ -159,7 +159,9 @@ class _ProductListState extends State<ProductList> {
                                                           maxLines: 1,
                                                         ),
                                                       ),
-                                                      product.price != null
+                                                      product.price !=
+                                                              product
+                                                                  .discountPrice
                                                           ? Expanded(
                                                               child: Padding(
                                                                 padding:
