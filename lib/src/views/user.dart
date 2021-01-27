@@ -1,4 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ecommerce_flutter/src/models/Cart.dart';
+import 'package:ecommerce_flutter/src/views/order_history.dart';
 import 'package:ecommerce_flutter/src/widgets/BottomNavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -26,8 +28,8 @@ class _UserState extends State<User> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
-          "Username",
+        title: AutoSizeText(
+          Redux.store.state.userState.user.email,
           style: TextStyle(
             color: Color.fromRGBO(79, 59, 120, 1),
             fontWeight: FontWeight.w900,
@@ -123,20 +125,31 @@ class _UserState extends State<User> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.assignment,
-                          size: 32,
-                          color: Colors.amber[600],
-                        ),
-                        Text(
-                          "Pending",
-                          style: TextStyle(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OrderHistory(
+                                status: 'processing',
+                              ),
+                            ));
+                      },
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.assignment,
+                            size: 32,
                             color: Colors.amber[600],
                           ),
-                        ),
-                      ],
+                          Text(
+                            "Processing",
+                            style: TextStyle(
+                              color: Colors.amber[600],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
@@ -146,20 +159,31 @@ class _UserState extends State<User> {
                     ),
                   ),
                   Container(
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.sync,
-                          size: 32,
-                          color: Colors.blue,
-                        ),
-                        Text(
-                          "Processing",
-                          style: TextStyle(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OrderHistory(
+                                status: 'shipping',
+                              ),
+                            ));
+                      },
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.airport_shuttle,
+                            size: 32,
                             color: Colors.blue,
                           ),
-                        ),
-                      ],
+                          Text(
+                            "Shipping",
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
@@ -169,20 +193,31 @@ class _UserState extends State<User> {
                     ),
                   ),
                   Container(
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.check,
-                          size: 32,
-                          color: Colors.green,
-                        ),
-                        Text(
-                          "Completed",
-                          style: TextStyle(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OrderHistory(
+                                status: 'completed',
+                              ),
+                            ));
+                      },
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.check,
+                            size: 32,
                             color: Colors.green,
                           ),
-                        ),
-                      ],
+                          Text(
+                            "Completed",
+                            style: TextStyle(
+                              color: Colors.green,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
@@ -192,20 +227,31 @@ class _UserState extends State<User> {
                     ),
                   ),
                   Container(
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.cancel,
-                          size: 32,
-                          color: Colors.redAccent,
-                        ),
-                        Text(
-                          "Cancelled",
-                          style: TextStyle(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OrderHistory(
+                                status: 'cancelled',
+                              ),
+                            ));
+                      },
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.cancel,
+                            size: 32,
                             color: Colors.redAccent,
                           ),
-                        ),
-                      ],
+                          Text(
+                            "Cancelled",
+                            style: TextStyle(
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

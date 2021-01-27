@@ -9,7 +9,9 @@ import 'package:intl/intl.dart';
 class OrderHistory extends StatefulWidget {
   // static String get routeName => '@routes/home-page';
 
-  OrderHistory({Key key}) : super(key: key);
+  final String status;
+
+  OrderHistory({Key key, this.status}) : super(key: key);
 
   @override
   _OrderHistoryState createState() => _OrderHistoryState();
@@ -33,7 +35,7 @@ class _OrderHistoryState extends State<OrderHistory> {
           ),
         ),
       ),
-      body: projectWidget(),
+      body: projectWidget(widget.status),
     );
   }
 }
@@ -50,11 +52,12 @@ Color getStatusColor(String status) {
   }
 }
 
-Widget projectWidget() {
+Widget projectWidget(String status) {
   final formatter = new NumberFormat("#,###");
 
   return FutureBuilder(
-    future: Redux.store.dispatch(OrderActions().getAllOrdersAction),
+    future: Redux.store
+        .dispatch(OrderActions().getAllOrdersAction(Redux.store, status)),
     builder: (context, projectSnap) {
       if (projectSnap.connectionState == ConnectionState.none &&
           projectSnap.hasData == null) {

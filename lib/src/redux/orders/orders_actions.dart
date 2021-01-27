@@ -28,15 +28,19 @@ class OrderActions {
     this.orderId,
   });
 
-  Future<void> getAllOrdersAction(Store<AppState> store) async {
+  Future<void> getAllOrdersAction(Store<AppState> store, String status) async {
     store.dispatch(
         SetOrdersStateAction(OrdersState(isLoading: true, orders: [])));
 
     String token = store.state.userState.token;
 
+    String url = status != null
+        ? 'http://35.213.174.112/api/orders?status=$status'
+        : 'http://35.213.174.112/api/orders';
+
     try {
       final response = await http.get(
-        'http://35.213.174.112/api/orders',
+        url,
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
