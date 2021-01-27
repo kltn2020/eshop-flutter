@@ -33,8 +33,6 @@ class _CheckOutState extends State<CheckOut> {
     var result = await Navigator.pushNamed(context, '/address-checkout');
 
     if (result != null) {
-      print(result);
-
       setState(() {
         shippingAddress = result;
       });
@@ -270,10 +268,14 @@ class _CheckOutState extends State<CheckOut> {
                         converter: (store) =>
                             store.state.addressesState.addresses,
                         builder: (context, addresses) {
-                          primaryAddress = addresses.firstWhere(
-                              (element) => element.isPrimary == true);
+                          if (addresses != null) {
+                            primaryAddress = addresses.firstWhere(
+                                (element) => element.isPrimary == true);
+                          }
 
                           if (addresses != null && primaryAddress != null) {
+                            shippingAddress = primaryAddress;
+
                             return Container(
                               width: double.infinity,
                               child: Row(
@@ -348,27 +350,27 @@ class _CheckOutState extends State<CheckOut> {
                     SizedBox(
                       height: 10,
                     ),
-                    FlatButton(
-                      onPressed: () {
-                        _navigateAndDisplaySelection(context);
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("Payment Type: "),
-                            Row(
-                              children: [
-                                Text("$paymentType"),
-                                Icon(Icons.navigate_next),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    // FlatButton(
+                    //   onPressed: () {
+                    //     _navigateAndDisplaySelection(context);
+                    //   },
+                    //   child: Container(
+                    //     width: double.infinity,
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //       crossAxisAlignment: CrossAxisAlignment.center,
+                    //       children: [
+                    //         Text("Payment Type: "),
+                    //         Row(
+                    //           children: [
+                    //             Text("$paymentType"),
+                    //             Icon(Icons.navigate_next),
+                    //           ],
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 10,
                     ),
@@ -397,6 +399,17 @@ class _CheckOutState extends State<CheckOut> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Voucher: ${voucher.code}"),
+                                  Text("Discount: ${voucher.value}%"),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
                                 children: [
                                   Text("Cart total: "),
                                   Text(
@@ -409,9 +422,12 @@ class _CheckOutState extends State<CheckOut> {
                               ),
                               Row(
                                 children: [
-                                  Text("Shipping total: "),
+                                  Text("Discount total: "),
                                   Text(
-                                    formatter.format(shippingFee),
+                                    formatter.format(cartTotal *
+                                        (voucher.value != null
+                                            ? voucher.value / 100
+                                            : 1)),
                                   ),
                                 ],
                               ),
@@ -428,7 +444,11 @@ class _CheckOutState extends State<CheckOut> {
                                     ),
                                   ),
                                   Text(
-                                    formatter.format(cartTotal + shippingFee),
+                                    formatter.format(cartTotal -
+                                        (cartTotal *
+                                            (voucher.value != null
+                                                ? voucher.value / 100
+                                                : 1))),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 24,

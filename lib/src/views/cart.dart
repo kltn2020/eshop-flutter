@@ -1,4 +1,5 @@
 import 'package:ecommerce_flutter/src/models/Cart.dart';
+import 'package:ecommerce_flutter/src/models/Voucher.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_state.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
@@ -20,7 +21,7 @@ class _CartViewState extends State<CartView> {
   bool productCheck = false;
   int productCount = 0;
 
-  var applyVoucher;
+  Voucher applyVoucher;
 
   _navigateAndDisplaySelection(BuildContext context) async {
     // Navigator.push returns a Future that completes after calling
@@ -75,11 +76,14 @@ class _CartViewState extends State<CartView> {
                       ),
                       Text(
                         formatter.format(cart.products.fold(
-                            0,
-                            (previousValue, element) =>
-                                previousValue +
-                                element.quantity *
-                                    element.product.discountPrice)),
+                                0,
+                                (previousValue, element) =>
+                                    previousValue +
+                                    element.quantity *
+                                        element.product.discountPrice) *
+                            (applyVoucher != null
+                                ? (100 - applyVoucher.value) / 100
+                                : 1)),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -108,8 +112,12 @@ class _CartViewState extends State<CartView> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            Navigator.pushNamed(context, "/checkout", arguments: applyVoucher),
+        onPressed: () => {
+          Redux.store.state.cartState.cart.products.length > 0
+              ? Navigator.pushNamed(context, "/checkout",
+                  arguments: applyVoucher)
+              : null,
+        },
         tooltip: 'Click to checkout',
         child: Text("Buy"),
         backgroundColor: Theme.of(context).primaryColor,
