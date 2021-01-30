@@ -1,10 +1,10 @@
-import 'package:ecommerce_flutter/src/models/Cart.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/redux/favorite/favorite_actions.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/views/product_detail.dart';
 import 'package:ecommerce_flutter/src/widgets/BottomNavigation.dart';
+import 'package:ecommerce_flutter/src/widgets/Appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
@@ -258,87 +258,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: typing
-            ? TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: 'Search',
-                ),
-              )
-            : Text(
-                "Eshop",
-                style: TextStyle(
-                  color: Color.fromRGBO(79, 59, 120, 1),
-                  fontWeight: FontWeight.w900,
-                  fontStyle: FontStyle.italic,
-                  fontSize: 32,
-                ),
-              ),
-        leading: IconButton(
-          icon: Icon(typing ? Icons.done : Icons.search),
-          color: Color.fromRGBO(146, 127, 191, 1),
-          onPressed: () {
-            setState(() {
-              typing = !typing;
-            });
-          },
-        ),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/cart');
-            },
-            icon: StoreConnector<AppState, Cart>(
-              distinct: true,
-              converter: (store) => store.state.cartState.cart,
-              builder: (context, cart) {
-                return cart != null
-                    ? Stack(
-                        children: <Widget>[
-                          Icon(
-                            Icons.shopping_cart,
-                            size: 32,
-                          ),
-                          Positioned(
-                            right: 0,
-                            child: Container(
-                              padding: EdgeInsets.all(1),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              constraints: BoxConstraints(
-                                minWidth: 16,
-                                minHeight: 16,
-                              ),
-                              child: Text(
-                                cart.products
-                                    .fold(
-                                        0,
-                                        (previousValue, element) =>
-                                            previousValue + element.quantity)
-                                    .toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          )
-                        ],
-                      )
-                    : Container();
-              },
-            ),
-            color: Color.fromRGBO(146, 127, 191, 1),
-          ),
-        ],
-      ),
+      appBar: AppBarWithSearch(),
       body: Container(
           child: StoreConnector<AppState, String>(
         distinct: true,

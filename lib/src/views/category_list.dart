@@ -1,12 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ecommerce_flutter/src/widgets/VerticalTabs.dart';
 import 'package:flutter/material.dart';
+import 'package:ecommerce_flutter/src/views/search_product.dart';
 
 class BrandList {
   final String title;
   final Image icon;
+  final int id;
 
-  BrandList({this.title, this.icon});
+  BrandList({this.title, this.icon, this.id});
 }
 
 class CategoryList extends StatelessWidget {
@@ -16,42 +18,49 @@ class CategoryList extends StatelessWidget {
       icon: Image(
         image: AssetImage('assets/brands/apple32.png'),
       ),
-    ),
-    BrandList(
-      title: "Microsoft",
-      icon: Image(
-        image: AssetImage('assets/brands/microsoft32.png'),
-      ),
+      id: 1,
     ),
     BrandList(
       title: "DELL",
       icon: Image(
         image: AssetImage('assets/brands/dell32.png'),
       ),
+      id: 2,
     ),
     BrandList(
       title: "Asus",
       icon: Image(
         image: AssetImage('assets/brands/asus32.png'),
       ),
+      id: 4,
     ),
     BrandList(
       title: "Acer",
       icon: Image(
         image: AssetImage('assets/brands/acer32.png'),
       ),
+      id: 6,
     ),
     BrandList(
       title: "LG",
       icon: Image(
         image: AssetImage('assets/brands/lg32.png'),
       ),
+      id: 8,
     ),
     BrandList(
-      title: "Lenovo",
+      title: "HP",
       icon: Image(
-        image: AssetImage('assets/brands/lenovo32.png'),
+        image: AssetImage('assets/brands/hp32.png'),
       ),
+      id: 3,
+    ),
+    BrandList(
+      title: "Huawei",
+      icon: Image(
+        image: AssetImage('assets/brands/huawei32.png'),
+      ),
+      id: 9,
     ),
   ];
 
@@ -213,16 +222,18 @@ class CategoryList extends StatelessWidget {
             tabsContent(
               'Recommended',
             ),
-            tabsContent('Laptop', brandListContainer(productBrandList)),
-            tabsContent('Mouse', brandListContainer(mouseBrandList)),
-            tabsContent('Keyboard', brandListContainer(keyboardBrandList)),
+            tabsContent(
+                'Laptop', brandListContainer(productBrandList, context)),
+            tabsContent('Mouse', brandListContainer(mouseBrandList, context)),
+            tabsContent(
+                'Keyboard', brandListContainer(keyboardBrandList, context)),
           ],
         ),
       )),
     );
   }
 
-  Widget brandListContainer(List<BrandList> brandList) {
+  Widget brandListContainer(List<BrandList> brandList, BuildContext context) {
     return Container(
       child: SingleChildScrollView(
         child: Column(
@@ -255,7 +266,13 @@ class CategoryList extends StatelessWidget {
                       color: Colors.transparent,
                       child: InkWell(
                         onTap: () {
-                          print("$brand.title");
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SearchProductList(
+                                  brandId: brand.id,
+                                ),
+                              ));
                         },
                       ),
                     ),

@@ -4,26 +4,22 @@ import 'package:ecommerce_flutter/src/widgets/BottomNavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-
 import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/views/product_detail.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:ecommerce_flutter/src/widgets/Appbar.dart';
 
-class ProductList extends StatefulWidget {
-  ProductList({Key key, this.title, this.search, this.category, this.brand})
-      : super(key: key);
+class SearchProductList extends StatefulWidget {
+  SearchProductList({Key key, this.search, this.brandId}) : super(key: key);
 
-  final String title;
   final String search;
-  final String category;
-  final String brand;
+  final int brandId;
 
   @override
-  _ProductListState createState() => _ProductListState();
+  _SearchProductListState createState() => _SearchProductListState();
 }
 
-class _ProductListState extends State<ProductList> {
+class _SearchProductListState extends State<SearchProductList> {
   bool typing = false;
   int page = 1;
 
@@ -61,13 +57,9 @@ class _ProductListState extends State<ProductList> {
               child: StoreConnector<AppState, ProductsState>(
                 distinct: true,
                 converter: (store) => store.state.productsState,
-                onInitialBuild:
-                    Redux.store.dispatch(ProductActions().getMoreProductsAction(
-                  Redux.store,
-                  page,
-                  "",
-                  null,
-                )),
+                onInitialBuild: Redux.store.dispatch(ProductActions()
+                    .getMoreProductsAction(
+                        Redux.store, page, widget.search, widget.brandId)),
                 builder: (context, productState) {
                   return Container(
                     child: NotificationListener<ScrollNotification>(

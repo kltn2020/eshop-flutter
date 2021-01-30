@@ -81,16 +81,18 @@ class ProductActions {
   }
 
   Future<void> getMoreProductsAction(
-      Store<AppState> store, int page, int size) async {
+      Store<AppState> store, int page, String search, int brandId) async {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
     print("begin-get-more");
 
     try {
       var token = store.state.userState.token;
+      print(
+          'http://35.213.174.112/api/products?page=$page&&search_terms=${search != null ? search : ''}${brandId != null ? '&&brand_id=$brandId' : ''}');
 
       final response = await http.get(
-        'http://35.213.174.112/api/products?page=$page',
+        'http://35.213.174.112/api/products?page=$page&&search_terms=${search != null ? search : ''}${brandId != null ? '&&brand_id=$brandId' : ''}',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
