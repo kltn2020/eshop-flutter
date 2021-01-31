@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:ecommerce_flutter/src/redux/user/user_actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   Login({Key key, this.title}) : super(key: key);
@@ -39,7 +40,10 @@ class _LoginState extends State<Login> {
       password: password.text,
     ).loginAction);
 
-    if (Redux.store.state.userState.token != "")
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('token', Redux.store.state.userState.token);
+
+    if (prefs.getString('token') != "")
       Navigator.pushReplacementNamed(context, '/');
   }
 

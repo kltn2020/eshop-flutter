@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
               ),
         ),
         title: 'Shop',
-        initialRoute: Redux.store.state.userState.token != "" ? '/' : '/intro',
+        initialRoute: '/',
         routes: {
           '/': (context) => HomePage(),
           '/intro': (context) => Intro(),

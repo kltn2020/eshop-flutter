@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:ecommerce_flutter/src/redux/user/user_actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountSetting extends StatefulWidget {
   AccountSetting({Key key, this.title}) : super(key: key);
@@ -31,9 +32,12 @@ class _AccountSettingState extends State<AccountSetting> {
     super.dispose();
   }
 
-  void _onLogout() {
+  void _onLogout() async {
     print("Ready to logout");
-    Redux.store.dispatch(new UserActions().logoutAction);
+    await Redux.store.dispatch(new UserActions().logoutAction);
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('token', null);
 
     if (Redux.store.state.userState.token == "")
       Navigator.pushReplacementNamed(context, '/login');

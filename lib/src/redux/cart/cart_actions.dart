@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:ecommerce_flutter/src/models/Address.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
 import 'package:ecommerce_flutter/src/models/Voucher.dart';
+import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:ecommerce_flutter/src/models/Cart.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_state.dart';
@@ -16,6 +18,23 @@ class SetCartStateAction {
   final CartState cartState;
 
   SetCartStateAction(this.cartState);
+}
+
+class ErrorMessage {
+  String message;
+  int status;
+
+  ErrorMessage({
+    this.message,
+    this.status,
+  });
+
+  factory ErrorMessage.fromJson(Map<String, dynamic> json) {
+    if (json != null)
+      return ErrorMessage(message: json['message'], status: json['status']);
+    else
+      return null;
+  }
 }
 
 class CartActions {
@@ -86,6 +105,14 @@ class CartActions {
       }
     } catch (error) {
       print(error);
+      final jsonData = json.decode(error);
+      var errorMessage = ErrorMessage.fromJson(jsonData['error']);
+
+      if (errorMessage.message.contains('not authenticated')) {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', null);
+      }
+
       store.dispatch(
           SetCartStateAction(CartState(isLoading: false, isError: true)));
     }

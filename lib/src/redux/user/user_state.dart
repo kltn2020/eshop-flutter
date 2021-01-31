@@ -8,8 +8,8 @@ class UserState {
   final String errorMessage;
   final bool isLoading;
   final bool isSuccess;
-  final User user;
-  final String token;
+  User user;
+  String token;
 
   UserState({
     this.isError,
