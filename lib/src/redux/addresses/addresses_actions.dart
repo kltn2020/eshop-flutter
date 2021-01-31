@@ -165,6 +165,7 @@ class AddressesActions {
     print("delete-addresses-action");
     store.dispatch(SetAddressesStateAction(AddressesState(isLoading: true)));
 
+    String token = store.state.userState.token;
     try {
       final response = await http.delete(
         'http://35.213.174.112/api/address/$id',

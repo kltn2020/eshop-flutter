@@ -13,20 +13,6 @@ class AddressCreate extends StatefulWidget {
 }
 
 class _AddressCreateState extends State<AddressCreate> {
-  // var _currencies = [
-  //   "Food",
-  //   "Transport",
-  //   "Personal",
-  //   "Shopping",
-  //   "Medical",
-  //   "Rent",
-  //   "Movie",
-  //   "Salary"
-  // ];
-
-  // String _currentCitySelectedValue = "Food";
-  // String _currentDistrictSelectedValue = "Food";
-
   var _isPrimary = [true, false];
   bool _currentIsPrimary = true;
 
@@ -38,6 +24,54 @@ class _AddressCreateState extends State<AddressCreate> {
     _phoneNumberController.dispose();
     _locateController.dispose();
     super.dispose();
+  }
+
+  Future<void> _showSuccessDialog(void value) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Update Successfully !!!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.greenAccent[400],
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Image.asset("assets/undraw_update_complete.png"),
+                Text(
+                  "Your address has been created",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'Back to Address List',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color.fromRGBO(146, 127, 191, 1),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(); //pop dialog
+                Navigator.of(context).pop(); // pop screen
+                Navigator.pushReplacementNamed(context, '/address-list');
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -85,74 +119,6 @@ class _AddressCreateState extends State<AddressCreate> {
                   labelText: 'Phone Number',
                 ),
               ),
-              // SizedBox(
-              //   height: 30,
-              // ),
-              // FormField<String>(
-              //   builder: (FormFieldState<String> state) {
-              //     return InputDecorator(
-              //       decoration: InputDecoration(
-              //           labelStyle: TextStyle(color: Colors.grey),
-              //           errorStyle:
-              //               TextStyle(color: Colors.redAccent, fontSize: 16.0),
-              //           hintText: 'City',
-              //           border: OutlineInputBorder(
-              //               borderRadius: BorderRadius.circular(5.0))),
-              //       isEmpty: _currentCitySelectedValue == null,
-              //       child: DropdownButtonHideUnderline(
-              //         child: DropdownButton<String>(
-              //           value: _currentCitySelectedValue,
-              //           isDense: true,
-              //           onChanged: (String newValue) {
-              //             setState(() {
-              //               _currentCitySelectedValue = newValue;
-              //             });
-              //           },
-              //           items: _currencies.map((String value) {
-              //             return DropdownMenuItem<String>(
-              //               value: value,
-              //               child: Text(value),
-              //             );
-              //           }).toList(),
-              //         ),
-              //       ),
-              //     );
-              //   },
-              // ),
-              // SizedBox(
-              //   height: 30,
-              // ),
-              // FormField<String>(
-              //   builder: (FormFieldState<String> state) {
-              //     return InputDecorator(
-              //       decoration: InputDecoration(
-              //           labelStyle: TextStyle(color: Colors.grey),
-              //           errorStyle:
-              //               TextStyle(color: Colors.redAccent, fontSize: 16.0),
-              //           hintText: 'District',
-              //           border: OutlineInputBorder(
-              //               borderRadius: BorderRadius.circular(5.0))),
-              //       isEmpty: _currentDistrictSelectedValue == '',
-              //       child: DropdownButtonHideUnderline(
-              //         child: DropdownButton<String>(
-              //           value: _currentDistrictSelectedValue,
-              //           isDense: true,
-              //           onChanged: (String newValue) {
-              //             setState(() {
-              //               _currentDistrictSelectedValue = newValue;
-              //             });
-              //           },
-              //           items: _currencies.map((String value) {
-              //             return DropdownMenuItem<String>(
-              //               value: value,
-              //               child: Text(value),
-              //             );
-              //           }).toList(),
-              //         ),
-              //       ),
-              //     );
-              //   },
-              // ),
               SizedBox(
                 height: 30,
               ),
@@ -167,6 +133,13 @@ class _AddressCreateState extends State<AddressCreate> {
               SizedBox(
                 height: 30,
               ),
+              Text(
+                "Is Primary?",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 10,
+              ),
               FormField<bool>(
                 builder: (FormFieldState<bool> state) {
                   return InputDecorator(
@@ -174,7 +147,7 @@ class _AddressCreateState extends State<AddressCreate> {
                       labelStyle: TextStyle(color: Colors.grey),
                       errorStyle:
                           TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                      hintText: 'City',
+                      hintText: 'IsPrimary',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       ),
@@ -205,12 +178,19 @@ class _AddressCreateState extends State<AddressCreate> {
               ),
               FlatButton(
                 onPressed: () {
-                  AddressesActions().addAddressesAction(
+                  AddressesActions()
+                      .addAddressesAction(
                     Redux.store,
                     Redux.store.state.userState.token,
                     _phoneNumberController.text,
                     _locateController.text,
                     _currentIsPrimary,
+                  )
+                      .then(
+                    (value) => _showSuccessDialog(value),
+                    onError: (e) {
+                      //_showErrorDialog(e);
+                    },
                   );
                 },
                 child: Container(

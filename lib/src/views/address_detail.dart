@@ -291,7 +291,7 @@ class _AddressDetailState extends State<AddressDetail> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 64),
+                margin: EdgeInsets.only(top: 32),
                 child: FlatButton(
                   onPressed: () async {
                     await AddressesActions()
