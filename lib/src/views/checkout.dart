@@ -268,7 +268,7 @@ class _CheckOutState extends State<CheckOut> {
                         converter: (store) =>
                             store.state.addressesState.addresses,
                         builder: (context, addresses) {
-                          if (addresses != null) {
+                          if (addresses != null && addresses.length > 0) {
                             primaryAddress = addresses.firstWhere(
                                 (element) => element.isPrimary == true);
                           }
@@ -412,8 +412,10 @@ class _CheckOutState extends State<CheckOut> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("Voucher: ${voucher.code}"),
-                                  Text("Discount: ${voucher.value}%"),
+                                  Text(
+                                      "Voucher: ${voucher != null && voucher.code != null ? voucher.code : ''}"),
+                                  Text(
+                                      "Discount: ${voucher != null && voucher.value != null ? voucher.value : ''}%"),
                                 ],
                               ),
                               SizedBox(
@@ -435,7 +437,8 @@ class _CheckOutState extends State<CheckOut> {
                                   Text("Discount total: "),
                                   Text(
                                     formatter.format(cartTotal *
-                                        (voucher.value != null
+                                        (voucher != null &&
+                                                voucher.value != null
                                             ? voucher.value / 100
                                             : 1)),
                                   ),
@@ -456,7 +459,8 @@ class _CheckOutState extends State<CheckOut> {
                                   Text(
                                     formatter.format(cartTotal -
                                         (cartTotal *
-                                            (voucher.value != null
+                                            (voucher != null &&
+                                                    voucher.value != null
                                                 ? voucher.value / 100
                                                 : 1))),
                                     style: TextStyle(
@@ -473,8 +477,7 @@ class _CheckOutState extends State<CheckOut> {
                                 disabledTextColor: Colors.grey,
                                 disabledColor: Colors.grey,
                                 onPressed: () {
-                                  (paymentType == "Choose type of payment" ||
-                                          cart.products.length == 0)
+                                  (cart.products.length == 0)
                                       ? _showMissingFieldDialog()
                                       : _checkoutCart(context, voucher);
                                 },

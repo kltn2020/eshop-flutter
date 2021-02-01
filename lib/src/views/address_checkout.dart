@@ -323,9 +323,15 @@ Widget projectWidget() {
                                         height: 10,
                                       ),
                                       Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text("Address detail: "),
-                                          Text(address.locate),
+                                          Expanded(
+                                            child: Text(address.locate,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2),
+                                          ),
                                         ],
                                       ),
                                       SizedBox(

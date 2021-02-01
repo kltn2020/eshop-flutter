@@ -1,4 +1,3 @@
-import 'package:ecommerce_flutter/src/models/Cart.dart';
 import 'package:ecommerce_flutter/src/models/Voucher.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_state.dart';
@@ -18,7 +17,6 @@ class CartView extends StatefulWidget {
 
 class _CartViewState extends State<CartView> {
   bool selectAllCheck = false;
-  bool productCheck = false;
   int productCount = 0;
 
   Voucher applyVoucher;
@@ -58,10 +56,12 @@ class _CartViewState extends State<CartView> {
         child: Container(
           height: 50.0,
           padding: EdgeInsets.symmetric(horizontal: 16),
-          child: StoreConnector<AppState, Cart>(
+          child: StoreConnector<AppState, CartState>(
             distinct: true,
-            converter: (store) => store.state.cartState.cart,
-            builder: (context, cart) {
+            rebuildOnChange: true,
+            converter: (store) => store.state.cartState,
+            builder: (context, cartState) {
+              var cart = cartState.cart;
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -79,8 +79,10 @@ class _CartViewState extends State<CartView> {
                                 0,
                                 (previousValue, element) =>
                                     previousValue +
-                                    element.quantity *
-                                        element.product.discountPrice) *
+                                    (element.check == true
+                                        ? element.quantity *
+                                            element.product.discountPrice
+                                        : 0)) *
                             (applyVoucher != null
                                 ? (100 - applyVoucher.value) / 100
                                 : 1)),
@@ -166,6 +168,7 @@ class ProductInCart extends StatelessWidget {
               Checkbox(
                 value: check,
                 onChanged: onChecked,
+                activeColor: Color.fromRGBO(146, 127, 191, 1),
               ),
               Image.network(
                 imageURL,
