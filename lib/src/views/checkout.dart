@@ -295,10 +295,20 @@ class _CheckOutState extends State<CheckOut> {
                                             ),
                                       shippingAddress != null &&
                                               shippingAddress.locate != null
-                                          ? Text(shippingAddress.locate)
-                                          : Text(
-                                              'Address Detail: ${primaryAddress.locate}',
-                                            ),
+                                          ? Expanded(
+                                              child: Text(
+                                                  shippingAddress.locate,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 2),
+                                            )
+                                          : Expanded(
+                                              child: Text(
+                                                  'Address Detail: ${primaryAddress.locate}',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 2),
+                                            )
                                     ],
                                   ),
                                   Icon(Icons.navigate_next),

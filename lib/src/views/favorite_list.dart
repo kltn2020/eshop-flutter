@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ecommerce_flutter/src/views/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -135,7 +136,7 @@ Widget projectWidget() {
                                             product.discountPrice > 0
                                                 ? Row(
                                                     children: [
-                                                      Text(
+                                                      AutoSizeText(
                                                         formatter.format(product
                                                             .discountPrice),
                                                         style: TextStyle(
@@ -149,7 +150,7 @@ Widget projectWidget() {
                                                       SizedBox(
                                                         width: 5,
                                                       ),
-                                                      Text(
+                                                      AutoSizeText(
                                                         formatter.format(
                                                             product.price),
                                                         style: TextStyle(

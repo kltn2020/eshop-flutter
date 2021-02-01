@@ -311,6 +311,7 @@ Widget productInfo(
                       ),
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "SKU: ",
@@ -319,11 +320,16 @@ Widget productInfo(
                           ),
                         ),
                         productData.sku != null
-                            ? Text(productData.sku)
+                            ? Expanded(
+                                child: Text(productData.sku,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Category: ",
@@ -332,11 +338,16 @@ Widget productInfo(
                           ),
                         ),
                         productData.categoryId != null
-                            ? Text(productData.categoryId.toString())
+                            ? Expanded(
+                                child: Text(productData.categoryId.toString(),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Brand: ",
@@ -345,7 +356,11 @@ Widget productInfo(
                           ),
                         ),
                         productData.brandId != null
-                            ? Text(productData.brandId.toString())
+                            ? Expanded(
+                                child: Text(productData.brandId.toString(),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
@@ -364,6 +379,7 @@ Widget productInfo(
                       ),
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "CPU: ",
@@ -372,7 +388,11 @@ Widget productInfo(
                           ),
                         ),
                         productData.cpu != null
-                            ? Text(productData.cpu)
+                            ? Expanded(
+                                child: Text(productData.cpu,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
@@ -386,11 +406,16 @@ Widget productInfo(
                           ),
                         ),
                         productData.gpu != null
-                            ? Flexible(child: Text(productData.gpu))
+                            ? Expanded(
+                                child: Text(productData.gpu,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "OS: ",
@@ -399,7 +424,11 @@ Widget productInfo(
                           ),
                         ),
                         productData.os != null
-                            ? Text(productData.os)
+                            ? Expanded(
+                                child: Text(productData.os,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
@@ -413,11 +442,16 @@ Widget productInfo(
                           ),
                         ),
                         productData.ram != null
-                            ? Flexible(child: Text(productData.ram))
+                            ? Expanded(
+                                child: Text(productData.ram,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Storage: ",
@@ -426,11 +460,16 @@ Widget productInfo(
                           ),
                         ),
                         productData.storage != null
-                            ? Text(productData.storage)
+                            ? Expanded(
+                                child: Text(productData.storage,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "New Features: ",
@@ -439,7 +478,11 @@ Widget productInfo(
                           ),
                         ),
                         productData.newFeature != null
-                            ? Flexible(child: Text(productData.newFeature))
+                            ? Expanded(
+                                child: Text(productData.newFeature,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
@@ -458,6 +501,7 @@ Widget productInfo(
                       ),
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Display: ",
@@ -466,11 +510,16 @@ Widget productInfo(
                           ),
                         ),
                         productData.display != null
-                            ? Text(productData.display)
+                            ? Expanded(
+                                child: Text(productData.display,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Display Resolution: ",
@@ -484,6 +533,7 @@ Widget productInfo(
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Display Screen: ",
@@ -492,7 +542,11 @@ Widget productInfo(
                           ),
                         ),
                         productData.displayScreen != null
-                            ? Text(productData.displayScreen)
+                            ? Expanded(
+                                child: Text(productData.displayScreen,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
@@ -511,6 +565,7 @@ Widget productInfo(
                       ),
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Camera: ",
@@ -519,11 +574,16 @@ Widget productInfo(
                           ),
                         ),
                         productData.camera != null
-                            ? Text(productData.camera)
+                            ? Expanded(
+                                child: Text(productData.camera,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Video: ",
@@ -532,7 +592,11 @@ Widget productInfo(
                           ),
                         ),
                         productData.video != null
-                            ? Text(productData.video)
+                            ? Expanded(
+                                child: Text(productData.video,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
@@ -551,6 +615,7 @@ Widget productInfo(
                       ),
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Wifi: ",
@@ -559,11 +624,16 @@ Widget productInfo(
                           ),
                         ),
                         productData.wifi != null
-                            ? Text(productData.wifi)
+                            ? Expanded(
+                                child: Text(productData.wifi,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Bluetooth: ",
@@ -572,11 +642,16 @@ Widget productInfo(
                           ),
                         ),
                         productData.bluetooth != null
-                            ? Text(productData.bluetooth)
+                            ? Expanded(
+                                child: Text(productData.bluetooth,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Ports: ",
@@ -585,7 +660,11 @@ Widget productInfo(
                           ),
                         ),
                         productData.ports != null
-                            ? Text(productData.ports)
+                            ? Expanded(
+                                child: Text(productData.ports,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
@@ -604,6 +683,7 @@ Widget productInfo(
                       ),
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Size: ",
@@ -612,11 +692,16 @@ Widget productInfo(
                           ),
                         ),
                         productData.size != null
-                            ? Text(productData.size)
+                            ? Expanded(
+                                child: Text(productData.size,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Weight: ",
@@ -625,11 +710,16 @@ Widget productInfo(
                           ),
                         ),
                         productData.weight != null
-                            ? Text(productData.weight)
+                            ? Expanded(
+                                child: Text(productData.weight,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Material: ",
@@ -638,11 +728,16 @@ Widget productInfo(
                           ),
                         ),
                         productData.material != null
-                            ? Text(productData.material)
+                            ? Expanded(
+                                child: Text(productData.material,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Battery Capacity: ",
@@ -650,8 +745,12 @@ Widget productInfo(
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        productData.ports != null
-                            ? Text(productData.batteryCapacity)
+                        productData.batteryCapacity != null
+                            ? Expanded(
+                                child: Text(productData.batteryCapacity,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2),
+                              )
                             : Text(""),
                       ],
                     ),

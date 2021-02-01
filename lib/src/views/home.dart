@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
 import 'package:ecommerce_flutter/src/models/User.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
@@ -338,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
-                                                Text(
+                                                AutoSizeText(
                                                   formatter.format(
                                                       product.discountPrice),
                                                   style: TextStyle(
@@ -350,7 +351,7 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                                 product.price !=
                                                         product.discountPrice
-                                                    ? Text(
+                                                    ? AutoSizeText(
                                                         formatter.format(
                                                             product.price),
                                                         style: TextStyle(
