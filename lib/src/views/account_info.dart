@@ -65,17 +65,17 @@ class _AccountInfoState extends State<AccountInfo> {
                         ),
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      child: TextFormField(
-                        enabled: false,
-                        initialValue: user.role,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Role',
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   padding: EdgeInsets.symmetric(vertical: 15),
+                    //   child: TextFormField(
+                    //     enabled: false,
+                    //     initialValue: user.role,
+                    //     decoration: InputDecoration(
+                    //       border: OutlineInputBorder(),
+                    //       labelText: 'Role',
+                    //     ),
+                    //   ),
+                    // ),
 
                     // FlatButton(
                     //   onPressed: null,
