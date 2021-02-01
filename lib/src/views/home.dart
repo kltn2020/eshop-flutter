@@ -4,6 +4,7 @@ import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/redux/favorite/favorite_actions.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/redux/user/user_actions.dart';
+import 'package:ecommerce_flutter/src/views/category_list.dart';
 import 'package:ecommerce_flutter/src/views/product_detail.dart';
 import 'package:ecommerce_flutter/src/widgets/BottomNavigation.dart';
 import 'package:ecommerce_flutter/src/widgets/Appbar.dart';
@@ -135,35 +136,68 @@ class _HomePageState extends State<HomePage> {
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
                   children: <Widget>[
-                    CategoryItem(
-                      icon: Icons.computer,
-                      size: 70,
-                      margin: EdgeInsets.only(
-                        left: 10,
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CategoryList(
+                                selectedIndex: 0,
+                              ),
+                            ));
+                      },
+                      child: CategoryItem(
+                        icon: Icons.computer,
+                        size: 70,
+                        margin: EdgeInsets.only(
+                          left: 10,
+                        ),
+                        padding: EdgeInsets.all(10),
+                        backgroundColor: Color.fromRGBO(196, 187, 240, 1),
+                        name: "Laptop",
                       ),
-                      padding: EdgeInsets.all(10),
-                      backgroundColor: Color.fromRGBO(196, 187, 240, 1),
-                      name: "Laptop",
                     ),
-                    CategoryItem(
-                      icon: Icons.mouse,
-                      size: 70,
-                      margin: EdgeInsets.only(
-                        left: 10,
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CategoryList(
+                                selectedIndex: 1,
+                              ),
+                            ));
+                      },
+                      child: CategoryItem(
+                        icon: Icons.mouse,
+                        size: 70,
+                        margin: EdgeInsets.only(
+                          left: 10,
+                        ),
+                        padding: EdgeInsets.all(10),
+                        backgroundColor: Color.fromRGBO(196, 187, 240, 1),
+                        name: "Mouse",
                       ),
-                      padding: EdgeInsets.all(10),
-                      backgroundColor: Color.fromRGBO(196, 187, 240, 1),
-                      name: "Mouse",
                     ),
-                    CategoryItem(
-                      icon: Icons.keyboard,
-                      size: 70,
-                      margin: EdgeInsets.only(
-                        left: 10,
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CategoryList(
+                                selectedIndex: 2,
+                              ),
+                            ));
+                      },
+                      child: CategoryItem(
+                        icon: Icons.keyboard,
+                        size: 70,
+                        margin: EdgeInsets.only(
+                          left: 10,
+                        ),
+                        padding: EdgeInsets.all(10),
+                        backgroundColor: Color.fromRGBO(196, 187, 240, 1),
+                        name: "Keyboard",
                       ),
-                      padding: EdgeInsets.all(10),
-                      backgroundColor: Color.fromRGBO(196, 187, 240, 1),
-                      name: "Keyboard",
                     ),
                   ],
                 ),

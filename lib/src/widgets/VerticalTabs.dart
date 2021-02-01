@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 /// A vertical tab widget for flutter
 class VerticalTabs extends StatefulWidget {
   final Key key;
+  final int selectedIndex;
   final double tabsWidth;
   final double itemExtent;
   final double indicatorWidth;
@@ -24,6 +25,7 @@ class VerticalTabs extends StatefulWidget {
 
   VerticalTabs(
       {this.key,
+      this.selectedIndex,
       @required this.tabs,
       @required this.contents,
       this.tabsWidth = 200,
@@ -65,7 +67,15 @@ class _VerticalTabsState extends State<VerticalTabs>
         vsync: this,
       ));
     }
-    _selectTab(0);
+    _selectTab(widget.selectedIndex != null ? widget.selectedIndex : 0);
+
+    if (widget.selectedIndex != null) {
+      setState(() {
+        _selectedIndex = widget.selectedIndex;
+      });
+      pageController = PageController(initialPage: _selectedIndex);
+    }
+
     if (widget.disabledChangePageFromContentView == true)
       pageScrollPhysics = NeverScrollableScrollPhysics();
     super.initState();
@@ -204,6 +214,7 @@ class _VerticalTabsState extends State<VerticalTabs>
 
   void _selectTab(index) {
     _selectedIndex = index;
+
     for (AnimationController animationController in animationControllers) {
       animationController.reset();
     }

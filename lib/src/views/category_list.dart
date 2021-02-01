@@ -12,6 +12,12 @@ class BrandList {
 }
 
 class CategoryList extends StatelessWidget {
+  final int selectedIndex;
+  CategoryList({
+    Key key,
+    this.selectedIndex,
+  }) : super(key: key);
+
   final productBrandList = [
     BrandList(
       title: "Apple",
@@ -144,6 +150,7 @@ class CategoryList extends StatelessWidget {
       body: SafeArea(
           child: Container(
         child: VerticalTabs(
+          selectedIndex: selectedIndex != null ? selectedIndex : 0,
           tabsWidth: 130,
           itemExtent: 100,
           direction: TextDirection.ltr,
@@ -151,27 +158,27 @@ class CategoryList extends StatelessWidget {
           changePageDuration: Duration(milliseconds: 500),
           indicatorColor: Colors.purple,
           tabs: <Tab>[
-            Tab(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.star_border,
-                      size: 32,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: AutoSizeText(
-                        "Recommended",
-                        maxLines: 1,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // Tab(
+            //   child: Center(
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       crossAxisAlignment: CrossAxisAlignment.center,
+            //       children: [
+            //         Icon(
+            //           Icons.star_border,
+            //           size: 32,
+            //         ),
+            //         SizedBox(
+            //           width: double.infinity,
+            //           child: AutoSizeText(
+            //             "Recommended",
+            //             maxLines: 1,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             Tab(
               child: Center(
                 child: Column(
@@ -180,7 +187,7 @@ class CategoryList extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.laptop,
-                      size: 32,
+                      size: 28,
                     ),
                     Text("Laptop"),
                   ],
@@ -195,7 +202,7 @@ class CategoryList extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.mouse,
-                      size: 32,
+                      size: 28,
                     ),
                     Text("Mouse"),
                   ],
@@ -210,7 +217,7 @@ class CategoryList extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.keyboard,
-                      size: 32,
+                      size: 28,
                     ),
                     Text("Keyboard"),
                   ],
@@ -219,9 +226,9 @@ class CategoryList extends StatelessWidget {
             ),
           ],
           contents: <Widget>[
-            tabsContent(
-              'Recommended',
-            ),
+            // tabsContent(
+            //   'Recommended',
+            // ),
             tabsContent(
                 'Laptop', brandListContainer(productBrandList, context)),
             tabsContent('Mouse', brandListContainer(mouseBrandList, context)),
