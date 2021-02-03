@@ -74,6 +74,52 @@ class _AddressCreateState extends State<AddressCreate> {
     );
   }
 
+  Future<void> _showErrorDialog(AddressErrorMessage e) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Create Error!!!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.redAccent,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Image.asset("assets/undraw_error.png"),
+                Text(
+                  e.message.toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'I will check it right now!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color.fromRGBO(146, 127, 191, 1),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,7 +173,7 @@ class _AddressCreateState extends State<AddressCreate> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   focusColor: Color.fromRGBO(146, 127, 191, 1),
-                  labelText: 'Address',
+                  labelText: 'Locate',
                 ),
               ),
               SizedBox(
@@ -171,20 +217,27 @@ class _AddressCreateState extends State<AddressCreate> {
               ),
               FlatButton(
                 onPressed: () {
-                  AddressesActions()
-                      .addAddressesAction(
-                    Redux.store,
-                    Redux.store.state.userState.token,
-                    _phoneNumberController.text,
-                    _locateController.text,
-                    _currentIsPrimary,
-                  )
-                      .then(
-                    (value) => _showSuccessDialog(value),
-                    onError: (e) {
-                      //_showErrorDialog(e);
-                    },
-                  );
+                  if (_phoneNumberController.text != "")
+                    AddressesActions()
+                        .addAddressesAction(
+                      Redux.store,
+                      Redux.store.state.userState.token,
+                      _phoneNumberController.text,
+                      _locateController.text,
+                      _currentIsPrimary,
+                    )
+                        .then(
+                      (value) => _showSuccessDialog(value),
+                      onError: (e) {
+                        _showErrorDialog(e);
+                      },
+                    );
+                  else
+                    _showErrorDialog(AddressErrorMessage.fromJson({
+                      'code': 'VALIATION_ERROR',
+                      'message': "Phone number can't be blank",
+                      'status': 'ERROR',
+                    }));
                 },
                 child: Container(
                   height: 50,

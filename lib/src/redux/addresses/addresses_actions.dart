@@ -99,6 +99,7 @@ class AddressesActions {
       print(error);
       store.dispatch(SetAddressesStateAction(
           AddressesState(isLoading: false, isError: true)));
+      throw (AddressErrorMessage.fromJson(json.decode(error)));
     }
   }
 
@@ -201,5 +202,28 @@ class AddressesActions {
       store.dispatch(SetAddressesStateAction(
           AddressesState(isLoading: false, isError: true)));
     }
+  }
+}
+
+class AddressErrorMessage {
+  String code;
+  String message;
+  String status;
+
+  AddressErrorMessage({
+    this.code,
+    this.message,
+    this.status,
+  });
+
+  factory AddressErrorMessage.fromJson(Map<String, dynamic> json) {
+    if (json != null) {
+      return AddressErrorMessage(
+        code: json['code'] != null ? json['code'] : null,
+        message: json['message'] != null ? json['message'] : null,
+        status: json['status'] != null ? json['status'] : null,
+      );
+    } else
+      return null;
   }
 }

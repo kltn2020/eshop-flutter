@@ -185,7 +185,9 @@ Widget projectWidget() {
                                       Row(
                                         children: [
                                           Text("Number: "),
-                                          Text(address.phoneNumber),
+                                          Text(address.phoneNumber != null
+                                              ? address.phoneNumber
+                                              : ''),
                                         ],
                                       ),
                                       SizedBox(
