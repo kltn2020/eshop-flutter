@@ -41,7 +41,7 @@ class _VoucherListState extends State<VoucherList> {
 }
 
 Widget projectWidget() {
-  final dateF = new DateFormat('dd/MM/yyyy hh:mm');
+  final dateF = new DateFormat('dd/MM/yyyy');
 
   return FutureBuilder(
     future: Redux.store
@@ -123,18 +123,18 @@ Widget projectWidget() {
                                                 fontSize: 18,
                                               ),
                                             ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
                                             Text(
                                               'Category: ${voucher.category.name}',
                                               style: TextStyle(),
                                             ),
-                                            Text(
-                                              'From: ${voucher.validFrom}',
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                              ),
+                                            SizedBox(
+                                              height: 10,
                                             ),
                                             Text(
-                                              'To: ${voucher.validTo}',
+                                              'Exp: ${dateF.format(DateTime.parse(voucher.validTo))}',
                                               style: TextStyle(
                                                 color: Colors.grey,
                                               ),

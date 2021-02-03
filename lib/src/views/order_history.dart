@@ -54,6 +54,7 @@ Color getStatusColor(String status) {
 
 Widget projectWidget(String status) {
   final formatter = new NumberFormat("#,###");
+  final dateF = new DateFormat('dd/MM/yyyy');
 
   return FutureBuilder(
     future: Redux.store
@@ -200,7 +201,7 @@ Widget projectWidget(String status) {
                                       height: 10,
                                     ),
                                     Text(
-                                      "Order date",
+                                      'Order date: ${dateF.format(DateTime.parse(order.orderDate))}',
                                       style: TextStyle(
                                         color: Colors.grey,
                                       ),

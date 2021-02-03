@@ -133,18 +133,11 @@ class _AddressCreateState extends State<AddressCreate> {
               SizedBox(
                 height: 30,
               ),
-              Text(
-                "Is Primary?",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 10,
-              ),
               FormField<bool>(
                 builder: (FormFieldState<bool> state) {
                   return InputDecorator(
                     decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.grey),
+                      labelText: 'Set as primary address?',
                       errorStyle:
                           TextStyle(color: Colors.redAccent, fontSize: 16.0),
                       hintText: 'IsPrimary',
@@ -165,7 +158,7 @@ class _AddressCreateState extends State<AddressCreate> {
                         items: _isPrimary.map((bool value) {
                           return DropdownMenuItem<bool>(
                             value: value,
-                            child: Text(value == true ? "True" : "False"),
+                            child: Text(value == true ? "Yes" : "No"),
                           );
                         }).toList(),
                       ),

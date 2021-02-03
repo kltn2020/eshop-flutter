@@ -44,6 +44,7 @@ class _OrderDetailState extends State<OrderDetail> {
 
 Widget projectWidget(int id) {
   final formatter = new NumberFormat("#,###");
+  final dateF = new DateFormat('dd/MM/yyyy');
 
   return FutureBuilder(
     future: Redux.store.dispatch(OrderActions(orderId: id).getByIdOrderAction),
@@ -111,7 +112,8 @@ Widget projectWidget(int id) {
                                 Container(
                                   padding: EdgeInsets.symmetric(vertical: 8),
                                   child: Text(
-                                    order.orderDate,
+                                    dateF.format(
+                                        DateTime.parse(order.orderDate)),
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.grey,

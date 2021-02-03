@@ -235,8 +235,7 @@ class _AddressDetailState extends State<AddressDetail> {
                 builder: (FormFieldState<bool> state) {
                   return InputDecorator(
                     decoration: InputDecoration(
-                      labelText: 'Primary Address?',
-                      labelStyle: TextStyle(color: Colors.grey),
+                      labelText: 'Set as primary address?',
                       errorStyle:
                           TextStyle(color: Colors.redAccent, fontSize: 16.0),
                       hintText: 'Primary',
@@ -257,7 +256,7 @@ class _AddressDetailState extends State<AddressDetail> {
                         items: _isPrimary.map((bool value) {
                           return DropdownMenuItem<bool>(
                             value: value,
-                            child: Text(value == true ? "True" : "False"),
+                            child: Text(value == true ? "Yes" : "No"),
                           );
                         }).toList(),
                       ),

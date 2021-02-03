@@ -21,6 +21,7 @@ class ProductPage extends StatelessWidget {
   ProductPage({@required this.product});
 
   final formatter = new NumberFormat("#,###");
+  final dateF = new DateFormat('dd/MM/yyyy');
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +133,8 @@ Widget productInfo(
     List<Product> recommendContentProductList,
     List<Product> recommendCollabProductList) {
   final formatter = new NumberFormat("#,###");
+  final dateF = new DateFormat('dd/MM/yyyy');
+
   return SingleChildScrollView(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -888,7 +891,9 @@ Widget productInfo(
                                                     ),
                                                     Text(
                                                       item.updatedAt != null
-                                                          ? item.updatedAt
+                                                          ? dateF.format(
+                                                              DateTime.parse(item
+                                                                  .updatedAt))
                                                           : '',
                                                       style: TextStyle(
                                                           color: Colors.grey),

@@ -7,6 +7,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ecommerce_flutter/src/models/Rating.dart';
 import 'package:ecommerce_flutter/src/redux/ratings/ratings_actions.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
+import 'package:intl/intl.dart';
 
 class RatingList extends StatefulWidget {
   // static String get routeName => '@routes/home-page';
@@ -20,6 +21,7 @@ class RatingList extends StatefulWidget {
 
 class _RatingListState extends State<RatingList> {
   int page = 1;
+  final dateF = new DateFormat('dd/MM/yyyy');
 
   Widget projectWidget() {
     return Container(
@@ -114,7 +116,8 @@ class _RatingListState extends State<RatingList> {
                                         ),
                                         Text(
                                           rating.updatedAt != null
-                                              ? rating.updatedAt
+                                              ? dateF.format(DateTime.parse(
+                                                  rating.updatedAt))
                                               : '',
                                           style: TextStyle(color: Colors.grey),
                                         )

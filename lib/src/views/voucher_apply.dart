@@ -3,8 +3,11 @@ import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:ecommerce_flutter/src/redux/vouchers/vouchers_actions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:intl/intl.dart';
 
 class VoucherApply extends StatelessWidget {
+  final dateF = new DateFormat('dd/MM/yyyy');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,6 +118,7 @@ class VoucherApply extends StatelessWidget {
                               Navigator.pop(context, voucher);
                             },
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
@@ -130,12 +134,12 @@ class VoucherApply extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      "Category ID: ",
+                                      "Category: ",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
-                                    Text(voucher.categoryId.toString()),
+                                    Text(voucher.category.name),
                                   ],
                                 ),
                                 Row(
@@ -149,6 +153,12 @@ class VoucherApply extends StatelessWidget {
                                     Text(voucher.value.toString()),
                                     Text("%"),
                                   ],
+                                ),
+                                Text(
+                                  'Exp: ${dateF.format(DateTime.parse(voucher.validTo))}',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ],
                             ),
