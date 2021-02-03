@@ -40,8 +40,6 @@ class _HomePageState extends State<HomePage> {
     "assets/banner4.jpg",
     "assets/banner5.jpg",
     "assets/banner6.jpg",
-    "assets/banner7.jpg",
-    "assets/banner8.jpg"
   ];
 
   @override
@@ -89,10 +87,13 @@ class _HomePageState extends State<HomePage> {
                           margin: EdgeInsets.symmetric(horizontal: 10.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16),
-                            child: Image(
-                              image: AssetImage(i),
-                              fit: BoxFit.cover,
-                              alignment: Alignment.topCenter,
+                            child: Container(
+                              decoration: BoxDecoration(color: Colors.black),
+                              child: Image(
+                                image: AssetImage(i),
+                                fit: BoxFit.contain,
+                                alignment: Alignment.center,
+                              ),
                             ),
                           ),
                         );
@@ -279,9 +280,12 @@ class _HomePageState extends State<HomePage> {
                     children: <Widget>[
                       GridView.count(
                         physics: ClampingScrollPhysics(),
-                        crossAxisCount: 2,
+                        crossAxisCount: MediaQuery.of(context).orientation ==
+                                Orientation.portrait
+                            ? 2
+                            : 3,
                         shrinkWrap: true,
-                        childAspectRatio: 1 / 1.55,
+                        childAspectRatio: 3 / 4.5,
                         children: products.map((product) {
                           return Stack(
                             children: <Widget>[

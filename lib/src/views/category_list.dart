@@ -187,7 +187,7 @@ class CategoryList extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.laptop,
-                      size: 28,
+                      size: 32,
                     ),
                     Text("Laptop"),
                   ],
@@ -202,7 +202,7 @@ class CategoryList extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.mouse,
-                      size: 28,
+                      size: 32,
                     ),
                     Text("Mouse"),
                   ],
@@ -217,7 +217,7 @@ class CategoryList extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.keyboard,
-                      size: 28,
+                      size: 32,
                     ),
                     Text("Keyboard"),
                   ],
@@ -301,7 +301,7 @@ class CategoryList extends StatelessWidget {
         children: <Widget>[
           Text(
             caption,
-            style: TextStyle(fontSize: 25),
+            style: TextStyle(fontSize: 21),
           ),
           Divider(
             height: 20,
