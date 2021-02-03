@@ -86,9 +86,13 @@ class _ProductListState extends State<ProductList> {
                           Expanded(
                             child: GridView.count(
                               physics: ClampingScrollPhysics(),
-                              crossAxisCount: 2,
+                              crossAxisCount:
+                                  MediaQuery.of(context).orientation ==
+                                          Orientation.portrait
+                                      ? 2
+                                      : 3,
                               shrinkWrap: true,
-                              childAspectRatio: 1 / 1.55,
+                              childAspectRatio: (3 / 4.5),
                               children: productState.products.map((product) {
                                 return Stack(
                                   children: <Widget>[

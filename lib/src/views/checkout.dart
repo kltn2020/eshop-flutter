@@ -273,43 +273,36 @@ class _CheckOutState extends State<CheckOut> {
                                 (element) => element.isPrimary == true);
                           }
 
-                          if (addresses != null && primaryAddress != null) {
+                          if (primaryAddress != null) {
                             shippingAddress = primaryAddress;
-
                             return Container(
-                              width: double.infinity,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      shippingAddress != null &&
-                                              shippingAddress.phoneNumber !=
-                                                  null
-                                          ? Text(shippingAddress.phoneNumber)
-                                          : Text(
-                                              'Number: ${primaryAddress.phoneNumber}',
-                                            ),
-                                      shippingAddress != null &&
-                                              shippingAddress.locate != null
-                                          ? Expanded(
-                                              child: Text(
-                                                  shippingAddress.locate,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 2),
-                                            )
-                                          : Expanded(
-                                              child: Text(
-                                                  'Address Detail: ${primaryAddress.locate}',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 2),
-                                            )
-                                    ],
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        shippingAddress != null &&
+                                                shippingAddress.phoneNumber !=
+                                                    null
+                                            ? Text(shippingAddress.phoneNumber)
+                                            : Text(
+                                                'Number: ${primaryAddress.phoneNumber}',
+                                              ),
+                                        shippingAddress != null &&
+                                                shippingAddress.locate != null
+                                            ? Text(shippingAddress.locate,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1)
+                                            : Text(
+                                                'Address Detail: ${primaryAddress.locate}',
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1),
+                                      ],
+                                    ),
                                   ),
                                   Icon(Icons.navigate_next),
                                 ],

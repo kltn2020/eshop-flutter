@@ -1,3 +1,5 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:ecommerce_flutter/src/models/Cart.dart';
 import 'package:ecommerce_flutter/src/models/Voucher.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_state.dart';
@@ -18,6 +20,7 @@ class CartView extends StatefulWidget {
 class _CartViewState extends State<CartView> {
   bool selectAllCheck = false;
   int productCount = 0;
+  bool disableBuy = false;
 
   Voucher applyVoucher;
 
@@ -55,7 +58,7 @@ class _CartViewState extends State<CartView> {
         shape: const CircularNotchedRectangle(),
         child: Container(
           height: 50.0,
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: 8),
           child: StoreConnector<AppState, CartState>(
             distinct: true,
             rebuildOnChange: true,
@@ -67,25 +70,20 @@ class _CartViewState extends State<CartView> {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        "Total: ",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        formatter.format(cart.products.fold(
-                                0,
-                                (previousValue, element) =>
-                                    previousValue +
-                                    (element.check == true
-                                        ? element.quantity *
-                                            element.product.discountPrice
-                                        : 0)) *
-                            (applyVoucher != null
-                                ? (100 - applyVoucher.value) / 100
-                                : 1)),
+                      AutoSizeText(
+                        "Total: " +
+                            formatter.format(cart.products.fold(
+                                    0,
+                                    (previousValue, element) =>
+                                        previousValue +
+                                        (element.check == true
+                                            ? element.quantity *
+                                                element.product.discountPrice
+                                            : 0)) *
+                                (applyVoucher != null
+                                    ? (100 - applyVoucher.value) / 100
+                                    : 1)) +
+                            ' VND',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -113,16 +111,31 @@ class _CartViewState extends State<CartView> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-          Redux.store.state.cartState.cart.products.length > 0
-              ? Navigator.pushNamed(context, "/checkout",
-                  arguments: applyVoucher)
-              : null,
+      floatingActionButton: StoreConnector<AppState, CartState>(
+        distinct: true,
+        converter: (store) => store.state.cartState,
+        builder: (context, cartState) {
+          var cart = cartState.cart;
+          var total = cart.products.fold(
+              0,
+              (previousValue, element) =>
+                  previousValue +
+                  (element.check == true
+                      ? element.quantity * element.product.discountPrice
+                      : 0));
+          return FloatingActionButton(
+            onPressed: () => {
+              total != 0
+                  ? Navigator.pushNamed(context, "/checkout",
+                      arguments: applyVoucher)
+                  : null,
+            },
+            tooltip: 'Click to checkout',
+            child: Text("Buy"),
+            backgroundColor:
+                total != 0 ? Theme.of(context).primaryColor : Colors.grey,
+          );
         },
-        tooltip: 'Click to checkout',
-        child: Text("Buy"),
-        backgroundColor: Theme.of(context).primaryColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -187,7 +200,10 @@ class ProductInCart extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      formatter.format(price),
+                      formatter.format(price) + ' VND',
+                      style: TextStyle(
+                        color: Color.fromRGBO(79, 59, 120, 1),
+                      ),
                     ),
                   ],
                 ),
