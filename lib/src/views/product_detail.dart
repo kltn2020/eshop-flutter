@@ -170,7 +170,7 @@ Widget productInfo(
             children: [
               Expanded(
                 child: AutoSizeText(
-                  formatter.format(productData.discountPrice),
+                  formatter.format(productData.discountPrice) + ' VND',
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.w700,
@@ -190,7 +190,7 @@ Widget productInfo(
                           style: TextStyle(
                             color: Colors.grey,
                             decoration: TextDecoration.lineThrough,
-                            fontSize: 32,
+                            fontSize: 24,
                           ),
                           maxLines: 1,
                         ),
@@ -1030,19 +1030,22 @@ Widget productInfo(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Text(
-                                            formatter.format(
-                                                    product.discountPrice) +
-                                                'VND',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700,
-                                              color: Color.fromRGBO(
-                                                  146, 127, 191, 1),
+                                          Expanded(
+                                            child: AutoSizeText(
+                                              formatter.format(
+                                                      product.discountPrice) +
+                                                  ' VND',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color.fromRGBO(
+                                                    146, 127, 191, 1),
+                                              ),
+                                              maxLines: 1,
                                             ),
                                           ),
                                           product.price != product.discountPrice
-                                              ? Text(
+                                              ? AutoSizeText(
                                                   formatter
                                                       .format(product.price),
                                                   style: TextStyle(
@@ -1051,12 +1054,13 @@ Widget productInfo(
                                                         .lineThrough,
                                                     fontSize: 12,
                                                   ),
+                                                  maxLines: 1,
                                                 )
                                               : Container(),
                                         ],
                                       ),
                                     )
-                                  : Text(
+                                  : AutoSizeText(
                                       (product.price != null
                                           ? formatter.format(product.price)
                                           : "Contact"),
@@ -1065,6 +1069,7 @@ Widget productInfo(
                                         fontWeight: FontWeight.w700,
                                         color: Color.fromRGBO(146, 127, 191, 1),
                                       ),
+                                      maxLines: 1,
                                     )
                             ],
                           ),
@@ -1153,18 +1158,22 @@ Widget productInfo(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Text(
-                                            formatter
-                                                .format(product.discountPrice),
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700,
-                                              color: Color.fromRGBO(
-                                                  146, 127, 191, 1),
+                                          Expanded(
+                                            child: AutoSizeText(
+                                              formatter.format(
+                                                      product.discountPrice) +
+                                                  ' VND',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color.fromRGBO(
+                                                    146, 127, 191, 1),
+                                              ),
+                                              maxLines: 1,
                                             ),
                                           ),
                                           product.price != product.discountPrice
-                                              ? Text(
+                                              ? AutoSizeText(
                                                   formatter
                                                       .format(product.price),
                                                   style: TextStyle(
@@ -1173,20 +1182,23 @@ Widget productInfo(
                                                         .lineThrough,
                                                     fontSize: 12,
                                                   ),
+                                                  maxLines: 1,
                                                 )
                                               : Container(),
                                         ],
                                       ),
                                     )
-                                  : Text(
+                                  : AutoSizeText(
                                       (product.price != null
-                                          ? formatter.format(product.price)
+                                          ? formatter.format(product.price) +
+                                              ' VND'
                                           : "Contact"),
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w700,
                                         color: Color.fromRGBO(146, 127, 191, 1),
                                       ),
+                                      maxLines: 1,
                                     )
                             ],
                           ),

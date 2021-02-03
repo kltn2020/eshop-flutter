@@ -156,7 +156,8 @@ class _ProductListState extends State<ProductList> {
                                                       Expanded(
                                                         child: AutoSizeText(
                                                           formatter.format(product
-                                                              .discountPrice),
+                                                                  .discountPrice) +
+                                                              ' VND',
                                                           style: TextStyle(
                                                             fontSize: 18,
                                                             fontWeight:
@@ -179,7 +180,7 @@ class _ProductListState extends State<ProductList> {
                                                                 padding:
                                                                     EdgeInsets
                                                                         .only(
-                                                                  left: 10,
+                                                                  left: 8,
                                                                 ),
                                                                 child:
                                                                     AutoSizeText(
