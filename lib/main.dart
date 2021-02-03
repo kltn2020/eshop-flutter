@@ -26,6 +26,7 @@ import 'package:ecommerce_flutter/src/views/address_list.dart';
 import 'package:ecommerce_flutter/src/views/cart.dart';
 import 'package:ecommerce_flutter/src/views/favorite_list.dart';
 import 'package:ecommerce_flutter/src/views/payment_checkout.dart';
+import 'package:ecommerce_flutter/src/views/help_center.dart';
 
 //StoreProvider it passes our Redux Store to our tree of widgets.
 //StoreConnector gets the Store from StoreProvider, reads a piece of data from our store and passes that data to its builder function, then whenever that data changes, rebuilds itself.
@@ -78,6 +79,7 @@ class MyApp extends StatelessWidget {
           '/checkout': (context) => CheckOut(),
           '/address-checkout': (context) => AddressCheckout(),
           '/payment-checkout': (context) => PaymentCheckout(),
+          '/help-center': (context) => HelpCenter(),
         },
       ),
     );

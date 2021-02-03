@@ -300,6 +300,9 @@ class _UserState extends State<User> {
                       color: Colors.blueAccent,
                     ),
                     title: Text("Help Center"),
+                    onTap: () => {
+                      Navigator.pushNamed(context, '/help-center'),
+                    },
                   ),
                 ],
               ),
