@@ -76,6 +76,7 @@ class _RatingListState extends State<RatingList> {
                                   child: Center(
                                     child: AutoSizeText(
                                       rating.userEmail[0].toUpperCase(),
+                                      maxLines: 1,
                                     ),
                                   ),
                                 ),

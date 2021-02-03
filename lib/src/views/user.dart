@@ -35,6 +35,7 @@ class _UserState extends State<User> {
             fontWeight: FontWeight.w900,
             fontStyle: FontStyle.italic,
           ),
+          maxLines: 1,
         ),
         actions: <Widget>[
           IconButton(

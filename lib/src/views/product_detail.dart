@@ -840,6 +840,7 @@ Widget productInfo(
                                                 child: AutoSizeText(
                                                   item.userEmail[0]
                                                       .toUpperCase(),
+                                                  maxLines: 1,
                                                 ),
                                               ),
                                             ),
@@ -1025,8 +1026,9 @@ Widget productInfo(
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Text(
-                                            formatter
-                                                .format(product.discountPrice),
+                                            formatter.format(
+                                                    product.discountPrice) +
+                                                'VND',
                                             style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.w700,

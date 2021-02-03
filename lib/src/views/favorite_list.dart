@@ -136,15 +136,23 @@ Widget projectWidget() {
                                             product.discountPrice > 0
                                                 ? Row(
                                                     children: [
-                                                      AutoSizeText(
-                                                        formatter.format(product
-                                                            .discountPrice),
-                                                        style: TextStyle(
-                                                          fontSize: 20,
-                                                          color: Color.fromRGBO(
-                                                              146, 127, 191, 1),
-                                                          fontWeight:
-                                                              FontWeight.w900,
+                                                      Expanded(
+                                                        child: AutoSizeText(
+                                                          formatter.format(product
+                                                                  .discountPrice) +
+                                                              ' VND',
+                                                          style: TextStyle(
+                                                            fontSize: 20,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    146,
+                                                                    127,
+                                                                    191,
+                                                                    1),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                          ),
+                                                          maxLines: 1,
                                                         ),
                                                       ),
                                                       SizedBox(
@@ -160,7 +168,8 @@ Widget projectWidget() {
                                                               TextDecoration
                                                                   .lineThrough,
                                                         ),
-                                                      )
+                                                        maxLines: 1,
+                                                      ),
                                                     ],
                                                   )
                                                 : Text(

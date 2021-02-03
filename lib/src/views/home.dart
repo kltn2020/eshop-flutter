@@ -343,14 +343,19 @@ class _HomePageState extends State<HomePage> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
-                                                AutoSizeText(
-                                                  formatter.format(
-                                                      product.discountPrice),
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Color.fromRGBO(
-                                                        146, 127, 191, 1),
+                                                Expanded(
+                                                  child: AutoSizeText(
+                                                    formatter.format(product
+                                                            .discountPrice) +
+                                                        " VND",
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Color.fromRGBO(
+                                                          146, 127, 191, 1),
+                                                    ),
+                                                    maxLines: 1,
                                                   ),
                                                 ),
                                                 product.price !=
@@ -365,12 +370,13 @@ class _HomePageState extends State<HomePage> {
                                                                   .lineThrough,
                                                           fontSize: 12,
                                                         ),
+                                                        maxLines: 1,
                                                       )
                                                     : Container(),
                                               ],
                                             ),
                                           )
-                                        : Text(
+                                        : AutoSizeText(
                                             (product.price != null
                                                 ? formatter
                                                     .format(product.price)
@@ -381,6 +387,7 @@ class _HomePageState extends State<HomePage> {
                                               color: Color.fromRGBO(
                                                   146, 127, 191, 1),
                                             ),
+                                            maxLines: 1,
                                           )
                                   ],
                                 ),

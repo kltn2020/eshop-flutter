@@ -174,7 +174,7 @@ class _ProductListState extends State<ProductList> {
                                                       product.price !=
                                                               product
                                                                   .discountPrice
-                                                          ? Expanded(
+                                                          ? Container(
                                                               child: Padding(
                                                                 padding:
                                                                     EdgeInsets
