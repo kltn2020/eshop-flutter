@@ -429,11 +429,10 @@ class _CheckOutState extends State<CheckOut> {
                                 children: [
                                   Text("Discount total: "),
                                   Text(
-                                    formatter.format(cartTotal *
-                                        (voucher != null &&
-                                                voucher.value != null
-                                            ? voucher.value / 100
-                                            : 1)),
+                                    (voucher != null && voucher.value != null
+                                        ? formatter.format(
+                                            cartTotal * voucher.value / 100)
+                                        : '0'),
                                   ),
                                 ],
                               ),
@@ -455,7 +454,7 @@ class _CheckOutState extends State<CheckOut> {
                                             (voucher != null &&
                                                     voucher.value != null
                                                 ? voucher.value / 100
-                                                : 1))),
+                                                : 0))),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 24,

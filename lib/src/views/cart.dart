@@ -70,23 +70,27 @@ class _CartViewState extends State<CartView> {
                 children: [
                   Row(
                     children: [
-                      AutoSizeText(
-                        "Total: " +
-                            formatter.format(cart.products.fold(
-                                    0,
-                                    (previousValue, element) =>
-                                        previousValue +
-                                        (element.check == true
-                                            ? element.quantity *
-                                                element.product.discountPrice
-                                            : 0)) *
-                                (applyVoucher != null
-                                    ? (100 - applyVoucher.value) / 100
-                                    : 1)) +
-                            ' VND',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
+                      Container(
+                        width: MediaQuery.of(context).size.width / 2 - 48,
+                        child: AutoSizeText(
+                          "Total: " +
+                              formatter.format(cart.products.fold(
+                                      0,
+                                      (previousValue, element) =>
+                                          previousValue +
+                                          (element.check == true
+                                              ? element.quantity *
+                                                  element.product.discountPrice
+                                              : 0)) *
+                                  (applyVoucher != null
+                                      ? (100 - applyVoucher.value) / 100
+                                      : 1)) +
+                              ' VND',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          maxLines: 1,
                         ),
                       ),
                     ],

@@ -153,35 +153,28 @@ class _ProductListState extends State<ProductList> {
                                                         MainAxisAlignment
                                                             .spaceEvenly,
                                                     children: [
-                                                      Expanded(
-                                                        child: AutoSizeText(
-                                                          formatter.format(product
-                                                                  .discountPrice) +
-                                                              ' VND',
-                                                          style: TextStyle(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    146,
-                                                                    127,
-                                                                    191,
-                                                                    1),
-                                                          ),
-                                                          maxLines: 1,
+                                                      AutoSizeText(
+                                                        formatter.format(product
+                                                                .discountPrice) +
+                                                            " VND ",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color: Color.fromRGBO(
+                                                              146, 127, 191, 1),
                                                         ),
+                                                        maxLines: 1,
                                                       ),
                                                       product.price !=
                                                               product
                                                                   .discountPrice
-                                                          ? Container(
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .only(
-                                                                  left: 8,
-                                                                ),
+                                                          ? Expanded(
+                                                              child: Container(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            2),
                                                                 child:
                                                                     AutoSizeText(
                                                                   formatter.format(

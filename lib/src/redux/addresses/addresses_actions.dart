@@ -25,6 +25,8 @@ class AddressesActions {
   Future<void> getAllAddressesAction(Store<AppState> store) async {
     print("get-addresses-action");
 
+    String token = store.state.userState.token;
+
     store.dispatch(SetAddressesStateAction(AddressesState(isLoading: true)));
     try {
       final response = await http.get(
@@ -34,7 +36,6 @@ class AddressesActions {
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        // print(jsonData);
         store.dispatch(
           SetAddressesStateAction(
             AddressesState(

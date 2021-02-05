@@ -343,34 +343,39 @@ class _HomePageState extends State<HomePage> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
-                                                Expanded(
-                                                  child: AutoSizeText(
-                                                    formatter.format(product
-                                                            .discountPrice) +
-                                                        " VND",
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: Color.fromRGBO(
-                                                          146, 127, 191, 1),
-                                                    ),
-                                                    maxLines: 1,
+                                                AutoSizeText(
+                                                  formatter.format(product
+                                                          .discountPrice) +
+                                                      " VND ",
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Color.fromRGBO(
+                                                        146, 127, 191, 1),
                                                   ),
+                                                  maxLines: 1,
                                                 ),
                                                 product.price !=
                                                         product.discountPrice
-                                                    ? AutoSizeText(
-                                                        formatter.format(
-                                                            product.price),
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough,
-                                                          fontSize: 12,
+                                                    ? Expanded(
+                                                        child: Container(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 2),
+                                                          child: AutoSizeText(
+                                                            formatter.format(
+                                                                product.price),
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.grey,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                              fontSize: 10,
+                                                            ),
+                                                            maxLines: 1,
+                                                          ),
                                                         ),
-                                                        maxLines: 1,
                                                       )
                                                     : Container(),
                                               ],
