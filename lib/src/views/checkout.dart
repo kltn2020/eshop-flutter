@@ -273,43 +273,38 @@ class _CheckOutState extends State<CheckOut> {
                                 (element) => element.isPrimary == true);
                           }
 
-                          if (primaryAddress != null) {
-                            shippingAddress = primaryAddress;
-                            return Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        shippingAddress != null &&
-                                                shippingAddress.phoneNumber !=
-                                                    null
-                                            ? Text(shippingAddress.phoneNumber)
-                                            : Text(
-                                                'Number: ${primaryAddress.phoneNumber}',
-                                              ),
-                                        shippingAddress != null &&
-                                                shippingAddress.locate != null
-                                            ? Text(shippingAddress.locate,
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1)
-                                            : Text(
-                                                'Address Detail: ${primaryAddress.locate}',
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1),
-                                      ],
-                                    ),
+                          return Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      shippingAddress != null &&
+                                              shippingAddress.phoneNumber !=
+                                                  null
+                                          ? Text(shippingAddress.phoneNumber)
+                                          : Text(
+                                              'Number: ${primaryAddress.phoneNumber}',
+                                            ),
+                                      shippingAddress != null &&
+                                              shippingAddress.locate != null
+                                          ? Text(shippingAddress.locate,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1)
+                                          : Text(
+                                              'Address Detail: ${primaryAddress.locate}',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1),
+                                    ],
                                   ),
-                                  Icon(Icons.navigate_next),
-                                ],
-                              ),
-                            );
-                          } else
-                            return Container();
+                                ),
+                                Icon(Icons.navigate_next),
+                              ],
+                            ),
+                          );
                         },
                       ),
                     ),

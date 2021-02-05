@@ -168,16 +168,14 @@ Widget productInfo(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Expanded(
-                child: AutoSizeText(
-                  formatter.format(productData.discountPrice) + ' VND',
-                  style: TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.w700,
-                    color: Color.fromRGBO(146, 127, 191, 1),
-                  ),
-                  maxLines: 1,
+              AutoSizeText(
+                formatter.format(productData.discountPrice) + ' VND',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w700,
+                  color: Color.fromRGBO(146, 127, 191, 1),
                 ),
+                maxLines: 1,
               ),
               productData.price != productData.discountPrice
                   ? Expanded(
@@ -190,7 +188,7 @@ Widget productInfo(
                           style: TextStyle(
                             color: Colors.grey,
                             decoration: TextDecoration.lineThrough,
-                            fontSize: 24,
+                            fontSize: 18,
                           ),
                           maxLines: 1,
                         ),
@@ -1030,31 +1028,31 @@ Widget productInfo(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Expanded(
-                                            child: AutoSizeText(
-                                              formatter.format(
-                                                      product.discountPrice) +
-                                                  ' VND',
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color.fromRGBO(
-                                                    146, 127, 191, 1),
-                                              ),
-                                              maxLines: 1,
+                                          AutoSizeText(
+                                            formatter.format(
+                                                    product.discountPrice) +
+                                                ' VND',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w700,
+                                              color: Color.fromRGBO(
+                                                  146, 127, 191, 1),
                                             ),
+                                            maxLines: 1,
                                           ),
                                           product.price != product.discountPrice
-                                              ? AutoSizeText(
-                                                  formatter
-                                                      .format(product.price),
-                                                  style: TextStyle(
-                                                    color: Colors.grey,
-                                                    decoration: TextDecoration
-                                                        .lineThrough,
-                                                    fontSize: 12,
+                                              ? Expanded(
+                                                  child: AutoSizeText(
+                                                    formatter
+                                                        .format(product.price),
+                                                    style: TextStyle(
+                                                      color: Colors.grey,
+                                                      decoration: TextDecoration
+                                                          .lineThrough,
+                                                      fontSize: 12,
+                                                    ),
+                                                    maxLines: 1,
                                                   ),
-                                                  maxLines: 1,
                                                 )
                                               : Container(),
                                         ],
@@ -1158,31 +1156,31 @@ Widget productInfo(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Expanded(
-                                            child: AutoSizeText(
-                                              formatter.format(
-                                                      product.discountPrice) +
-                                                  ' VND',
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color.fromRGBO(
-                                                    146, 127, 191, 1),
-                                              ),
-                                              maxLines: 1,
+                                          AutoSizeText(
+                                            formatter.format(
+                                                    product.discountPrice) +
+                                                ' VND',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w700,
+                                              color: Color.fromRGBO(
+                                                  146, 127, 191, 1),
                                             ),
+                                            maxLines: 1,
                                           ),
                                           product.price != product.discountPrice
-                                              ? AutoSizeText(
-                                                  formatter
-                                                      .format(product.price),
-                                                  style: TextStyle(
-                                                    color: Colors.grey,
-                                                    decoration: TextDecoration
-                                                        .lineThrough,
-                                                    fontSize: 12,
+                                              ? Expanded(
+                                                  child: AutoSizeText(
+                                                    formatter
+                                                        .format(product.price),
+                                                    style: TextStyle(
+                                                      color: Colors.grey,
+                                                      decoration: TextDecoration
+                                                          .lineThrough,
+                                                      fontSize: 12,
+                                                    ),
+                                                    maxLines: 1,
                                                   ),
-                                                  maxLines: 1,
                                                 )
                                               : Container(),
                                         ],

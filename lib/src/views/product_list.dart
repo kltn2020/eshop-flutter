@@ -158,7 +158,7 @@ class _ProductListState extends State<ProductList> {
                                                                 .discountPrice) +
                                                             " VND ",
                                                         style: TextStyle(
-                                                          fontSize: 14,
+                                                          fontSize: 12,
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           color: Color.fromRGBO(
@@ -188,7 +188,7 @@ class _ProductListState extends State<ProductList> {
                                                                         TextDecoration
                                                                             .lineThrough,
                                                                     fontSize:
-                                                                        12,
+                                                                        10,
                                                                   ),
                                                                   maxLines: 1,
                                                                 ),

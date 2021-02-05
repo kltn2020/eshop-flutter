@@ -46,9 +46,9 @@ class HelpCenter extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text('Number: '),
-                    Text('Phone: '),
-                    Text('Email: @gm.uit.edu.vn'),
+                    Text('Number: 16521470'),
+                    Text('Phone: 0332935353'),
+                    Text('Email: 16521470@gm.uit.edu.vn'),
                     SizedBox(
                       height: 50,
                     ),

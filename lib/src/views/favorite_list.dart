@@ -136,39 +136,35 @@ Widget projectWidget() {
                                             product.discountPrice > 0
                                                 ? Row(
                                                     children: [
-                                                      Expanded(
-                                                        child: AutoSizeText(
-                                                          formatter.format(product
-                                                                  .discountPrice) +
-                                                              ' VND',
-                                                          style: TextStyle(
-                                                            fontSize: 20,
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    146,
-                                                                    127,
-                                                                    191,
-                                                                    1),
-                                                            fontWeight:
-                                                                FontWeight.w900,
-                                                          ),
-                                                          maxLines: 1,
+                                                      AutoSizeText(
+                                                        formatter.format(product
+                                                                .discountPrice) +
+                                                            ' VND',
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          color: Color.fromRGBO(
+                                                              146, 127, 191, 1),
+                                                          fontWeight:
+                                                              FontWeight.w900,
                                                         ),
+                                                        maxLines: 1,
                                                       ),
                                                       SizedBox(
                                                         width: 5,
                                                       ),
-                                                      AutoSizeText(
-                                                        formatter.format(
-                                                            product.price),
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          color: Colors.grey,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough,
+                                                      Expanded(
+                                                        child: AutoSizeText(
+                                                          formatter.format(
+                                                              product.price),
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            color: Colors.grey,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .lineThrough,
+                                                          ),
+                                                          maxLines: 1,
                                                         ),
-                                                        maxLines: 1,
                                                       ),
                                                     ],
                                                   )
