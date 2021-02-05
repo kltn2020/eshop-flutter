@@ -158,7 +158,7 @@ class _ProductListState extends State<ProductList> {
                                                                 .discountPrice) +
                                                             " VND ",
                                                         style: TextStyle(
-                                                          fontSize: 12,
+                                                          fontSize: 14,
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           color: Color.fromRGBO(
