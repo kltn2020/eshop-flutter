@@ -23,13 +23,13 @@ class AppBarWithSearch extends StatefulWidget with PreferredSizeWidget {
 }
 
 class _AppBarWithSearchState extends State<AppBarWithSearch> {
-  bool typing = false;
-  final searchController = TextEditingController();
+  //bool typing = false;
+  //final searchController = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    searchController.dispose();
+    //searchController.dispose();
     super.dispose();
   }
 
@@ -37,41 +37,52 @@ class _AppBarWithSearchState extends State<AppBarWithSearch> {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
-      title: typing
-          ? TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                filled: true,
-                fillColor: Colors.white,
-                hintText: 'Search',
-              ),
-              controller: searchController,
-            )
-          : Text(
-              "Eshop",
-              style: TextStyle(
-                color: Color.fromRGBO(79, 59, 120, 1),
-                fontWeight: FontWeight.w900,
-                fontStyle: FontStyle.italic,
-                fontSize: 32,
-              ),
-            ),
+      // title: typing
+      //     ? TextField(
+      //         decoration: InputDecoration(
+      //           border: OutlineInputBorder(),
+      //           filled: true,
+      //           fillColor: Colors.white,
+      //           hintText: 'Search',
+      //         ),
+      //         controller: searchController,
+      //       )
+      //     : Text(
+      //         "Eshop",
+      //         style: TextStyle(
+      //           color: Color.fromRGBO(79, 59, 120, 1),
+      //           fontWeight: FontWeight.w900,
+      //           fontStyle: FontStyle.italic,
+      //           fontSize: 32,
+      //         ),
+      //       ),
+      title: Text(
+        "Eshop",
+        style: TextStyle(
+          color: Color.fromRGBO(79, 59, 120, 1),
+          fontWeight: FontWeight.w900,
+          fontStyle: FontStyle.italic,
+          fontSize: 32,
+        ),
+      ),
       leading: IconButton(
-        icon: Icon(typing ? Icons.done : Icons.search),
+        //icon: Icon(typing ? Icons.done : Icons.search),
+        icon: Icon(Icons.search),
         color: Color.fromRGBO(146, 127, 191, 1),
         onPressed: () {
-          setState(() {
-            typing = !typing;
-            if (!typing) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchProductList(
-                      search: searchController.text,
-                    ),
-                  ));
-            }
-          });
+          // setState(() {
+          //   typing = !typing;
+          //   if (!typing) {
+          //     Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => SearchProductList(
+          //             search: searchController.text,
+          //           ),
+          //         ));
+          //   }
+          // });
+          Navigator.pushNamed(context, '/search-product');
         },
       ),
       actions: <Widget>[

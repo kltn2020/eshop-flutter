@@ -129,7 +129,7 @@ class ProductActions {
       var token = store.state.userState.token;
 
       final response = await http.get(
-        'http://35.213.174.112/api/products/content_based_recommend?size=10',
+        'http://35.213.174.112/api/products/content_based_recommend?size=$size',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
