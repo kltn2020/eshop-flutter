@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:redux/redux.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
@@ -225,12 +224,14 @@ class UserActions {
       // assert(response.statusCode == 200, response.body);
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
+
+        print(response.body);
+
         store.dispatch(
           SetUserStateAction(
             UserState(
               isLoading: false,
               isSuccess: true,
-              user: User.fromJson(parseJwtPayLoad(jsonData['token'])),
             ),
           ),
         );
@@ -256,6 +257,61 @@ class UserActions {
                       : 'Password ${detailError.passwordConfirmation}'),
         ),
       );
+    }
+  }
+
+  Future<void> confirmEmailAction(
+      Store<AppState> store, String tokenCode, String confirmEmail) async {
+    print('confirm-email');
+
+    store.dispatch(SetUserStateAction(UserState(
+      isLoading: true,
+      isError: false,
+      errorMessage: "",
+      isSuccess: false,
+    )));
+
+    try {
+      final response = await http.post(
+        'http://35.213.174.112/api/auth/confirm',
+        body: {
+          'email': '$confirmEmail',
+          'token': '$tokenCode',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print(response.body);
+
+        store.dispatch(
+          SetUserStateAction(
+            UserState(
+              isLoading: false,
+              isSuccess: true,
+            ),
+          ),
+        );
+      }
+      if (response.statusCode > 400) {
+        final jsonData = json.decode(response.body);
+
+        print(jsonData['error']);
+
+        store.dispatch(
+          SetUserStateAction(
+            UserState(
+              isLoading: false,
+              isError: true,
+              errorMessage: ErrorMessage.fromJson(jsonData['error']).message,
+            ),
+          ),
+        );
+      }
+    } catch (error) {
+      print("Error time:");
+      print(error);
+      store.dispatch(
+          SetUserStateAction(UserState(isLoading: false, isError: true)));
     }
   }
 

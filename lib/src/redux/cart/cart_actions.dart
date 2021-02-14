@@ -275,13 +275,14 @@ class CartActions {
       Store<AppState> store, Address address, Voucher voucher) async {
     print("checkout-cart-action");
 
+    store.dispatch(SetCartStateAction(
+        CartState(isLoading: true, isSuccess: false, isError: false)));
+
     var uncheckCart = Cart.clone(store.state.cartState.cart);
     uncheckCart.products = store.state.cartState.cart.products
         .where((item) => item.check == false)
         .map((item) => item)
         .toList();
-
-    print(uncheckCart.products.map((item) => item.product.name));
 
     //Remove from checkout cart
     //store.dispatch(removeUncheckFromCart(store, uncheckCart.products));

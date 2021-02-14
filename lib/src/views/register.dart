@@ -5,6 +5,7 @@ import 'package:ecommerce_flutter/src/redux/user/user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ecommerce_flutter/src/views/confirm_email.dart';
 
 class Register extends StatefulWidget {
   Register({Key key, this.title}) : super(key: key);
@@ -41,11 +42,13 @@ class _RegisterState extends State<Register> {
             email: email.text,
             password: password.text,
             passwordConfirmation: repassword.text)
-        .resigterAction);
+        .resigterAction(Redux.store));
   }
 
   @override
   Widget build(BuildContext context) {
+    final node = FocusScope.of(context);
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -96,7 +99,7 @@ class _RegisterState extends State<Register> {
                         child: Column(
                           children: <Widget>[
                             SizedBox(
-                              height: 40,
+                              height: 20,
                             ),
                             FadeAnimation(
                               1.4,
@@ -155,8 +158,15 @@ class _RegisterState extends State<Register> {
                                       Timer(
                                         Duration(seconds: 3),
                                         () {
-                                          Navigator.pushReplacementNamed(
-                                              context, '/login');
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ConfirmEmail(
+                                                email: email.text,
+                                              ),
+                                            ),
+                                          );
                                         },
                                       );
                                       return Container(
@@ -194,10 +204,14 @@ class _RegisterState extends State<Register> {
                                           child: TextField(
                                             controller: email,
                                             decoration: InputDecoration(
-                                                hintText: "Email ",
+                                                hintText:
+                                                    "Email (ex: example@gmail.com)",
                                                 hintStyle: TextStyle(
                                                     color: Colors.grey),
                                                 border: InputBorder.none),
+                                            onEditingComplete: () {
+                                              node.nextFocus();
+                                            },
                                           ),
                                         ),
                                         Container(
@@ -211,10 +225,14 @@ class _RegisterState extends State<Register> {
                                             obscureText: true,
                                             controller: password,
                                             decoration: InputDecoration(
-                                                hintText: "Password",
+                                                hintText:
+                                                    "Password (at least 8 characters)",
                                                 hintStyle: TextStyle(
                                                     color: Colors.grey),
                                                 border: InputBorder.none),
+                                            onEditingComplete: () {
+                                              node.nextFocus();
+                                            },
                                           ),
                                         ),
                                         Container(
@@ -228,10 +246,13 @@ class _RegisterState extends State<Register> {
                                             obscureText: true,
                                             controller: repassword,
                                             decoration: InputDecoration(
-                                                hintText: "Re-enter password",
+                                                hintText: "Re-enter password ",
                                                 hintStyle: TextStyle(
                                                     color: Colors.grey),
                                                 border: InputBorder.none),
+                                            onEditingComplete: () {
+                                              node.unfocus();
+                                            },
                                           ),
                                         ),
                                       ],
@@ -275,25 +296,33 @@ class _RegisterState extends State<Register> {
                             SizedBox(
                               height: 30,
                             ),
-                            Row(
-                              children: <Widget>[
-                                FadeAnimation(
-                                  1.6,
-                                  FlatButton(
+                            FadeAnimation(
+                              1.6,
+                              Row(
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.only(left: 30),
+                                    child: Icon(
+                                      Icons.arrow_back,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  Container(
+                                    child: FlatButton(
                                       onPressed: () {
                                         Navigator.pushReplacementNamed(
                                             context, '/login');
                                       },
+                                      padding: EdgeInsets.only(left: 4),
                                       child: Text(
                                         "Back to Login",
                                         style: TextStyle(color: Colors.grey),
-                                      )),
-                                ),
-                                SizedBox(
-                                  width: 30,
-                                ),
-                              ],
-                            )
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       );

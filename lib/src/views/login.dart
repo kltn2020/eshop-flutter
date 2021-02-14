@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ecommerce_flutter/src/animations/fade_animation.dart';
 import 'package:ecommerce_flutter/src/redux/user/user_state.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +51,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final node = FocusScope.of(context);
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -182,6 +186,9 @@ class _LoginState extends State<Login> {
                                                   hintStyle: TextStyle(
                                                       color: Colors.grey),
                                                   border: InputBorder.none),
+                                              onEditingComplete: () {
+                                                node.nextFocus();
+                                              },
                                             ),
                                           ),
                                           Container(
@@ -199,6 +206,9 @@ class _LoginState extends State<Login> {
                                                   hintStyle: TextStyle(
                                                       color: Colors.grey),
                                                   border: InputBorder.none),
+                                              onEditingComplete: () {
+                                                node.unfocus();
+                                              },
                                             ),
                                           ),
                                         ],
@@ -351,9 +361,41 @@ class _LoginState extends State<Login> {
                                               ),
                                             ),
                                           ))),
-                                )
+                                ),
                               ],
-                            )
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            FadeAnimation(
+                                2.0,
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, '/confirm-email');
+                                    },
+                                    child: Container(
+                                      height: 40,
+                                      width:
+                                          MediaQuery.of(context).size.width / 2,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.black38,
+                                            width: 1,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          color:
+                                              Color.fromRGBO(196, 187, 240, 1)),
+                                      child: Center(
+                                        child: Text(
+                                          "Confirm Email",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ))),
                           ],
                         ),
                       );
