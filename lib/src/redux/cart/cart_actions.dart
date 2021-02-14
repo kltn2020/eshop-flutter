@@ -50,23 +50,54 @@ class CartActions {
     this.size,
   });
 
-  bool checkProductInCartAction(
-      Store<AppState> store, int productId, bool value) {
-    Cart newCart = store.state.cartState.cart;
-    newCart.products
-        .firstWhere((element) => element.product.id == productId)
-        .check = value;
+  Future<void> checkProductInCartAction(
+      Store<AppState> store, int productId, bool value) async {
+    print("check-cart-action");
 
-    store.dispatch(
-      SetCartStateAction(
-        CartState(
-          isLoading: false,
-          isSuccess: true,
-          //totalPages: jsonData['count'],
-          cart: newCart,
-        ),
-      ),
-    );
+    var token = store.state.userState.token;
+
+    try {
+      final response = await http.put(
+        'http://35.213.174.112/api/shopping/$productId/toggle',
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+      );
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        print(jsonData);
+        // Cart newCart = Cart.fromJson(jsonData['data']);
+
+        Cart newCart = store.state.cartState.cart;
+        newCart.products
+            .firstWhere((element) => element.product.id == productId)
+            .check = value;
+
+        store.dispatch(
+          SetCartStateAction(
+            CartState(
+              isLoading: false,
+              isSuccess: true,
+              //totalPages: jsonData['count'],
+              cart: newCart,
+            ),
+          ),
+        );
+      }
+    } catch (error) {
+      print(error);
+      final jsonData = json.decode(error);
+      var errorMessage = ErrorMessage.fromJson(jsonData['error']);
+
+      if (errorMessage.message.contains('not authenticated')) {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', null);
+      }
+
+      store.dispatch(
+          SetCartStateAction(CartState(isLoading: false, isError: true)));
+    }
   }
 
   Future<void> getAllCartAction(Store<AppState> store) async {
@@ -243,11 +274,6 @@ class CartActions {
   Future<void> checkoutCartAction(
       Store<AppState> store, Address address, Voucher voucher) async {
     print("checkout-cart-action");
-    // var checkoutCart = Cart.clone(store.state.cartState.cart);
-    // checkoutCart.products = checkoutCart.products
-    //     .where((item) => item.check == true)
-    //     .map((item) => item)
-    //     .toList();
 
     var uncheckCart = Cart.clone(store.state.cartState.cart);
     uncheckCart.products = store.state.cartState.cart.products
@@ -255,35 +281,23 @@ class CartActions {
         .map((item) => item)
         .toList();
 
-    //print(checkoutCart.products.map((item) => item.product.name));
     print(uncheckCart.products.map((item) => item.product.name));
 
     //Remove from checkout cart
-
-    store.dispatch(removeUncheckFromCart(store, uncheckCart.products));
+    //store.dispatch(removeUncheckFromCart(store, uncheckCart.products));
 
     var token = store.state.userState.token;
 
     try {
-      final response = voucher != null
-          ? await http.post('http://35.213.174.112/api/orders',
-              headers: {
-                HttpHeaders.authorizationHeader: "Bearer $token",
-                "Content-Type": "application/json",
-              },
-              body: jsonEncode(<String, dynamic>{
-                'address_id': address != null ? address.id : '',
-                'voucher_code': voucher.code,
-              }))
-          : await http.post('http://35.213.174.112/api/orders',
-              headers: {
-                HttpHeaders.authorizationHeader: "Bearer $token",
-                "Content-Type": "application/json",
-              },
-              body: jsonEncode(<String, dynamic>{
-                'address_id': address != null ? address.id : '',
-                'voucher_code': "",
-              }));
+      final response = await http.post('http://35.213.174.112/api/orders',
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer $token",
+            "Content-Type": "application/json",
+          },
+          body: jsonEncode(<String, dynamic>{
+            'address_id': address != null ? address.id : '',
+            'voucher_code': voucher != null ? voucher.code : '',
+          }));
 
       if (response.statusCode == 200) {
         store.dispatch(
@@ -302,7 +316,7 @@ class CartActions {
       }
     } catch (error) {
       print(error);
-      store.dispatch(addUncheckToNewCart(store, uncheckCart.products));
+      // store.dispatch(addUncheckToNewCart(store, uncheckCart.products));
       store.dispatch(
           SetCartStateAction(CartState(isLoading: false, isError: true)));
       throw (CheckoutErrorMessage.fromJson(json.decode(error)));

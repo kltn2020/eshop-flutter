@@ -11,7 +11,7 @@ class ProductInCart {
     if (json == null) return;
     product = Product.fromJson(json['product']);
     quantity = json['quantity'];
-    check = true;
+    check = json['active'];
   }
 
   static List<ProductInCart> listFromJson(List<dynamic> json) {

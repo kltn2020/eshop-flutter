@@ -287,7 +287,7 @@ class _CheckOutState extends State<CheckOut> {
                                                   null
                                           ? Text(shippingAddress.phoneNumber)
                                           : Text(
-                                              'Number: ${primaryAddress.phoneNumber}',
+                                              'Number: ${primaryAddress != null ? primaryAddress.phoneNumber : ""}',
                                             ),
                                       shippingAddress != null &&
                                               shippingAddress.locate != null
@@ -295,7 +295,7 @@ class _CheckOutState extends State<CheckOut> {
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1)
                                           : Text(
-                                              'Address Detail: ${primaryAddress.locate}',
+                                              'Address Detail: ${primaryAddress != null ? primaryAddress.locate : ""}',
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1),
                                     ],
