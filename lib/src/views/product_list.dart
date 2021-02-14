@@ -65,8 +65,6 @@ class _ProductListState extends State<ProductList> {
                     Redux.store.dispatch(ProductActions().getMoreProductsAction(
                   Redux.store,
                   page,
-                  "",
-                  null,
                 )),
                 builder: (context, productState) {
                   return Container(

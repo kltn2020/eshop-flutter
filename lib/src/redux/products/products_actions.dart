@@ -80,19 +80,17 @@ class ProductActions {
     }
   }
 
-  Future<void> getMoreProductsAction(
-      Store<AppState> store, int page, String search, int brandId) async {
+  Future<void> getMoreProductsAction(Store<AppState> store, int page) async {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
     print("begin-get-more");
 
     try {
       var token = store.state.userState.token;
-      print(
-          'http://35.213.174.112/api/products?page=$page&&search_terms=${search != null ? search : ''}${brandId != null ? '&&brand_id=$brandId' : ''}');
+      print('http://35.213.174.112/api/products?page=$page');
 
       final response = await http.get(
-        'http://35.213.174.112/api/products?page=$page&&search_terms=${search != null ? search : ''}${brandId != null ? '&&brand_id=$brandId' : ''}',
+        'http://35.213.174.112/api/products?page=$page',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -118,6 +116,50 @@ class ProductActions {
       store.dispatch(SetProductsStateAction(
           ProductsState(isLoading: false, isError: true)));
     }
+  }
+
+  Future<void> getMoreSearchProductsAction(
+      Store<AppState> store, int page, String search, int brandId) async {
+    store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
+
+    print("begin-get-more-search");
+
+    try {
+      var token = store.state.userState.token;
+      print(
+          'http://35.213.174.112/api/products?page=$page&&search_terms=${search != null ? search : ''}${brandId != null ? '&&brand_id=$brandId' : ''}');
+
+      final response = await http.get(
+        'http://35.213.174.112/api/products?page=$page&&search_terms=${search != null ? search : ''}${brandId != null ? '&&brand_id=$brandId' : ''}',
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body)['data'];
+
+        var oldProductsList = store.state.productsState.products;
+        var newProductsListData = Product.listFromJson(jsonData['entries']);
+
+        var newProductList = [...oldProductsList, ...newProductsListData];
+
+        store.dispatch(
+          SetProductsStateAction(
+            ProductsState(
+              isLoading: false,
+              isSuccess: true,
+              searchProducts: page == 1 ? newProductsListData : newProductList,
+            ),
+          ),
+        );
+      }
+    } catch (error) {
+      store.dispatch(SetProductsStateAction(
+          ProductsState(isLoading: false, isError: true)));
+    }
+  }
+
+  void cleanSearchProductsAction(Store<AppState> store) {
+    store.dispatch(SetProductsStateAction(ProductsState(searchProducts: [])));
   }
 
   Future<void> getContentBaseRecommendAction(

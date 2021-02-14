@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:debounce_throttle/debounce_throttle.dart';
 import 'package:ecommerce_flutter/src/models/Cart.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_state.dart';
 import 'package:ecommerce_flutter/src/widgets/BottomNavigation.dart';
@@ -34,6 +35,27 @@ class _SearchProductListState extends State<SearchProductList> {
   }
 
   Widget projectWidget() {
+    var listBrand = [
+      'Apple',
+      'Dell',
+      'HP',
+      'Acer',
+      'Asus',
+      'MSI',
+      'Huawei',
+    ];
+
+    Future<void> submitSearch(String search) async {
+      await Redux.store.dispatch(ProductActions().getMoreSearchProductsAction(
+          Redux.store, page, search, widget.brandId));
+    }
+
+    final debouncer = Debouncer<String>(Duration(seconds: 1));
+
+    // Run a search whenever the user pauses while typing.
+    searchController.addListener(() => debouncer.value = searchController.text);
+    debouncer.values.listen((search) => submitSearch(search));
+
     return Container(
       child: StoreConnector<AppState, String>(
         distinct: true,
@@ -66,7 +88,7 @@ class _SearchProductListState extends State<SearchProductList> {
                 distinct: true,
                 converter: (store) => store.state.productsState,
                 onInitialBuild: Redux.store.dispatch(ProductActions()
-                    .getMoreProductsAction(Redux.store, page,
+                    .getMoreSearchProductsAction(Redux.store, page,
                         searchController.text, widget.brandId)),
                 builder: (context, productState) {
                   if (searchController.text != '' || widget.brandId != null)
@@ -84,163 +106,187 @@ class _SearchProductListState extends State<SearchProductList> {
                         },
                         child: Column(
                           children: [
-                            Expanded(
-                              child: GridView.count(
-                                physics: ClampingScrollPhysics(),
-                                crossAxisCount: 2,
-                                shrinkWrap: true,
-                                childAspectRatio: 1 / 1.55,
-                                children: productState.products.map((product) {
-                                  return Stack(
-                                    children: <Widget>[
-                                      Container(
-                                        margin: EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              color: Colors.grey[300]),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Column(
+                            !productState.isLoading
+                                ? Expanded(
+                                    child: GridView.count(
+                                      physics: ClampingScrollPhysics(),
+                                      crossAxisCount: 2,
+                                      shrinkWrap: true,
+                                      childAspectRatio: 1 / 1.55,
+                                      children: productState.searchProducts
+                                          .map((product) {
+                                        return Stack(
                                           children: <Widget>[
-                                            Hero(
-                                              tag: product.id,
-                                              child: AspectRatio(
-                                                aspectRatio: 1 / 1,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    height: 100,
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        fit: BoxFit.fitHeight,
-                                                        image: NetworkImage(
-                                                            product.images[0]
-                                                                ['url']),
+                                            Container(
+                                              margin: EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                    color: Colors.grey[300]),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Hero(
+                                                    tag: product.id,
+                                                    child: AspectRatio(
+                                                      aspectRatio: 1 / 1,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        child: Container(
+                                                          width: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .width,
+                                                          height: 100,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              fit: BoxFit
+                                                                  .fitHeight,
+                                                              image: NetworkImage(
+                                                                  product.images[
+                                                                          0]
+                                                                      ['url']),
+                                                            ),
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                left: 8,
-                                                right: 8,
-                                                top: 8,
-                                              ),
-                                              child: Text(
-                                                product.name,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                            product.discountPrice != null
-                                                ? Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 15,
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                      left: 8,
+                                                      right: 8,
+                                                      top: 8,
                                                     ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        Expanded(
-                                                          child: AutoSizeText(
-                                                            formatter.format(product
-                                                                .discountPrice),
-                                                            style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      146,
-                                                                      127,
-                                                                      191,
-                                                                      1),
-                                                            ),
-                                                            maxLines: 1,
-                                                          ),
-                                                        ),
-                                                        product.price !=
-                                                                product
-                                                                    .discountPrice
-                                                            ? Expanded(
-                                                                child: Padding(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .only(
-                                                                    left: 10,
-                                                                  ),
-                                                                  child:
-                                                                      AutoSizeText(
-                                                                    formatter.format(
-                                                                        product
-                                                                            .price),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .grey,
-                                                                      decoration:
-                                                                          TextDecoration
-                                                                              .lineThrough,
-                                                                      fontSize:
-                                                                          12,
-                                                                    ),
-                                                                    maxLines: 1,
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            : Container(),
-                                                      ],
+                                                    child: Text(
+                                                      product.name,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
-                                                  )
-                                                : Text(
-                                                    (product.price != null
-                                                        ? formatter.format(
-                                                            product.price)
-                                                        : "Contact"),
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: Color.fromRGBO(
-                                                          146, 127, 191, 1),
-                                                    ),
-                                                  )
-                                          ],
-                                        ),
-                                      ),
-                                      Material(
-                                        color: Colors.transparent,
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductPage(
-                                                    product: product,
                                                   ),
-                                                ));
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                }).toList(),
-                              ),
-                            ),
+                                                  product.discountPrice != null
+                                                      ? Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                            horizontal: 8,
+                                                            vertical: 15,
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              Expanded(
+                                                                child:
+                                                                    AutoSizeText(
+                                                                  formatter.format(
+                                                                      product
+                                                                          .discountPrice),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        18,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    color: Color
+                                                                        .fromRGBO(
+                                                                            146,
+                                                                            127,
+                                                                            191,
+                                                                            1),
+                                                                  ),
+                                                                  maxLines: 1,
+                                                                ),
+                                                              ),
+                                                              product.price !=
+                                                                      product
+                                                                          .discountPrice
+                                                                  ? Expanded(
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            EdgeInsets.only(
+                                                                          left:
+                                                                              10,
+                                                                        ),
+                                                                        child:
+                                                                            AutoSizeText(
+                                                                          formatter
+                                                                              .format(product.price),
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.grey,
+                                                                            decoration:
+                                                                                TextDecoration.lineThrough,
+                                                                            fontSize:
+                                                                                12,
+                                                                          ),
+                                                                          maxLines:
+                                                                              1,
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  : Container(),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : Text(
+                                                          (product.price != null
+                                                              ? formatter.format(
+                                                                  product.price)
+                                                              : "Contact"),
+                                                          style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    146,
+                                                                    127,
+                                                                    191,
+                                                                    1),
+                                                          ),
+                                                        )
+                                                ],
+                                              ),
+                                            ),
+                                            Material(
+                                              color: Colors.transparent,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductPage(
+                                                          product: product,
+                                                        ),
+                                                      ));
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      }).toList(),
+                                    ),
+                                  )
+                                : LinearProgressIndicator(
+                                    backgroundColor:
+                                        Color.fromRGBO(196, 187, 240, 0.5),
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                      Color.fromRGBO(146, 127, 191, 1),
+                                    ),
+                                  ),
                             StoreConnector<AppState, bool>(
                               distinct: true,
                               converter: (store) =>
@@ -264,7 +310,28 @@ class _SearchProductListState extends State<SearchProductList> {
                       ),
                     );
                   else
-                    return Container();
+                    return Container(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: listBrand.map((brand) {
+                            return FlatButton(
+                              onPressed: () {
+                                searchController.text = brand;
+                              },
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 16),
+                              child: Container(
+                                width: double.infinity,
+                                child: Text(
+                                  brand,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    );
                 },
               ),
             );
@@ -291,10 +358,10 @@ class _SearchProductListState extends State<SearchProductList> {
               hintText: 'Search',
             ),
             controller: searchController,
-            onSubmitted: (String value) async {
-              await Redux.store.dispatch(ProductActions().getMoreProductsAction(
-                  Redux.store, page, searchController.text, widget.brandId));
-            },
+            // onSubmitted: (String value) async {
+            //   await Redux.store.dispatch(ProductActions().getMoreProductsAction(
+            //       Redux.store, page, searchController.text, widget.brandId));
+            // },
           ),
         ),
         leading: IconButton(
@@ -302,6 +369,7 @@ class _SearchProductListState extends State<SearchProductList> {
           color: Colors.black,
           onPressed: () {
             Navigator.of(context).pop();
+            Redux.store.dispatch(ProductActions().cleanSearchProductsAction);
           },
         ),
         actions: <Widget>[

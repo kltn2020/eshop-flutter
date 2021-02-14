@@ -10,6 +10,7 @@ class ProductsState {
   final int totalItems;
   final int totalPages;
   final List<Product> products;
+  final List<Product> searchProducts;
   final Product productDetail;
   final List<Product> recommendContentProducts;
   final List<Product> recommendCollabProducts;
@@ -21,6 +22,7 @@ class ProductsState {
     this.totalItems,
     this.totalPages,
     this.products,
+    this.searchProducts,
     this.productDetail,
     this.recommendContentProducts,
     this.recommendCollabProducts,
@@ -35,6 +37,7 @@ class ProductsState {
         totalPages: null,
         productDetail: null,
         products: const [],
+        searchProducts: const [],
         recommendContentProducts: const [],
         recommendCollabProducts: const [],
       );
@@ -48,6 +51,7 @@ class ProductsState {
     @required int totalPages,
     @required Product productDetail,
     @required List<Product> products,
+    @required List<Product> searchProducts,
     @required List<Product> recommendContentProducts,
     @required List<Product> recommendCollabProducts,
   }) {
@@ -59,6 +63,7 @@ class ProductsState {
       totalItems: totalItems ?? this.totalItems,
       productDetail: productDetail ?? this.productDetail,
       products: products ?? this.products,
+      searchProducts: searchProducts ?? this.searchProducts,
       recommendContentProducts:
           recommendContentProducts ?? this.recommendContentProducts,
       recommendCollabProducts:

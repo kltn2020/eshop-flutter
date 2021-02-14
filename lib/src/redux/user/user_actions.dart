@@ -159,12 +159,11 @@ class UserActions {
           'password': '$password',
         },
       );
-      final statusCode = response.statusCode;
-      print('Response Status code: $statusCode');
-      print(response.body);
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
+
+        print(response.body);
         store.dispatch(
           SetUserStateAction(
             UserState(
@@ -281,8 +280,6 @@ class UserActions {
       );
 
       if (response.statusCode == 200) {
-        print(response.body);
-
         store.dispatch(
           SetUserStateAction(
             UserState(
@@ -292,6 +289,7 @@ class UserActions {
           ),
         );
       }
+
       if (response.statusCode > 400) {
         final jsonData = json.decode(response.body);
 
