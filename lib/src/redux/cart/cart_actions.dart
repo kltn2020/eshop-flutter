@@ -58,7 +58,7 @@ class CartActions {
 
     try {
       final response = await http.put(
-        'http://35.213.174.112/api/shopping/$productId/toggle',
+        '$backendUrl/shopping/$productId/toggle',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -113,7 +113,7 @@ class CartActions {
 
     try {
       final response = await http.get(
-        'http://35.213.174.112/api/shopping/my-cart',
+        '$backendUrl/shopping/my-cart',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -160,8 +160,8 @@ class CartActions {
     String productID = product.id.toString();
 
     try {
-      final response = await http
-          .put('http://35.213.174.112/api/shopping/$productID', headers: {
+      final response =
+          await http.put('$backendUrl/shopping/$productID', headers: {
         HttpHeaders.authorizationHeader: "Bearer $token"
       }, body: {
         'quantity': '$quantity',
@@ -191,8 +191,8 @@ class CartActions {
     String productID = product.id.toString();
 
     try {
-      final response = await http
-          .put('http://35.213.174.112/api/shopping/$productID', headers: {
+      final response =
+          await http.put('$backendUrl/shopping/$productID', headers: {
         HttpHeaders.authorizationHeader: "Bearer $token"
       }, body: {
         'quantity': '0',
@@ -224,8 +224,7 @@ class CartActions {
       final responses = await Future.wait(productList.map((e) {
         int productId = e.product.id;
         print(productId);
-        return http
-            .put('http://35.213.174.112/api/shopping/$productId', headers: {
+        return http.put('$backendUrl/shopping/$productId', headers: {
           HttpHeaders.authorizationHeader: "Bearer $token"
         }, body: {
           'quantity': '0',
@@ -254,8 +253,7 @@ class CartActions {
       final responses = await Future.wait(productList.map((e) {
         int productId = e.product.id;
         print(productId);
-        return http
-            .put('http://35.213.174.112/api/shopping/$productId', headers: {
+        return http.put('$backendUrl/shopping/$productId', headers: {
           HttpHeaders.authorizationHeader: "Bearer $token"
         }, body: {
           'quantity': e.quantity.toString(),
@@ -290,7 +288,7 @@ class CartActions {
     var token = store.state.userState.token;
 
     try {
-      final response = await http.post('http://35.213.174.112/api/orders',
+      final response = await http.post('$backendUrl/orders',
           headers: {
             HttpHeaders.authorizationHeader: "Bearer $token",
             "Content-Type": "application/json",

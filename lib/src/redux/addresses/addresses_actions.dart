@@ -30,7 +30,7 @@ class AddressesActions {
     store.dispatch(SetAddressesStateAction(AddressesState(isLoading: true)));
     try {
       final response = await http.get(
-        'http://35.213.174.112/api/address',
+        '$backendUrl/address',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -65,7 +65,7 @@ class AddressesActions {
     }));
 
     try {
-      final response = await http.post('http://35.213.174.112/api/address',
+      final response = await http.post('$backendUrl/address',
           headers: {
             HttpHeaders.authorizationHeader: "Bearer $token",
             "Content-Type": "application/json",
@@ -116,7 +116,7 @@ class AddressesActions {
     }));
 
     try {
-      final response = await http.put('http://35.213.174.112/api/address/$id',
+      final response = await http.put('$backendUrl/address/$id',
           headers: {
             HttpHeaders.authorizationHeader: "Bearer $token",
             "Content-Type": "application/json",
@@ -170,7 +170,7 @@ class AddressesActions {
     String token = store.state.userState.token;
     try {
       final response = await http.delete(
-        'http://35.213.174.112/api/address/$id',
+        '$backendUrl/address/$id',
         headers: {
           HttpHeaders.authorizationHeader: "Bearer $token",
           "Content-Type": "application/json",

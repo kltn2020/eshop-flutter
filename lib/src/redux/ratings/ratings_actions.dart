@@ -38,7 +38,7 @@ class RatingActions {
       var token = store.state.userState.token;
 
       final response = await http.get(
-        'http://35.213.174.112/api/products/$productId/reviews?size=$size',
+        '$backendUrl/products/$productId/reviews?size=$size',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -74,7 +74,7 @@ class RatingActions {
     }));
     try {
       final response = await http.post(
-        'http://35.213.174.112/api/products/$productID/reviews',
+        '$backendUrl/products/$productID/reviews',
         headers: {
           HttpHeaders.authorizationHeader: "Bearer $token",
           "Content-Type": "application/json",
@@ -118,7 +118,7 @@ class RatingActions {
 
   //   try {
   //     final response = await http.delete(
-  //       'http://35.213.174.112/api/products/$productID/like',
+  //       '$backendUrl/products/$productID/like',
   //       headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
   //     );
 

@@ -35,8 +35,8 @@ class OrderActions {
     String token = store.state.userState.token;
 
     String url = status != null
-        ? 'http://35.213.174.112/api/orders?status=$status'
-        : 'http://35.213.174.112/api/orders';
+        ? '$backendUrl/orders?status=$status'
+        : '$backendUrl/orders';
 
     try {
       final response = await http.get(
@@ -72,7 +72,7 @@ class OrderActions {
 
     try {
       final response = await http.get(
-        'http://35.213.174.112/api/orders/$orderId',
+        '$backendUrl/orders/$orderId',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 

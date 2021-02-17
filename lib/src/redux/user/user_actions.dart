@@ -150,10 +150,8 @@ class UserActions {
     )));
     try {
       print("Login");
-      print(email);
-      print(password);
       final response = await http.post(
-        'http://35.213.174.112/api/auth/login',
+        '$backendUrl/auth/login',
         body: {
           'email': '$email',
           'password': '$password',
@@ -163,7 +161,6 @@ class UserActions {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
 
-        print(response.body);
         store.dispatch(
           SetUserStateAction(
             UserState(
@@ -207,7 +204,7 @@ class UserActions {
 
     try {
       final response = await http.post(
-        'http://35.213.174.112/api/auth/register',
+        '$backendUrl/auth/register',
         headers: {
           "Content-Type": "application/json",
         },
@@ -222,10 +219,6 @@ class UserActions {
 
       // assert(response.statusCode == 200, response.body);
       if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-
-        print(response.body);
-
         store.dispatch(
           SetUserStateAction(
             UserState(
@@ -239,8 +232,6 @@ class UserActions {
     } catch (error) {
       print(error);
       final jsonData = json.decode(error);
-
-      print(ErrorRegisterMessage.fromJson(jsonData['error']).errors);
 
       var detailError = ErrorRegisterMessage.fromJson(jsonData['error']).errors;
 
@@ -272,7 +263,7 @@ class UserActions {
 
     try {
       final response = await http.post(
-        'http://35.213.174.112/api/auth/confirm',
+        '$backendUrl/auth/confirm',
         body: {
           'email': '$confirmEmail',
           'token': '$tokenCode',
@@ -293,8 +284,6 @@ class UserActions {
       if (response.statusCode > 400) {
         final jsonData = json.decode(response.body);
 
-        print(jsonData['error']);
-
         store.dispatch(
           SetUserStateAction(
             UserState(
@@ -306,7 +295,6 @@ class UserActions {
         );
       }
     } catch (error) {
-      print("Error time:");
       print(error);
       store.dispatch(
           SetUserStateAction(UserState(isLoading: false, isError: true)));

@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
 import 'package:ecommerce_flutter/src/models/User.dart';
 import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
-import 'package:ecommerce_flutter/src/redux/favorite/favorite_actions.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/redux/user/user_actions.dart';
 import 'package:ecommerce_flutter/src/views/category_list.dart';
@@ -15,7 +14,6 @@ import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:intl/intl.dart';
 
-import '../animations/fade_animation.dart';
 import '../widgets/CategoryItem.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -246,9 +244,6 @@ class _HomePageState extends State<HomePage> {
               return;
             }
           }));
-          Redux.store.dispatch(
-              FavoriteActions(token: Redux.store.state.userState.token)
-                  .getAllFavoriteAction);
           Redux.store.dispatch(ProductActions()
               .getCollaborativeRecommendAction(Redux.store, 1, 20));
         }),

@@ -35,7 +35,7 @@ class FavoriteActions {
     store.dispatch(SetFavoriteStateAction(FavoriteState(isLoading: true)));
     try {
       final response = await http.get(
-        'http://35.213.174.112/api/products/like',
+        '$backendUrl/products/like',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -67,7 +67,7 @@ class FavoriteActions {
 
     try {
       final response = await http.post(
-        'http://35.213.174.112/api/products/$productID/like',
+        '$backendUrl/products/$productID/like',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -104,7 +104,7 @@ class FavoriteActions {
 
     try {
       final response = await http.delete(
-        'http://35.213.174.112/api/products/$productID/like',
+        '$backendUrl/products/$productID/like',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 

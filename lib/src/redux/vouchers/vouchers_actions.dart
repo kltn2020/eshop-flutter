@@ -25,14 +25,13 @@ class VoucherActions {
     print("check-voucher");
     try {
       final response = await http.get(
-        'http://35.213.174.112/api/vouchers/check/$voucherCode',
+        '$backendUrl/vouchers/check/$voucherCode',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body)['data'];
 
-        print(jsonData);
         store.dispatch(
           SetVouchersStateAction(
             VouchersState(
@@ -62,14 +61,13 @@ class VoucherActions {
     print("get-all-voucher");
     try {
       final response = await http.get(
-        'http://35.213.174.112/api/vouchers',
+        '$backendUrl/vouchers',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body)['data'];
 
-        print(jsonData);
         store.dispatch(
           SetVouchersStateAction(
             VouchersState(

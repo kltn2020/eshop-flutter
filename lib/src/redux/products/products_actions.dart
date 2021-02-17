@@ -20,13 +20,11 @@ class ProductActions {
       Store<AppState> store, int page, int size) async {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
-    print("begin");
-
     try {
       var token = store.state.userState.token;
 
       final response = await http.get(
-        'http://35.213.174.112/api/products',
+        '$backendUrl/products',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -52,12 +50,11 @@ class ProductActions {
   Future<void> getProductDetailAction(Store<AppState> store, int id) async {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
-    print('id $id');
     try {
       var token = store.state.userState.token;
 
       final response = await http.get(
-        'http://35.213.174.112/api/products/$id',
+        '$backendUrl/products/$id',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -87,10 +84,9 @@ class ProductActions {
 
     try {
       var token = store.state.userState.token;
-      print('http://35.213.174.112/api/products?page=$page');
 
       final response = await http.get(
-        'http://35.213.174.112/api/products?page=$page',
+        '$backendUrl/products?page=$page',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -126,18 +122,15 @@ class ProductActions {
 
     try {
       var token = store.state.userState.token;
-      print(
-          'http://35.213.174.112/api/products?page=$page&&search_terms=${search != null ? search : ''}${brandId != null ? '&&brand_id=$brandId' : ''}');
-
       final response = await http.get(
-        'http://35.213.174.112/api/products?page=$page&&search_terms=${search != null ? search : ''}${brandId != null ? '&&brand_id=$brandId' : ''}',
+        '$backendUrl/products?page=$page&&search_terms=${search != null ? search : ''}${brandId != null ? '&&brand_id=$brandId' : ''}',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body)['data'];
 
-        var oldProductsList = store.state.productsState.products;
+        var oldProductsList = store.state.productsState.searchProducts;
         var newProductsListData = Product.listFromJson(jsonData['entries']);
 
         var newProductList = [...oldProductsList, ...newProductsListData];
@@ -163,7 +156,7 @@ class ProductActions {
   }
 
   Future<void> getContentBaseRecommendAction(
-      Store<AppState> store, int page, int size) async {
+      Store<AppState> store, int id, int size) async {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
     print('get-content-base');
@@ -171,7 +164,7 @@ class ProductActions {
       var token = store.state.userState.token;
 
       final response = await http.get(
-        'http://35.213.174.112/api/products/content_based_recommend?size=$size',
+        '$backendUrl/products/content_based_recommend?size=$size&&product_id=$id',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 
@@ -196,7 +189,7 @@ class ProductActions {
   }
 
   Future<void> getCollaborativeRecommendAction(
-      Store<AppState> store, int page, int size) async {
+      Store<AppState> store, int id, int size) async {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
     print('get-collab-recommend');
 
@@ -204,7 +197,7 @@ class ProductActions {
       var token = store.state.userState.token;
 
       final response = await http.get(
-        'http://35.213.174.112/api/products/collaborative_recommend?size=$size',
+        '$backendUrl/products/collaborative_recommend?size=$size&&product_id=$id',
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
 

@@ -90,6 +90,11 @@ Widget projectWidget() {
               return Container(
                 child: StoreConnector<AppState, Favorite>(
                   distinct: true,
+                  onInit: (store) {
+                    Redux.store.dispatch(FavoriteActions(
+                            token: Redux.store.state.userState.token)
+                        .getAllFavoriteAction);
+                  },
                   converter: (store) => store.state.favoriteState.favoriteList,
                   builder: (context, favoriteList) {
                     return Container(
@@ -98,7 +103,6 @@ Widget projectWidget() {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: favoriteList.product.map((product) {
-                            print(product);
                             return Container(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 8,

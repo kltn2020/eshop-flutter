@@ -96,10 +96,14 @@ class ProductPage extends StatelessWidget {
             onInit: (store) {
               Redux.store.dispatch(ProductActions()
                   .getProductDetailAction(Redux.store, product.id));
+              Redux.store.dispatch(
+                  FavoriteActions(token: Redux.store.state.userState.token)
+                      .getAllFavoriteAction);
               Redux.store.dispatch(ProductActions()
-                  .getContentBaseRecommendAction(Redux.store, 1, 20));
+                  .getContentBaseRecommendAction(Redux.store, product.id, 20));
               Redux.store.dispatch(ProductActions()
-                  .getCollaborativeRecommendAction(Redux.store, 1, 10));
+                  .getCollaborativeRecommendAction(
+                      Redux.store, product.id, 10));
             },
             builder: (context, productState) {
               if (productState.productDetail != null && !productState.isLoading)

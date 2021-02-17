@@ -2,11 +2,6 @@ import 'package:meta/meta.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
-//Post
-import 'package:ecommerce_flutter/src/redux/posts/posts_actions.dart';
-import 'package:ecommerce_flutter/src/redux/posts/posts_reducer.dart';
-import 'package:ecommerce_flutter/src/redux/posts/posts_state.dart';
-
 //Product
 import 'package:ecommerce_flutter/src/redux/products/products_actions.dart';
 import 'package:ecommerce_flutter/src/redux/products/products_reducer.dart';
@@ -47,14 +42,11 @@ import 'package:ecommerce_flutter/src/redux/ratings/ratings_actions.dart';
 import 'package:ecommerce_flutter/src/redux/ratings/ratings_reducer.dart';
 import 'package:ecommerce_flutter/src/redux/ratings/ratings_state.dart';
 
+//Backend URL
+const String backendUrl = 'http://35.213.174.112/api';
+
 //appReducer: the root reducer of our entire application is where we use all of our reducers
 AppState appReducer(AppState state, dynamic action) {
-  if (action is SetPostsStateAction) {
-    final nextPostsState = postsReducer(state.postsState, action);
-
-    return state.copyWith(postsState: nextPostsState);
-  }
-
   if (action is SetProductsStateAction) {
     final nextProductsState = productsReducer(state.productsState, action);
 
@@ -109,7 +101,6 @@ AppState appReducer(AppState state, dynamic action) {
 @immutable
 //AppState: this is our main state object, the one that holds entire applications state
 class AppState {
-  final PostsState postsState;
   final ProductsState productsState;
   final UserState userState;
   final FavoriteState favoriteState;
@@ -120,7 +111,6 @@ class AppState {
   final RatingState ratingState;
 
   AppState({
-    @required this.postsState,
     @required this.productsState,
     @required this.userState,
     @required this.favoriteState,
@@ -132,7 +122,6 @@ class AppState {
   });
 
   AppState copyWith({
-    PostsState postsState,
     ProductsState productsState,
     UserState userState,
     FavoriteState favoriteState,
@@ -143,7 +132,6 @@ class AppState {
     RatingState ratingState,
   }) {
     return AppState(
-      postsState: postsState ?? this.postsState,
       productsState: productsState ?? this.productsState,
       userState: userState ?? this.userState,
       favoriteState: favoriteState ?? this.favoriteState,
@@ -171,7 +159,6 @@ class Redux {
   }
 
   static Future<void> init() async {
-    final postsStateInitial = PostsState.initial();
     final productsStateInitial = ProductsState.initial();
     final userStateInitial = UserState.initial();
     final favoriteStateInitial = FavoriteState.initial();
@@ -185,7 +172,6 @@ class Redux {
       appReducer,
       middleware: [thunkMiddleware],
       initialState: AppState(
-        postsState: postsStateInitial,
         productsState: productsStateInitial,
         userState: userStateInitial,
         favoriteState: favoriteStateInitial,
