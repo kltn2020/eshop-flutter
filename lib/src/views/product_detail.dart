@@ -343,9 +343,12 @@ Widget productInfo(
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        productData.categoryId != null
+                        productData.category != null
                             ? Expanded(
-                                child: Text(productData.categoryId.toString(),
+                                child: Text(
+                                    productData.category != null
+                                        ? productData.category
+                                        : '',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2),
                               )
@@ -361,9 +364,12 @@ Widget productInfo(
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        productData.brandId != null
+                        productData.brand != null
                             ? Expanded(
-                                child: Text(productData.brandId.toString(),
+                                child: Text(
+                                    productData.brand != null
+                                        ? productData.brand
+                                        : '',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2),
                               )

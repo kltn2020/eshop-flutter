@@ -151,6 +151,14 @@ Widget projectWidget(int id) {
                                           fontSize: 16,
                                         ),
                                       ),
+                                      Text(
+                                        order.voucher != null
+                                            ? order.voucher.code
+                                            : '',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

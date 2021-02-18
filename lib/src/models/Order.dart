@@ -1,5 +1,6 @@
 import 'package:ecommerce_flutter/src/models/Address.dart';
 import 'package:ecommerce_flutter/src/models/Product.dart';
+import 'package:ecommerce_flutter/src/models/Voucher.dart';
 
 class Order {
   int id;
@@ -11,6 +12,7 @@ class Order {
   int voucherId;
   int addressId;
   Address address;
+  Voucher voucher;
   List<ProductInOrder> productList;
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,8 @@ class Order {
     orderDate = json['order_date'];
     address = Address.fromJson(json['address']);
     productList = ProductInOrder.listFromJson(json['lines']);
+    voucher =
+        json['voucher'] != null ? Voucher.fromJson(json['voucher']) : null;
   }
 
   static List<Order> listFromJson(List<dynamic> json) {

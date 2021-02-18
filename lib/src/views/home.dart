@@ -343,7 +343,7 @@ class _HomePageState extends State<HomePage> {
                                                           .discountPrice) +
                                                       " VND ",
                                                   style: TextStyle(
-                                                    fontSize: 14,
+                                                    fontSize: 12,
                                                     fontWeight: FontWeight.w700,
                                                     color: Color.fromRGBO(
                                                         146, 127, 191, 1),

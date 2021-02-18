@@ -1,3 +1,6 @@
+import 'package:ecommerce_flutter/src/models/Category.dart';
+import 'package:ecommerce_flutter/src/models/Brand.dart';
+
 class Product {
   int id;
   String sku;
@@ -24,8 +27,8 @@ class Product {
   int sold;
   double ratingAvg;
   int ratingCount;
-  int categoryId;
-  int brandId;
+  String category;
+  String brand;
   List<dynamic> images;
   int price;
   int discountPrice;
@@ -57,8 +60,8 @@ class Product {
     sold = json['sold'];
     ratingAvg = json['rating_avg'];
     ratingCount = json['rating_count'];
-    categoryId = json['category_id'];
-    brandId = json['brand_id'];
+    category = Category.fromJson(json['category']).name;
+    brand = Brand.fromJson(json['brand']).name;
     images = json['images'];
     price = json['price'];
     discountPrice = json['discount_price'];
