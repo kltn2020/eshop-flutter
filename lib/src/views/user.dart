@@ -29,7 +29,9 @@ class _UserState extends State<User> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: AutoSizeText(
-          Redux.store.state.userState.user.email,
+          Redux.store.state.userState.user != null
+              ? Redux.store.state.userState.user.email
+              : '',
           style: TextStyle(
             color: Color.fromRGBO(79, 59, 120, 1),
             fontWeight: FontWeight.w900,

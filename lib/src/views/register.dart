@@ -21,6 +21,8 @@ class _RegisterState extends State<Register> {
   final password = TextEditingController();
   final repassword = TextEditingController();
 
+  Timer _confirmtimer;
+
   @override
   void initState() {
     super.initState();
@@ -33,7 +35,7 @@ class _RegisterState extends State<Register> {
     email.dispose();
     password.dispose();
     repassword.dispose();
-
+    _confirmtimer.cancel();
     super.dispose();
   }
 
@@ -155,10 +157,10 @@ class _RegisterState extends State<Register> {
                                   //Success
                                   (() {
                                     if (userState.isSuccess) {
-                                      Timer(
+                                      _confirmtimer = new Timer(
                                         Duration(seconds: 3),
                                         () {
-                                          Navigator.push(
+                                          Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
@@ -169,6 +171,7 @@ class _RegisterState extends State<Register> {
                                           );
                                         },
                                       );
+
                                       return Container(
                                         margin: EdgeInsets.all(8),
                                         child: Text(

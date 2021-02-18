@@ -50,6 +50,7 @@ class ProductActions {
   Future<void> getProductDetailAction(Store<AppState> store, int id) async {
     store.dispatch(SetProductsStateAction(ProductsState(isLoading: true)));
 
+    print('get-detail-id-$id');
     try {
       var token = store.state.userState.token;
 
@@ -181,6 +182,10 @@ class ProductActions {
             ),
           ),
         );
+
+        print('content-list-id');
+        print(store.state.productsState.recommendContentProducts
+            .map((ele) => ele.id));
       }
     } catch (error) {
       store.dispatch(SetProductsStateAction(
@@ -214,6 +219,9 @@ class ProductActions {
             ),
           ),
         );
+        print('collab-list-id');
+        print(store.state.productsState.recommendCollabProducts
+            .map((ele) => ele.id));
       }
     } catch (error) {
       store.dispatch(SetProductsStateAction(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ecommerce_flutter/src/animations/fade_animation.dart';
 import 'package:ecommerce_flutter/src/redux/user/user_state.dart';
+import 'package:ecommerce_flutter/src/views/login.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:ecommerce_flutter/src/redux/user/user_actions.dart';
@@ -25,6 +26,8 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
   final token5 = TextEditingController();
   final token6 = TextEditingController();
   final emailInput = TextEditingController();
+
+  Timer _logintimer;
 
   @override
   void initState() {
@@ -63,6 +66,7 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
 
+    print(widget.email);
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -169,13 +173,16 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
                                   //Success
                                   (() {
                                     if (userState.isSuccess) {
-                                      Timer(
-                                        Duration(seconds: 3),
-                                        () {
-                                          Navigator.pushReplacementNamed(
-                                              context, '/login');
-                                        },
-                                      );
+                                      _logintimer = new Timer(
+                                          const Duration(seconds: 2), () {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => Login(),
+                                          ),
+                                        );
+                                      });
+
                                       return Container(
                                         margin: EdgeInsets.all(8),
                                         child: Text(

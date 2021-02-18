@@ -219,12 +219,13 @@ Widget productInfo(
                   distinct: true,
                   converter: (store) => store.state.favoriteState,
                   builder: (context, favoriteState) {
-                    return favoriteState.favoriteList.product
-                                .where(
-                                    (iproduct) => iproduct.id == productData.id)
-                                .toList()
-                                .length >
-                            0
+                    return favoriteState.favoriteList != null &&
+                            favoriteState.favoriteList.product
+                                    .where((iproduct) =>
+                                        iproduct.id == productData.id)
+                                    .toList()
+                                    .length >
+                                0
                         ? FlatButton(
                             onPressed: () {
                               Redux.store.dispatch(
