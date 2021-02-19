@@ -142,11 +142,8 @@ class _ProductListState extends State<ProductList> {
                                           ),
                                           product.discountPrice != null
                                               ? Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                    horizontal: 8,
-                                                    vertical: 15,
-                                                  ),
-                                                  child: Row(
+                                                  padding: EdgeInsets.all(8),
+                                                  child: Column(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceEvenly,
@@ -156,7 +153,7 @@ class _ProductListState extends State<ProductList> {
                                                                 .discountPrice) +
                                                             " VND ",
                                                         style: TextStyle(
-                                                          fontSize: 12,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           color: Color.fromRGBO(
@@ -167,30 +164,19 @@ class _ProductListState extends State<ProductList> {
                                                       product.price !=
                                                               product
                                                                   .discountPrice
-                                                          ? Expanded(
-                                                              child: Container(
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        left:
-                                                                            2),
-                                                                child:
-                                                                    AutoSizeText(
-                                                                  formatter.format(
-                                                                      product
-                                                                          .price),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .lineThrough,
-                                                                    fontSize:
-                                                                        10,
-                                                                  ),
-                                                                  maxLines: 1,
-                                                                ),
+                                                          ? AutoSizeText(
+                                                              formatter.format(
+                                                                  product
+                                                                      .price),
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors.grey,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .lineThrough,
+                                                                fontSize: 10,
                                                               ),
+                                                              maxLines: 1,
                                                             )
                                                           : Container(),
                                                     ],
