@@ -191,7 +191,7 @@ class _ProductListState extends State<ProductList> {
                                                           .format(product.price)
                                                       : "Contact"),
                                                   style: TextStyle(
-                                                    fontSize: 18,
+                                                    fontSize: 14,
                                                     fontWeight: FontWeight.w700,
                                                     color: Color.fromRGBO(
                                                         146, 127, 191, 1),

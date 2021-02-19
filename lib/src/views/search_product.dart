@@ -175,24 +175,21 @@ class _SearchProductListState extends State<SearchProductList> {
                                                           MainAxisAlignment
                                                               .spaceEvenly,
                                                       children: [
-                                                        Expanded(
-                                                          child: AutoSizeText(
-                                                            formatter.format(product
-                                                                .discountPrice),
-                                                            style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      146,
-                                                                      127,
-                                                                      191,
-                                                                      1),
-                                                            ),
-                                                            maxLines: 1,
+                                                        AutoSizeText(
+                                                          formatter.format(product
+                                                              .discountPrice),
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    146,
+                                                                    127,
+                                                                    191,
+                                                                    1),
                                                           ),
+                                                          maxLines: 1,
                                                         ),
                                                         product.price !=
                                                                 product
@@ -222,7 +219,7 @@ class _SearchProductListState extends State<SearchProductList> {
                                                             product.price)
                                                         : "Contact"),
                                                     style: TextStyle(
-                                                      fontSize: 18,
+                                                      fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.w700,
                                                       color: Color.fromRGBO(
