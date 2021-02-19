@@ -138,11 +138,14 @@ class _ProductListState extends State<ProductList> {
                                               product.name,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
                                             ),
                                           ),
                                           product.discountPrice != null
                                               ? Container(
-                                                  padding: EdgeInsets.all(8),
+                                                  padding: EdgeInsets.all(6),
                                                   child: Column(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -153,7 +156,7 @@ class _ProductListState extends State<ProductList> {
                                                                 .discountPrice) +
                                                             " VND ",
                                                         style: TextStyle(
-                                                          fontSize: 15,
+                                                          fontSize: 14,
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           color: Color.fromRGBO(
