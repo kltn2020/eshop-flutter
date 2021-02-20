@@ -13,6 +13,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:ecommerce_flutter/src/redux/store.dart';
 import 'package:ecommerce_flutter/src/views/home.dart';
+import 'package:ecommerce_flutter/src/views/loading_screen.dart';
 import 'package:ecommerce_flutter/src/views/product_list.dart';
 import 'package:ecommerce_flutter/src/views/login.dart';
 import 'package:ecommerce_flutter/src/views/register.dart';
@@ -54,10 +55,11 @@ class MyApp extends StatelessWidget {
               ),
         ),
         title: 'Shop',
-        initialRoute: '/',
+        initialRoute: '/loading-screen',
         routes: {
           '/': (context) => HomePage(),
           '/intro': (context) => Intro(),
+          '/loading-screen': (context) => LoadingScreen(),
           '/product-list': (context) => ProductList(title: 'Product List'),
           '/category-list': (context) => CategoryList(),
           '/notifications': (context) => Notifications(title: 'Notifications'),

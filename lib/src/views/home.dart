@@ -45,20 +45,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  Future<void> autoLogIn() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String token = prefs.getString('token');
-
-    if (token == null) {
-      Navigator.pushReplacementNamed(context, '/intro');
-      return;
-    } else {
-      Redux.store.state.userState.token = token;
-      Redux.store.state.userState.user = User.fromJson(parseJwtPayLoad(token));
-      return;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -235,18 +221,9 @@ class _HomePageState extends State<HomePage> {
   Widget projectWidget() {
     return FutureBuilder(
       future: Future.wait(<Future>[
-        autoLogIn().then((_) async {
-          final SharedPreferences prefs = await SharedPreferences.getInstance();
-          Redux.store.dispatch(
-              CartActions().getAllCartAction(Redux.store).catchError((_) {
-            if (prefs.getString('token') == null) {
-              Navigator.pushReplacementNamed(context, '/intro');
-              return;
-            }
-          }));
-          Redux.store.dispatch(ProductActions()
-              .getCollaborativeRecommendAction(Redux.store, 1, 20));
-        }),
+        Redux.store.dispatch(CartActions().getAllCartAction(Redux.store)),
+        Redux.store.dispatch(ProductActions()
+            .getCollaborativeRecommendAction(Redux.store, 1, 20)),
       ]),
       builder: (context, projectSnap) {
         if (projectSnap.connectionState == ConnectionState.none &&

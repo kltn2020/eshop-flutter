@@ -45,7 +45,7 @@ void _showToast(BuildContext context) {
   final scaffold = Scaffold.of(context);
   scaffold.showSnackBar(
     SnackBar(
-      content: const Text('Added to favorite'),
+      content: const Text('Added to cart'),
     ),
   );
 }
@@ -107,140 +107,151 @@ Widget projectWidget() {
                   },
                   converter: (store) => store.state.favoriteState.favoriteList,
                   builder: (context, favoriteList) {
-                    return Container(
-                      padding: EdgeInsets.symmetric(vertical: 32),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: favoriteList.product.map((product) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 16,
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => ProductPage(
-                                                product: product,
+                    if (favoriteList != null)
+                      return Container(
+                        padding: EdgeInsets.symmetric(vertical: 32),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: favoriteList.product.map((product) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 16,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductPage(
+                                                  product: product,
+                                                ),
+                                              ));
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                product.name,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 14,
+                                                ),
+                                                maxLines: 3,
                                               ),
-                                            ));
-                                      },
-                                      child: Container(
-                                        padding:
-                                            EdgeInsets.symmetric(horizontal: 8),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              product.name,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 14,
-                                              ),
-                                              maxLines: 3,
-                                            ),
-                                            product.discountPrice > 0
-                                                ? Row(
-                                                    children: [
-                                                      AutoSizeText(
-                                                        formatter.format(product
-                                                                .discountPrice) +
-                                                            ' VND',
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Color.fromRGBO(
-                                                              146, 127, 191, 1),
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                        ),
-                                                        maxLines: 1,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Expanded(
-                                                        child: AutoSizeText(
-                                                          formatter.format(
-                                                              product.price),
+                                              product.discountPrice > 0
+                                                  ? Row(
+                                                      children: [
+                                                        AutoSizeText(
+                                                          formatter.format(product
+                                                                  .discountPrice) +
+                                                              ' VND',
                                                           style: TextStyle(
                                                             fontSize: 14,
-                                                            color: Colors.grey,
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .lineThrough,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    146,
+                                                                    127,
+                                                                    191,
+                                                                    1),
+                                                            fontWeight:
+                                                                FontWeight.w900,
                                                           ),
                                                           maxLines: 1,
                                                         ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Expanded(
+                                                          child: AutoSizeText(
+                                                            formatter.format(
+                                                                product.price),
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              color:
+                                                                  Colors.grey,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                            ),
+                                                            maxLines: 1,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : Text(
+                                                      formatter.format(
+                                                          product.price),
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Color.fromRGBO(
+                                                            146, 127, 191, 1),
+                                                        fontWeight:
+                                                            FontWeight.w900,
                                                       ),
-                                                    ],
-                                                  )
-                                                : Text(
-                                                    formatter
-                                                        .format(product.price),
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Color.fromRGBO(
-                                                          146, 127, 191, 1),
-                                                      fontWeight:
-                                                          FontWeight.w900,
                                                     ),
-                                                  ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  FlatButton(
-                                    onPressed: () {
-                                      Redux.store.dispatch(CartActions()
-                                          .addCartAction(
-                                              Redux.store, product, 1)
-                                          .then(
-                                        (value) => _showToast(context),
-                                        onError: (e) {
-                                          print(e);
-                                        },
-                                      ));
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 8,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          width: 1,
-                                          color: Colors.black,
-                                        ),
-                                        borderRadius: BorderRadius.circular(50),
-                                        color: Color.fromRGBO(196, 187, 240, 1),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "Add to cart",
-                                          style: TextStyle(
-                                            color: Colors.black,
+                                            ],
                                           ),
                                         ),
                                       ),
                                     ),
-                                  )
-                                ],
-                              ),
-                            );
-                          }).toList(),
+                                    FlatButton(
+                                      onPressed: () {
+                                        Redux.store.dispatch(CartActions()
+                                            .addCartAction(
+                                                Redux.store, product, 1)
+                                            .then(
+                                          (value) => _showToast(context),
+                                          onError: (e) {
+                                            print(e);
+                                          },
+                                        ));
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 8,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            width: 1,
+                                            color: Colors.black,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          color:
+                                              Color.fromRGBO(196, 187, 240, 1),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "Add to cart",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    else
+                      return Container();
                   },
                 ),
               );
