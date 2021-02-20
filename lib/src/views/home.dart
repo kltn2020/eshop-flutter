@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
     final String token = prefs.getString('token');
 
     if (token == null) {
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, '/intro');
       return;
     } else {
       Redux.store.state.userState.token = token;
@@ -240,7 +240,7 @@ class _HomePageState extends State<HomePage> {
           Redux.store.dispatch(
               CartActions().getAllCartAction(Redux.store).catchError((_) {
             if (prefs.getString('token') == null) {
-              Navigator.pushReplacementNamed(context, '/login');
+              Navigator.pushReplacementNamed(context, '/intro');
               return;
             }
           }));
