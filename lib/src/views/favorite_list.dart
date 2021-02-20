@@ -134,8 +134,9 @@ Widget projectWidget() {
                                               product.name,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w700,
-                                                fontSize: 18,
+                                                fontSize: 14,
                                               ),
+                                              maxLines: 3,
                                             ),
                                             product.discountPrice > 0
                                                 ? Row(
@@ -145,7 +146,7 @@ Widget projectWidget() {
                                                                 .discountPrice) +
                                                             ' VND',
                                                         style: TextStyle(
-                                                          fontSize: 18,
+                                                          fontSize: 14,
                                                           color: Color.fromRGBO(
                                                               146, 127, 191, 1),
                                                           fontWeight:
@@ -176,7 +177,7 @@ Widget projectWidget() {
                                                     formatter
                                                         .format(product.price),
                                                     style: TextStyle(
-                                                      fontSize: 20,
+                                                      fontSize: 18,
                                                       color: Color.fromRGBO(
                                                           146, 127, 191, 1),
                                                       fontWeight:
