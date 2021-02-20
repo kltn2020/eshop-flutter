@@ -293,10 +293,14 @@ class CartActions {
             HttpHeaders.authorizationHeader: "Bearer $token",
             "Content-Type": "application/json",
           },
-          body: jsonEncode(<String, dynamic>{
-            'address_id': address != null ? address.id : '',
-            'voucher_code': voucher != null ? voucher.code : '',
-          }));
+          body: voucher != null
+              ? jsonEncode(<String, dynamic>{
+                  'address_id': address != null ? address.id : '',
+                  'voucher_code': voucher.code,
+                })
+              : jsonEncode(<String, dynamic>{
+                  'address_id': address != null ? address.id : '',
+                }));
 
       if (response.statusCode == 200) {
         store.dispatch(
