@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:ecommerce_flutter/src/redux/cart/cart_actions.dart';
 import 'package:ecommerce_flutter/src/views/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -38,6 +39,15 @@ class _FavoriteListState extends State<FavoriteList> {
       body: projectWidget(),
     );
   }
+}
+
+void _showToast(BuildContext context) {
+  final scaffold = Scaffold.of(context);
+  scaffold.showSnackBar(
+    SnackBar(
+      content: const Text('Added to favorite'),
+    ),
+  );
 }
 
 Widget projectWidget() {
@@ -191,7 +201,15 @@ Widget projectWidget() {
                                   ),
                                   FlatButton(
                                     onPressed: () {
-                                      print("Add to cart");
+                                      Redux.store.dispatch(CartActions()
+                                          .addCartAction(
+                                              Redux.store, product, 1)
+                                          .then(
+                                        (value) => _showToast(context),
+                                        onError: (e) {
+                                          print(e);
+                                        },
+                                      ));
                                     },
                                     child: Container(
                                       padding: EdgeInsets.symmetric(
