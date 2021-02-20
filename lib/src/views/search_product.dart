@@ -91,7 +91,8 @@ class _SearchProductListState extends State<SearchProductList> {
                     .getMoreSearchProductsAction(Redux.store, page,
                         searchController.text, widget.brandId)),
                 builder: (context, productState) {
-                  if (searchController.text != '' || widget.brandId != null)
+                  if (searchController.text.trim() != '' ||
+                      widget.brandId != null)
                     return Container(
                       child: NotificationListener<ScrollNotification>(
                         onNotification: (ScrollNotification scrollInfo) {
@@ -177,7 +178,8 @@ class _SearchProductListState extends State<SearchProductList> {
                                                       children: [
                                                         AutoSizeText(
                                                           formatter.format(product
-                                                              .discountPrice),
+                                                                  .discountPrice) +
+                                                              ' VND',
                                                           style: TextStyle(
                                                             fontSize: 14,
                                                             fontWeight:

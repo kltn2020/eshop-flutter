@@ -149,24 +149,6 @@ Widget projectWidget() {
                                       ),
                                       Row(
                                         children: [
-                                          Expanded(
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "User ID: ",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  address.userId.toString(),
-                                                  // style: TextStyle(
-                                                  //   fontWeight: FontWeight.w700,
-                                                  // ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
                                           address.isPrimary == true
                                               ? Text(
                                                   "PRIMARY",
